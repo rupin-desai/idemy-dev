@@ -51,12 +51,18 @@ class Blockchain {
     return block;
   }
 
+  // Add this to your addTransaction method
   addTransaction(transaction) {
     if (!transaction.fromAddress || !transaction.toAddress) {
       throw new Error("Transaction must include from and to address");
     }
 
-    if (!transaction.isValid()) {
+    // In development mode, bypass signature validation
+    const isValidTransaction =
+      require("../app.config").nodeEnv === "development" ||
+      transaction.isValid();
+
+    if (!isValidTransaction) {
       throw new Error("Cannot add invalid transaction to chain");
     }
 

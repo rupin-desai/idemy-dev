@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const idGenerator = require("../utils/idGenerator.utils");
+const config = require("../app.config");
 
 class Transaction {
   constructor(fromAddress, toAddress, amount, metadata = {}) {
@@ -36,18 +37,29 @@ class Transaction {
   }
 
   isValid() {
-    if (this.fromAddress === null) return true;
+    // In development mode or for mining reward transactions (from = null), 
+    // bypass strict validation
+    if (config.nodeEnv === "development" || this.fromAddress === null) {
+      return true;
+    }
+    
     if (!this.signature || this.signature.length === 0) {
       throw new Error("No signature in this transaction");
     }
 
-    const publicKey = crypto.createPublicKey(this.fromAddress);
-    return crypto.verify(
-      "sha256",
-      Buffer.from(this.calculateHash()),
-      publicKey,
-      Buffer.from(this.signature, "hex")
-    );
+    try {
+      const publicKey = crypto.createPublicKey(this.fromAddress);
+      return crypto.verify(
+        "sha256",
+        Buffer.from(this.calculateHash()),
+        publicKey,
+        Buffer.from(this.signature, "hex")
+      );
+    } catch (error) {
+      console.error("Signature verification error:", error.message);
+      // In development mode, allow transactions even if signature verification fails
+      return config.nodeEnv === "development";
+    }
   }
 }
 

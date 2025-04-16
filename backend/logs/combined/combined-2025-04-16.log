@@ -22,3 +22,39 @@
 [INFO] 2025-04-16T06:37:41.709Z: Auto-saved blockchain (interval: 5 minutes)
 [INFO] 2025-04-16T06:42:41.715Z: Blockchain saved to file successfully
 [INFO] 2025-04-16T06:42:41.716Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T06:45:30.155Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T06:45:30.158Z: Genesis block created
+[INFO] 2025-04-16T06:45:30.159Z: Blockchain restored with 1 blocks
+[INFO] 2025-04-16T06:45:30.160Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T06:45:30.161Z: Blockchain service initialized
+[INFO] 2025-04-16T06:45:30.165Z: Transaction created: TXm9jkhrxw4c7ab7ba5e705f36
+[INFO] 2025-04-16T06:45:30.166Z: Transaction added: TXm9jkhrxw4c7ab7ba5e705f36
+[INFO] 2025-04-16T06:45:30.167Z: Transaction added: TXm9jkhrxw4c7ab7ba5e705f36
+[INFO] 2025-04-16T06:45:30.169Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T06:45:30.170Z: Transaction added successfully
+[INFO] 2025-04-16T06:45:30.172Z: Mining block 1...
+[INFO] 2025-04-16T06:45:30.217Z: Block 1 mined: 00007f3dcd879fd2568ac8ebfedbbb7a473b09f0869de7f07aef3aca5af5eba8
+[INFO] 2025-04-16T06:45:30.218Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T06:45:30.219Z: Block mined successfully: {"index":1,"timestamp":1744785930172,"transactions":[{"id":"TXm9jkhrxw4c7ab7ba5e705f36","fromAddress":"test-address-1","toAddress":"test-address-2","amount":50,"timestamp":1744785930165,"metadata":{"studentId":"STU12345678","note":"Test transaction"},"signature":""},{"id":"TXm9jkhry3aa7df7a849ca82d6","fromAddress":null,"toAddress":"miner-reward-address","amount":100,"timestamp":1744785930172,"metadata":{"note":"Test mining block"},"signature":""}],"previousHash":"cced9758569ad9263e8aa85d554c03eb08ca17c8d77685048ee9cb8dc3a636a2","metadata":{"note":"Test mining block"},"hash":"00007f3dcd879fd2568ac8ebfedbbb7a473b09f0869de7f07aef3aca5af5eba8","nonce":7630}
+[INFO] 2025-04-16T06:45:30.221Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T06:45:30.221Z: Blockchain saved: success
+[INFO] 2025-04-16T06:45:30.222Z: Persistence test completed!
+[INFO] 2025-04-16T06:45:58.615Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T06:45:58.618Z: Genesis block created
+[INFO] 2025-04-16T06:45:58.619Z: Blockchain restored with 2 blocks
+[INFO] 2025-04-16T06:45:58.621Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T06:45:58.622Z: Blockchain service initialized
+[INFO] 2025-04-16T06:45:58.626Z: Transaction created: TXm9jkidwib60a2213203822ab
+[INFO] 2025-04-16T06:45:58.628Z: Transaction added: TXm9jkidwib60a2213203822ab
+[INFO] 2025-04-16T06:45:58.629Z: Transaction added: TXm9jkidwib60a2213203822ab
+[INFO] 2025-04-16T06:45:58.631Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T06:45:58.633Z: Transaction added successfully
+[INFO] 2025-04-16T06:45:58.635Z: Mining block 2...
+[INFO] 2025-04-16T06:45:58.646Z: Block 2 mined: 00000d326a3251f5e75e19d24f0279d9e0b4e8178bbbc365c337261ce8a4b45f
+[INFO] 2025-04-16T06:45:58.647Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T06:45:58.648Z: Block mined successfully: {"index":2,"timestamp":1744785958635,"transactions":[{"id":"TXm9jkidwib60a2213203822ab","fromAddress":"test-address-1","toAddress":"test-address-2","amount":50,"timestamp":1744785958626,"metadata":{"studentId":"STU12345678","note":"Test transaction"},"signature":""},{"id":"TXm9jkidwq4f0dd12bbbcb32e5","fromAddress":null,"toAddress":"miner-reward-address","amount":100,"timestamp":1744785958634,"metadata":{"note":"Test mining block"},"signature":""}],"previousHash":"00007f3dcd879fd2568ac8ebfedbbb7a473b09f0869de7f07aef3aca5af5eba8","metadata":{"note":"Test mining block"},"hash":"00000d326a3251f5e75e19d24f0279d9e0b4e8178bbbc365c337261ce8a4b45f","nonce":1316}
+[INFO] 2025-04-16T06:45:58.650Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T06:45:58.651Z: Blockchain saved: success
+[INFO] 2025-04-16T06:45:58.652Z: Persistence test completed!
+[INFO] 2025-04-16T06:47:41.715Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T06:47:41.716Z: Auto-saved blockchain (interval: 5 minutes)
