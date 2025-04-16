@@ -2170,3 +2170,298 @@
 [INFO] 2025-04-16T11:42:36.412Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
 [INFO] 2025-04-16T11:42:36.413Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
 [INFO] 2025-04-16T11:42:36.414Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T11:43:59.765Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T11:43:59.766Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T11:48:59.769Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T11:48:59.770Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T11:53:59.777Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T11:53:59.778Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T11:58:44.717Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T11:58:44.721Z: Genesis block created
+[INFO] 2025-04-16T11:58:44.723Z: Blockchain restored with 5 blocks
+[INFO] 2025-04-16T11:58:44.724Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T11:58:44.725Z: Blockchain service initialized
+[INFO] 2025-04-16T11:58:44.736Z: Loaded 2 students from file
+[WARN] 2025-04-16T11:58:44.764Z: Font registration error: ENOENT: no such file or directory, lstat 'C:\Users\rupin\Desktop\Dev_Files\Git_Repos\Development\idemy-dev\backend\src\assets'. Using system fonts.
+[INFO] 2025-04-16T11:58:44.766Z: Loaded 1 NFTs from file
+[INFO] 2025-04-16T11:58:44.768Z: Loaded 1 ID cards from file
+[INFO] 2025-04-16T11:58:44.777Z: Server running on port 3000 in development mode
+[INFO] 2025-04-16T12:03:44.726Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T12:03:44.727Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T12:08:44.727Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T12:08:44.728Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T12:13:44.729Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T12:13:44.731Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T12:18:44.733Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T12:18:44.734Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T12:19:22.463Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744805962442 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744805962442","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805962442"}}
+[INFO] 2025-04-16T12:19:22.468Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:22.475Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:19:22.477Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:22.482Z: Request received: GET /api/students/STU7F4E1DA1/history?_t=1744805962444 {"method":"GET","url":"/api/students/STU7F4E1DA1/history?_t=1744805962444","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805962444"}}
+[INFO] 2025-04-16T12:19:22.485Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:22.489Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744805962448 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744805962448","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805962448"}}
+[INFO] 2025-04-16T12:19:22.492Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:22.496Z: Request received: GET /api/students/STU7F4E1DA1/history?_t=1744805962449 {"method":"GET","url":"/api/students/STU7F4E1DA1/history?_t=1744805962449","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805962449"}}
+[INFO] 2025-04-16T12:19:22.499Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:22.505Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:19:22.508Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:22.512Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:19:22.515Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:22.518Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:19:22.520Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:22.525Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:19:22.529Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:22.534Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:19:22.536Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:24.587Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:19:24.590Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:24.594Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:19:24.597Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:26.201Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:19:26.204Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:26.207Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:19:26.210Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:27.222Z: Request received: GET /api/students?_t=1744805967216 {"method":"GET","url":"/api/students?_t=1744805967216","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805967216"}}
+[INFO] 2025-04-16T12:19:27.224Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:27.227Z: Request received: GET /api/students?_t=1744805967217 {"method":"GET","url":"/api/students?_t=1744805967217","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805967217"}}
+[INFO] 2025-04-16T12:19:27.230Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:27.735Z: Request received: GET /api/nft?_t=1744805967733 {"method":"GET","url":"/api/nft?_t=1744805967733","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805967733"}}
+[INFO] 2025-04-16T12:19:27.738Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:27.741Z: Request received: GET /api/nft?_t=1744805967734 {"method":"GET","url":"/api/nft?_t=1744805967734","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805967734"}}
+[INFO] 2025-04-16T12:19:27.744Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:28.123Z: Request received: GET /api/students?_t=1744805968118 {"method":"GET","url":"/api/students?_t=1744805968118","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805968118"}}
+[INFO] 2025-04-16T12:19:28.125Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:28.128Z: Request received: GET /api/students?_t=1744805968119 {"method":"GET","url":"/api/students?_t=1744805968119","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805968119"}}
+[INFO] 2025-04-16T12:19:28.131Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:29.464Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744805969461 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744805969461","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805969461"}}
+[INFO] 2025-04-16T12:19:29.467Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:29.470Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744805969462 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744805969462","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805969462"}}
+[INFO] 2025-04-16T12:19:29.475Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:31.007Z: Request received: GET /api/students?_t=1744805971003 {"method":"GET","url":"/api/students?_t=1744805971003","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805971003"}}
+[INFO] 2025-04-16T12:19:31.009Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:31.012Z: Request received: GET /api/students?_t=1744805971004 {"method":"GET","url":"/api/students?_t=1744805971004","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805971004"}}
+[INFO] 2025-04-16T12:19:31.015Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:31.851Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744805971849 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744805971849","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805971849"}}
+[INFO] 2025-04-16T12:19:31.853Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:31.857Z: Request received: GET /api/students/STU7F4E1DA1/history?_t=1744805971850 {"method":"GET","url":"/api/students/STU7F4E1DA1/history?_t=1744805971850","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805971850"}}
+[INFO] 2025-04-16T12:19:31.860Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:31.864Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744805971850 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744805971850","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805971850"}}
+[INFO] 2025-04-16T12:19:31.866Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:19:31.869Z: Request received: GET /api/students/STU7F4E1DA1/history?_t=1744805971851 {"method":"GET","url":"/api/students/STU7F4E1DA1/history?_t=1744805971851","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744805971851"}}
+[INFO] 2025-04-16T12:19:31.871Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:23:44.746Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T12:23:44.747Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T12:27:33.145Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.3624","params":{},"query":{}}
+[INFO] 2025-04-16T12:27:33.147Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:27:47.926Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.3624","params":{},"query":{}}
+[INFO] 2025-04-16T12:27:47.928Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:28:44.746Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T12:28:44.747Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T12:31:10.361Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T12:31:10.364Z: Genesis block created
+[INFO] 2025-04-16T12:31:10.365Z: Blockchain restored with 5 blocks
+[INFO] 2025-04-16T12:31:10.366Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T12:31:10.367Z: Blockchain service initialized
+[INFO] 2025-04-16T12:31:10.578Z: Firebase Admin SDK initialized successfully
+[INFO] 2025-04-16T12:31:10.649Z: Loaded 2 students from file
+[WARN] 2025-04-16T12:31:10.676Z: Font registration error: ENOENT: no such file or directory, lstat 'C:\Users\rupin\Desktop\Dev_Files\Git_Repos\Development\idemy-dev\backend\src\assets'. Using system fonts.
+[INFO] 2025-04-16T12:31:10.678Z: Loaded 1 NFTs from file
+[INFO] 2025-04-16T12:31:10.681Z: Loaded 1 ID cards from file
+[INFO] 2025-04-16T12:31:10.817Z: Server running on port 3000 in development mode
+[INFO] 2025-04-16T12:31:48.699Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:31:48.703Z: Response sent: 400 {"statusCode":400,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:36:10.369Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T12:36:10.371Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T12:41:10.382Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T12:41:10.383Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T12:42:09.128Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[ERROR] 2025-04-16T12:42:10.154Z: Firebase user creation failed: There is no configuration corresponding to the provided identifier.
+[ERROR] 2025-04-16T12:42:10.156Z: User registration error: There is no configuration corresponding to the provided identifier.
+[INFO] 2025-04-16T12:42:10.158Z: Response sent: 500 {"statusCode":500,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:46:10.392Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T12:46:10.395Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T12:46:28.613Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:46:28.616Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:46:28.620Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:46:28.622Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:46:28.624Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:46:28.627Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:46:28.630Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:46:28.633Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:46:28.635Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:46:28.637Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:46:28.640Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T12:46:28.642Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T12:51:10.401Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T12:51:10.403Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T12:54:55.849Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T12:54:55.852Z: Genesis block created
+[INFO] 2025-04-16T12:54:55.854Z: Blockchain restored with 5 blocks
+[INFO] 2025-04-16T12:54:55.855Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T12:54:55.856Z: Blockchain service initialized
+[INFO] 2025-04-16T12:54:56.143Z: Firebase Admin SDK initialized successfully
+[INFO] 2025-04-16T12:58:15.738Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T12:58:15.741Z: Genesis block created
+[INFO] 2025-04-16T12:58:15.743Z: Blockchain restored with 5 blocks
+[INFO] 2025-04-16T12:58:15.744Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T12:58:15.745Z: Blockchain service initialized
+[INFO] 2025-04-16T12:58:15.936Z: Firebase Admin SDK initialized successfully
+[INFO] 2025-04-16T12:58:16.015Z: Loaded 2 students from file
+[WARN] 2025-04-16T12:58:16.063Z: Font registration error: ENOENT: no such file or directory, lstat 'C:\Users\rupin\Desktop\Dev_Files\Git_Repos\Development\idemy-dev\backend\src\assets'. Using system fonts.
+[INFO] 2025-04-16T12:58:16.067Z: Loaded 1 NFTs from file
+[INFO] 2025-04-16T12:58:16.069Z: Loaded 1 ID cards from file
+[INFO] 2025-04-16T12:58:16.082Z: Server running on port 3000 in development mode
+[INFO] 2025-04-16T13:00:45.643Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[ERROR] 2025-04-16T13:00:46.587Z: Firebase user creation failed: There is no configuration corresponding to the provided identifier.
+[ERROR] 2025-04-16T13:00:46.589Z: User registration error: There is no configuration corresponding to the provided identifier.
+[INFO] 2025-04-16T13:00:46.591Z: Response sent: 500 {"statusCode":500,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:03:15.747Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T13:03:15.749Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T13:06:02.403Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.3624","params":{},"query":{}}
+[ERROR] 2025-04-16T13:06:03.705Z: Firebase user creation failed: There is no configuration corresponding to the provided identifier.
+[ERROR] 2025-04-16T13:06:03.707Z: User registration error: There is no configuration corresponding to the provided identifier.
+[INFO] 2025-04-16T13:06:03.708Z: Response sent: 500 {"statusCode":500,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:08:15.752Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T13:08:15.754Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T13:09:56.738Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T13:09:56.743Z: Genesis block created
+[INFO] 2025-04-16T13:09:56.744Z: Blockchain restored with 5 blocks
+[INFO] 2025-04-16T13:09:56.746Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T13:09:56.748Z: Blockchain service initialized
+[INFO] 2025-04-16T13:09:56.960Z: Firebase Admin SDK initialized successfully
+[INFO] 2025-04-16T13:09:57.052Z: Loaded 2 students from file
+[WARN] 2025-04-16T13:09:57.081Z: Font registration error: ENOENT: no such file or directory, lstat 'C:\Users\rupin\Desktop\Dev_Files\Git_Repos\Development\idemy-dev\backend\src\assets'. Using system fonts.
+[INFO] 2025-04-16T13:09:57.084Z: Loaded 1 NFTs from file
+[INFO] 2025-04-16T13:09:57.087Z: Loaded 1 ID cards from file
+[INFO] 2025-04-16T13:09:57.098Z: Server running on port 3000 in development mode
+[INFO] 2025-04-16T13:10:20.600Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[ERROR] 2025-04-16T13:10:21.880Z: Firebase user creation failed: There is no configuration corresponding to the provided identifier.
+[ERROR] 2025-04-16T13:10:21.882Z: User registration error: There is no configuration corresponding to the provided identifier.
+[INFO] 2025-04-16T13:10:21.888Z: Response sent: 500 {"statusCode":500,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:13:45.195Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.3624","params":{},"query":{}}
+[ERROR] 2025-04-16T13:13:45.646Z: Firebase user creation failed: There is no configuration corresponding to the provided identifier.
+[ERROR] 2025-04-16T13:13:45.648Z: User registration error: There is no configuration corresponding to the provided identifier.
+[INFO] 2025-04-16T13:13:45.649Z: Response sent: 500 {"statusCode":500,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:14:56.756Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T13:14:56.757Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T13:16:55.039Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[ERROR] 2025-04-16T13:16:55.490Z: Firebase user creation failed: There is no configuration corresponding to the provided identifier.
+[ERROR] 2025-04-16T13:16:55.492Z: User registration error: There is no configuration corresponding to the provided identifier.
+[INFO] 2025-04-16T13:16:55.493Z: Response sent: 500 {"statusCode":500,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:19:56.757Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T13:19:56.759Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T13:22:26.838Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T13:22:26.841Z: Genesis block created
+[INFO] 2025-04-16T13:22:26.843Z: Blockchain restored with 5 blocks
+[INFO] 2025-04-16T13:22:26.844Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T13:22:26.845Z: Blockchain service initialized
+[INFO] 2025-04-16T13:22:27.020Z: Firebase Admin SDK initialized successfully
+[INFO] 2025-04-16T13:22:27.089Z: Loaded 2 students from file
+[WARN] 2025-04-16T13:22:27.117Z: Font registration error: ENOENT: no such file or directory, lstat 'C:\Users\rupin\Desktop\Dev_Files\Git_Repos\Development\idemy-dev\backend\src\assets'. Using system fonts.
+[INFO] 2025-04-16T13:22:27.120Z: Loaded 1 NFTs from file
+[INFO] 2025-04-16T13:22:27.121Z: Loaded 1 ID cards from file
+[INFO] 2025-04-16T13:22:27.133Z: Server running on port 3000 in development mode
+[INFO] 2025-04-16T13:23:49.137Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:23:49.138Z: Registration attempt for email: rupin360@gmail.com
+[ERROR] 2025-04-16T13:23:50.477Z: Firebase user creation failed: There is no configuration corresponding to the provided identifier.
+[ERROR] 2025-04-16T13:23:50.479Z: User registration error: There is no configuration corresponding to the provided identifier.
+[INFO] 2025-04-16T13:23:50.482Z: Response sent: 500 {"statusCode":500,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:27:26.846Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T13:27:26.847Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T13:30:08.633Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:30:08.635Z: Registration attempt for email: rupin360@gmail.com
+[INFO] 2025-04-16T13:30:09.801Z: Firebase user created: LxQV3T1iD3SkqNMRoDqgLdvXXfy2
+[ERROR] 2025-04-16T13:30:09.811Z: User registration error: "expiresIn" should be a number of seconds or string representing a timespan eg: "1d", "20h", 60
+[INFO] 2025-04-16T13:30:09.814Z: Response sent: 500 {"statusCode":500,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:32:00.450Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:32:00.452Z: Registration attempt for email: rupin360@gmail.com
+[ERROR] 2025-04-16T13:32:01.066Z: Firebase user creation failed: The email address is already in use by another account.
+[ERROR] 2025-04-16T13:32:01.067Z: User registration error: The email address is already in use by another account.
+[INFO] 2025-04-16T13:32:01.070Z: Response sent: 400 {"statusCode":400,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:32:10.335Z: Request received: POST /api/auth/login {"method":"POST","url":"/api/auth/login","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:32:10.337Z: Response sent: 400 {"statusCode":400,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:32:26.855Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T13:32:26.856Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T13:32:39.597Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:32:39.598Z: Registration attempt for email: rupin360@gmail.com
+[INFO] 2025-04-16T13:32:40.917Z: Firebase user created: R6iifKnUsmhPj3BFLXR6ormf8e33
+[ERROR] 2025-04-16T13:32:40.920Z: User registration error: "expiresIn" should be a number of seconds or string representing a timespan eg: "1d", "20h", 60
+[INFO] 2025-04-16T13:32:40.921Z: Response sent: 500 {"statusCode":500,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:33:36.480Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:33:36.482Z: Registration attempt for email: rupin360@gmail.com
+[ERROR] 2025-04-16T13:33:37.030Z: Firebase user creation failed: The email address is already in use by another account.
+[ERROR] 2025-04-16T13:33:37.032Z: User registration error: The email address is already in use by another account.
+[INFO] 2025-04-16T13:33:37.033Z: Response sent: 400 {"statusCode":400,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:33:45.190Z: Request received: POST /api/auth/login {"method":"POST","url":"/api/auth/login","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:33:45.192Z: Response sent: 400 {"statusCode":400,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:33:59.788Z: Request received: POST /api/auth/login {"method":"POST","url":"/api/auth/login","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:33:59.790Z: Response sent: 400 {"statusCode":400,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:36:53.819Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T13:36:53.822Z: Genesis block created
+[INFO] 2025-04-16T13:36:53.824Z: Blockchain restored with 5 blocks
+[INFO] 2025-04-16T13:36:53.825Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T13:36:53.827Z: Blockchain service initialized
+[INFO] 2025-04-16T13:36:54.012Z: Firebase Admin SDK initialized successfully
+[INFO] 2025-04-16T13:36:54.084Z: Loaded 2 students from file
+[WARN] 2025-04-16T13:36:54.111Z: Font registration error: ENOENT: no such file or directory, lstat 'C:\Users\rupin\Desktop\Dev_Files\Git_Repos\Development\idemy-dev\backend\src\assets'. Using system fonts.
+[INFO] 2025-04-16T13:36:54.113Z: Loaded 1 NFTs from file
+[INFO] 2025-04-16T13:36:54.115Z: Loaded 1 ID cards from file
+[INFO] 2025-04-16T13:36:54.127Z: Server running on port 3000 in development mode
+[INFO] 2025-04-16T13:37:23.006Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:37:23.008Z: Registration attempt for email: rupin360@gmail.com
+[ERROR] 2025-04-16T13:37:23.010Z: User registration error: firebaseAdminModule is not defined
+[INFO] 2025-04-16T13:37:23.012Z: Response sent: 500 {"statusCode":500,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:37:28.779Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:37:28.781Z: Registration attempt for email: rupin360@gmail.com
+[ERROR] 2025-04-16T13:37:28.782Z: User registration error: firebaseAdminModule is not defined
+[INFO] 2025-04-16T13:37:28.784Z: Response sent: 500 {"statusCode":500,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:37:39.535Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:37:39.538Z: Registration attempt for email: rupin360@gmail.com
+[ERROR] 2025-04-16T13:37:39.539Z: User registration error: firebaseAdminModule is not defined
+[INFO] 2025-04-16T13:37:39.542Z: Response sent: 500 {"statusCode":500,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:38:13.268Z: Request received: POST /api/auth/login {"method":"POST","url":"/api/auth/login","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:38:13.271Z: Response sent: 400 {"statusCode":400,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:41:53.827Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T13:41:53.828Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T13:46:10.746Z: Request received: POST /api/auth/login {"method":"POST","url":"/api/auth/login","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:46:11.744Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:46:16.113Z: Request received: POST /api/auth/logout {"method":"POST","url":"/api/auth/logout","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:46:16.115Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:46:31.651Z: Request received: POST /api/auth/login {"method":"POST","url":"/api/auth/login","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[ERROR] 2025-04-16T13:46:32.086Z: Get user by email failed: There is no user record corresponding to the provided identifier.
+[INFO] 2025-04-16T13:46:32.088Z: Response sent: 401 {"statusCode":401,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:46:43.632Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:46:43.634Z: Registration attempt for email: rupin360@gmail.com
+[ERROR] 2025-04-16T13:46:43.635Z: User registration error: firebaseAdminModule is not defined
+[INFO] 2025-04-16T13:46:43.637Z: Response sent: 500 {"statusCode":500,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:46:53.833Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T13:46:53.834Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T13:51:53.845Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T13:51:53.846Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T13:54:08.583Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T13:54:08.586Z: Genesis block created
+[INFO] 2025-04-16T13:54:08.587Z: Blockchain restored with 5 blocks
+[INFO] 2025-04-16T13:54:08.588Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T13:54:08.590Z: Blockchain service initialized
+[INFO] 2025-04-16T13:54:08.812Z: Firebase Admin SDK initialized successfully
+[INFO] 2025-04-16T13:54:08.891Z: Loaded 2 students from file
+[WARN] 2025-04-16T13:54:08.923Z: Font registration error: ENOENT: no such file or directory, lstat 'C:\Users\rupin\Desktop\Dev_Files\Git_Repos\Development\idemy-dev\backend\src\assets'. Using system fonts.
+[INFO] 2025-04-16T13:54:08.925Z: Loaded 1 NFTs from file
+[INFO] 2025-04-16T13:54:08.926Z: Loaded 1 ID cards from file
+[INFO] 2025-04-16T13:54:08.934Z: Server running on port 3000 in development mode
+[INFO] 2025-04-16T13:55:05.639Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:55:05.641Z: Registration attempt for email: rupin360@gmail.com
+[INFO] 2025-04-16T13:55:07.252Z: Firebase user created: 2bHTSjOUTPf3Cjg4k6yQJamLbCl2
+[INFO] 2025-04-16T13:55:07.258Z: Response sent: 201 {"statusCode":201,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:55:13.972Z: Request received: POST /api/auth/logout {"method":"POST","url":"/api/auth/logout","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:55:13.974Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:55:21.539Z: Request received: POST /api/auth/login {"method":"POST","url":"/api/auth/login","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[ERROR] 2025-04-16T13:55:21.984Z: Get user by email failed: There is no user record corresponding to the provided identifier.
+[INFO] 2025-04-16T13:55:21.985Z: Response sent: 401 {"statusCode":401,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:55:38.702Z: Request received: POST /api/auth/register {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T13:55:38.703Z: Registration attempt for email: krish382002@gmail.com
+[INFO] 2025-04-16T13:55:39.805Z: Firebase user created: Ch6HEE1fGpcQAjmsMFsMw68G2eN2
+[INFO] 2025-04-16T13:55:39.809Z: Response sent: 201 {"statusCode":201,"responseTime":"unknown"}
+[INFO] 2025-04-16T13:59:08.594Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T13:59:08.596Z: Auto-saved blockchain (interval: 5 minutes)

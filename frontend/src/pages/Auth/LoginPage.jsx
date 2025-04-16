@@ -65,14 +65,11 @@ const LoginPage = () => {
     setError("");
 
     try {
-      // This would be an API call in a real app
-      // For now, we'll simulate a successful login
-      setTimeout(() => {
-        login({ email });
-        navigate("/");
-      }, 1000);
+      // Replace the mock implementation with actual API call
+      await login(email, password);
+      navigate("/");
     } catch (err) {
-      setError("Invalid credentials. Please try again.");
+      setError(err.response?.data?.message || "Invalid credentials. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

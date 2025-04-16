@@ -78,14 +78,10 @@ const RegisterPage = () => {
     setError("");
 
     try {
-      // This would be an API call in a real app
-      // For now, we'll simulate a successful registration
-      setTimeout(() => {
-        register({ firstName, lastName, email });
-        navigate("/");
-      }, 1000);
+      await register({ firstName, lastName, email, password });
+      navigate("/");
     } catch (err) {
-      setError("Registration failed. Please try again.");
+      setError(err.response?.data?.message || "Registration failed. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

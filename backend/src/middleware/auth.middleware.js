@@ -1,66 +1,93 @@
-const crypto = require('../utils/crypto.utils');
-const logger = require('../utils/logger.utils');
+// backend/src/middleware/auth.middleware.js
+const authService = require("../services/auth.service");
+const logger = require("../utils/logger.utils");
+const jwt = require('jsonwebtoken');
 
-exports.authenticate = (req, res, next) => {
-    const token = req.headers['authorization'];
-
-    if (!token) {
-        return res.status(401).json({ message: 'Unauthorized access' });
+// Firebase authentication middleware
+exports.authenticate = async (req, res, next) => {
+  try {
+    // Get the token from the Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({
+        success: false,
+        message: "No authentication token provided",
+      });
     }
 
-    // Here you would typically verify the token
-    // For example, using a JWT library
-    // jwt.verify(token, secretKey, (err, decoded) => {
-    //     if (err) {
-    //         return res.status(403).json({ message: 'Forbidden' });
-    //     }
-    //     req.user = decoded;
-    //     next();
-    // });
+    // Extract the token
+    const token = authHeader.split(" ")[1];
 
-    // Placeholder for token verification
-    req.user = { id: 'sampleUserId' }; // Replace with actual user data after verification
-    next();
-};
-
-exports.checkStudentId = (req, res, next) => {
-    const { studentId } = req.body;
-
-    if (!studentId || typeof studentId !== 'string') {
-        return res.status(400).json({ message: 'Invalid student ID' });
-    }
-
-    // Additional validation logic can be added here
-
-    next();
-};
-
-exports.verifySignature = (req, res, next) => {
-    try {
-        const { signature, publicKey, data } = req.body;
-
-        if (!signature || !publicKey || !data) {
-            return res.status(400).json({
-                success: false,
-                message: 'Signature verification requires signature, publicKey and data'
-            });
-        }
-
-        const isValid = crypto.verify(publicKey, signature, data);
-        if (!isValid) {
-            return res.status(401).json({
-                success: false,
-                message: 'Invalid signature'
-            });
-        }
-
-        next();
-    } catch (error) {
-        logger.error(`Auth middleware error: ${error.message}`);
-        return res.status(500).json({
-            success: false,
-            message: 'Authentication error',
-            error: error.message
+    // Verify the JWT token
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        logger.error(`JWT verification failed: ${err.message}`);
+        return res.status(401).json({
+          success: false,
+          message: "Invalid or expired token",
         });
+      }
+
+      // Set user information on the request object
+      req.user = decoded;
+      next();
+    });
+  } catch (error) {
+    logger.error(`Authentication error: ${error.message}`);
+    return res.status(401).json({
+      success: false,
+      message: "Authentication failed",
+      error: error.message,
+    });
+  }
+};
+
+// Role-based access control middleware
+exports.authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required",
+      });
     }
+
+    const userRole = req.user.role || "user";
+
+    if (!roles.includes(userRole)) {
+      return res.status(403).json({
+        success: false,
+        message: `Role '${userRole}' is not authorized to access this resource`,
+      });
+    }
+
+    next();
+  };
+};
+
+// Check if a user is acting on their own resource
+exports.checkOwnership = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({
+      success: false,
+      message: "Authentication required",
+    });
+  }
+
+  const resourceUserId = req.params.userId || req.body.userId;
+
+  if (resourceUserId && resourceUserId !== req.user.uid) {
+    // Allow admins to override ownership check
+    if (req.user.role === "admin") {
+      next();
+      return;
+    }
+
+    return res.status(403).json({
+      success: false,
+      message: "You are not authorized to access this resource",
+    });
+  }
+
+  next();
 };

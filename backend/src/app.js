@@ -1,3 +1,22 @@
+require('dotenv').config();
+
+try {
+  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  console.log("Service Account Parsed Successfully");
+  
+  // Check required fields
+  const requiredFields = ['project_id', 'private_key', 'client_email', 'private_key_id'];
+  const missingFields = requiredFields.filter(field => !serviceAccount[field]);
+  
+  if (missingFields.length > 0) {
+    console.error(`Missing required fields: ${missingFields.join(', ')}`);
+  } else {
+    console.log("All required fields present");
+  }
+} catch (error) {
+  console.error(`Failed to parse Firebase service account: ${error.message}`);
+}
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -11,6 +30,7 @@ const blockchainRoutes = require("./routes/blockchain.routes");
 const transactionRoutes = require("./routes/transaction.routes");
 const studentRoutes = require("./routes/student.routes");
 const nftRoutes = require('./routes/nft.routes');
+const authRoutes = require('./routes/auth.routes'); // Add this line
 
 // Initialize the app
 const app = express();
@@ -27,6 +47,7 @@ app.use("/api/blockchain", blockchainRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/students", studentRoutes);
 app.use('/api/nft', nftRoutes);
+app.use('/api/auth', authRoutes); // Add this line
 
 // Root route
 app.get("/", (req, res) => {
