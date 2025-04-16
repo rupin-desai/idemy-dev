@@ -8,3 +8,15 @@
 [INFO] 2025-04-16T05:14:58.169Z: Request received: POST /api/transactions {"method":"POST","url":"/api/transactions","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.3624","params":{},"query":{}}
 [INFO] 2025-04-16T05:14:58.172Z: Transaction created: TXm9jh9cl8069b9343e83586af
 [INFO] 2025-04-16T05:14:58.173Z: Response sent: 201 {"statusCode":201,"responseTime":"unknown"}
+[INFO] 2025-04-16T06:27:41.685Z: No blockchain file found. Starting with a new blockchain.
+[INFO] 2025-04-16T06:27:41.688Z: Genesis block created
+[INFO] 2025-04-16T06:27:41.689Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T06:27:41.690Z: Blockchain service initialized
+[INFO] 2025-04-16T06:27:41.702Z: Server running on port 3000 in development mode
+[INFO] 2025-04-16T06:28:02.411Z: Request received: POST /api/transactions {"method":"POST","url":"/api/transactions","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.3624","params":{},"query":{}}
+[INFO] 2025-04-16T06:28:02.414Z: Transaction created: TXm9jjvbhq652b800cb089b7ca
+[INFO] 2025-04-16T06:28:02.416Z: Response sent: 201 {"statusCode":201,"responseTime":"unknown"}
+[INFO] 2025-04-16T06:32:41.693Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T06:32:41.695Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T06:37:41.708Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T06:37:41.709Z: Auto-saved blockchain (interval: 5 minutes)

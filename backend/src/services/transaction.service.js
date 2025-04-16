@@ -1,11 +1,17 @@
-const Transaction = require('../models/transaction.model');
-const blockchainService = require('./blockchain.service');
-const logger = require('../utils/logger.utils');
+const Transaction = require("../models/transaction.model");
+const blockchainService = require("./blockchain.service");
+const persistenceService = require("./persistence.service");
+const logger = require("../utils/logger.utils");
 
 class TransactionService {
   createTransaction(fromAddress, toAddress, amount, metadata = {}) {
     try {
-      const transaction = new Transaction(fromAddress, toAddress, amount, metadata);
+      const transaction = new Transaction(
+        fromAddress,
+        toAddress,
+        amount,
+        metadata
+      );
       logger.info(`Transaction created: ${transaction.id}`);
       return transaction;
     } catch (error) {
@@ -18,6 +24,10 @@ class TransactionService {
     try {
       const result = blockchainService.blockchain.addTransaction(transaction);
       logger.info(`Transaction added: ${transaction.id}`);
+
+      // Save blockchain after adding a new transaction
+      persistenceService.saveBlockchain(blockchainService.blockchain);
+
       return result;
     } catch (error) {
       logger.error(`Add transaction error: ${error.message}`);

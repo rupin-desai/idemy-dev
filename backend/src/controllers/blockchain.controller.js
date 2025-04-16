@@ -167,6 +167,22 @@ class BlockchainController {
             });
         }
     }
+
+    async saveBlockchain(req, res) {
+        try {
+            const result = blockchainService.saveBlockchain();
+            return res.status(200).json({
+                success: result,
+                message: result ? 'Blockchain saved successfully' : 'Failed to save blockchain'
+            });
+        } catch (error) {
+            logger.error(`Save blockchain error: ${error.message}`);
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            });
+        }
+    }
 }
 
 module.exports = new BlockchainController();

@@ -20,4 +20,7 @@ router.get('/block/index/:index', blockchainController.getBlockByIndex);
 // Get a block by its hash
 router.get('/block/hash/:hash', blockchainController.getBlockByHash);
 
+// Manually save blockchain to file
+router.post('/save', blockchainController.saveBlockchain);
+
 module.exports = router;
