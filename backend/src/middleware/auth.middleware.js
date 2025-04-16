@@ -1,3 +1,6 @@
+const crypto = require('../utils/crypto.utils');
+const logger = require('../utils/logger.utils');
+
 exports.authenticate = (req, res, next) => {
     const token = req.headers['authorization'];
 
@@ -30,4 +33,34 @@ exports.checkStudentId = (req, res, next) => {
     // Additional validation logic can be added here
 
     next();
+};
+
+exports.verifySignature = (req, res, next) => {
+    try {
+        const { signature, publicKey, data } = req.body;
+
+        if (!signature || !publicKey || !data) {
+            return res.status(400).json({
+                success: false,
+                message: 'Signature verification requires signature, publicKey and data'
+            });
+        }
+
+        const isValid = crypto.verify(publicKey, signature, data);
+        if (!isValid) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid signature'
+            });
+        }
+
+        next();
+    } catch (error) {
+        logger.error(`Auth middleware error: ${error.message}`);
+        return res.status(500).json({
+            success: false,
+            message: 'Authentication error',
+            error: error.message
+        });
+    }
 };

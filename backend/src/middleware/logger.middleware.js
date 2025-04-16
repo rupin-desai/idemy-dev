@@ -1,13 +1,14 @@
-exports.loggerMiddleware = (req, res, next) => {
-    const logEntry = {
-        method: req.method,
-        url: req.originalUrl,
-        timestamp: new Date().toISOString(),
-        body: req.body,
-        query: req.query,
-        params: req.params,
-    };
+const logger = require('../utils/logger.utils');
 
-    console.log(JSON.stringify(logEntry, null, 2));
-    next();
+module.exports = (req, res, next) => {
+  logger.logRequest(req);
+  
+  // Override res.end to log responses
+  const originalEnd = res.end;
+  res.end = function(chunk, encoding) {
+    logger.logResponse(res);
+    originalEnd.call(this, chunk, encoding);
+  };
+  
+  next();
 };

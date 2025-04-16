@@ -1,13 +1,21 @@
-exports = function(app) {
-    const TransactionController = require('../controllers/transaction.controller');
-    const transactionController = new TransactionController();
+const express = require('express');
+const router = express.Router();
+const transactionController = require('../controllers/transaction.controller');
+const authMiddleware = require('../middleware/auth.middleware');
 
-    // Route to create a new transaction
-    app.post('/api/transactions', transactionController.createTransaction);
+// Create a new transaction
+router.post('/', transactionController.createTransaction);
 
-    // Route to retrieve all transactions
-    app.get('/api/transactions', transactionController.getAllTransactions);
+// Add a signed transaction to pending transactions
+router.post('/add', transactionController.addTransaction);
 
-    // Route to retrieve a specific transaction by ID
-    app.get('/api/transactions/:id', transactionController.getTransactionById);
-};
+// Get all pending transactions
+router.get('/pending', transactionController.getPendingTransactions);
+
+// Get transaction by ID
+router.get('/:id', transactionController.getTransactionById);
+
+// Get balance for an address
+router.get('/balance/:address', transactionController.getAddressBalance);
+
+module.exports = router;
