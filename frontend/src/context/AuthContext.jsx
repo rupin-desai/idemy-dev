@@ -5,38 +5,40 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Check if token exists and load user on mount
   useEffect(() => {
-    const initAuth = async () => {
-      try {
-        if (authApi.loadToken()) {
-          // If we have a token, validate it by getting the profile
-          const result = await authApi.getProfile();
-          if (result.success) {
-            setCurrentUser(result.user);
-          } else {
-            // If token validation fails, log out
-            authApi.setAuthToken(null);
-          }
-        }
-      } catch (err) {
-        console.error('Auth initialization error:', err);
-        authApi.setAuthToken(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    initAuth();
+    const hasToken = authApi.loadToken();
+    
+    if (hasToken) {
+      getUserProfile();
+    } else {
+      setLoading(false);
+    }
   }, []);
+
+  const getUserProfile = async () => {
+    try {
+      const result = await authApi.getProfile();
+      setCurrentUser(result.user);
+      setIsAuthenticated(true);
+    } catch (err) {
+      authApi.setAuthToken(null);
+      setError(err.response?.data?.message || 'Failed to load user profile');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const register = async (userData) => {
     setError(null);
     try {
       const result = await authApi.register(userData);
       setCurrentUser(result.user);
+      setIsAuthenticated(true);
       return result;
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
@@ -49,6 +51,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const result = await authApi.login(email, password);
       setCurrentUser(result.user);
+      setIsAuthenticated(true);
       return result;
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
@@ -61,17 +64,35 @@ export const AuthProvider = ({ children }) => {
     try {
       await authApi.logout();
       setCurrentUser(null);
+      setIsAuthenticated(false);
     } catch (err) {
       setError(err.response?.data?.message || 'Logout failed');
     }
   };
 
-  const forgotPassword = async (email) => {
+  // Update the updateProfile method to properly handle student information
+  const updateProfile = async (userData) => {
     setError(null);
     try {
-      return await authApi.forgotPassword(email);
+      // If there's student info but it wasn't in the original profile,
+      // we need to handle it separately
+      const updatedUserData = {...userData};
+      
+      // Remove student field from data sent to profile update
+      const studentInfo = updatedUserData.student;
+      delete updatedUserData.student;
+      
+      const result = await authApi.updateProfile(updatedUserData);
+      
+      // Add the student info back to the current user object
+      if (studentInfo) {
+        result.user.student = studentInfo;
+      }
+      
+      setCurrentUser(result.user);
+      return result;
     } catch (err) {
-      setError(err.response?.data?.message || 'Password reset request failed');
+      setError(err.response?.data?.message || 'Profile update failed');
       throw err;
     }
   };
@@ -80,13 +101,13 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         currentUser,
+        isAuthenticated,
         loading,
         error,
         register,
         login,
         logout,
-        forgotPassword,
-        isAuthenticated: !!currentUser
+        updateProfile // Add this to the context value
       }}
     >
       {children}

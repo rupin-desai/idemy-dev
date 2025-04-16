@@ -90,3 +90,14 @@ export const forgotPassword = async (email) => {
     throw error;
   }
 };
+
+// Update user profile
+export const updateProfile = async (userData) => {
+  try {
+    const response = await axios.put(`${API_URL}/profile`, userData);
+    return response.data;
+  } catch (error) {
+    console.error("Update profile error:", error.response?.data || error.message);
+    throw error;
+  }
+};

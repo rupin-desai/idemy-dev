@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const nftController = require('../controllers/nft.controller');
+const authMiddleware = require('../middleware/auth.middleware');
 
 // Add this new route at the beginning of the file
 router.get('/', nftController.getAllNFTs);
+
+// Add this new route to get current user NFTs
+router.get('/user', authMiddleware.authenticate, nftController.getCurrentUserNFTs);
 
 // Create ID card for student
 router.post('/idcards/:studentId', nftController.createIDCard);

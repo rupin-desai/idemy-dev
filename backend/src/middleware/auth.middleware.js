@@ -4,40 +4,32 @@ const logger = require("../utils/logger.utils");
 const jwt = require('jsonwebtoken');
 
 // Firebase authentication middleware
-exports.authenticate = async (req, res, next) => {
+exports.authenticate = (req, res, next) => {
   try {
-    // Get the token from the Authorization header
+    // Get token from header
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({
         success: false,
-        message: "No authentication token provided",
+        message: 'Authentication token is required'
       });
     }
-
-    // Extract the token
-    const token = authHeader.split(" ")[1];
-
-    // Verify the JWT token
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err) {
-        logger.error(`JWT verification failed: ${err.message}`);
-        return res.status(401).json({
-          success: false,
-          message: "Invalid or expired token",
-        });
-      }
-
-      // Set user information on the request object
-      req.user = decoded;
-      next();
-    });
+    
+    const token = authHeader.split(' ')[1];
+    
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    // Add user info to request
+    req.user = decoded;
+    
+    next();
   } catch (error) {
-    logger.error(`Authentication error: ${error.message}`);
+    logger.error(`JWT verification failed: ${error.message}`);
     return res.status(401).json({
       success: false,
-      message: "Authentication failed",
-      error: error.message,
+      message: 'Invalid or expired token'
     });
   }
 };

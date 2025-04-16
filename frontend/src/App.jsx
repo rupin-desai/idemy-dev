@@ -6,6 +6,10 @@ import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import Header from "./components/Layout/Header";
 import { AuthProvider } from "./context/AuthContext";
+import { NftProvider } from "./context/NftContext";
+import NftDetailsPage from './pages/NftDetailsPage';
+import CreateIdPage from './pages/CreateIdPage';
+import StudentRegistrationPage from './pages/StudentRegistrationPage'; // Add import
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -40,21 +44,26 @@ function App() {
 
   return (
     <AuthProvider>
-      <Router>
-        <div className="min-h-screen bg-slate-50">
-          <Header />
-          <main>
-            <AnimatePresence mode="wait">
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </AnimatePresence>
-          </main>
-        </div>
-      </Router>
+      <NftProvider>
+        <Router>
+          <div className="min-h-screen bg-slate-50">
+            <Header />
+            <main>
+              <AnimatePresence mode="wait">
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/nft/:tokenId" element={<NftDetailsPage />} />
+                  <Route path="/create-id" element={<CreateIdPage />} />
+                  <Route path="/create-student" element={<StudentRegistrationPage />} /> {/* Add this line */}
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </AnimatePresence>
+            </main>
+          </div>
+        </Router>
+      </NftProvider>
     </AuthProvider>
   );
 }

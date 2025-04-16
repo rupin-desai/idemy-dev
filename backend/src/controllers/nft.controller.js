@@ -210,6 +210,38 @@ class NFTController {
       });
     }
   }
+
+  async getCurrentUserNFTs(req, res) {
+    try {
+      // Get the current user from req (added by auth middleware)
+      const user = req.user;
+      
+      // Check if user has a student ID
+      if (!user || !user.student || !user.student.studentId) {
+        return res.status(404).json({
+          success: false,
+          message: 'No student ID associated with the current user'
+        });
+      }
+      
+      const studentId = user.student.studentId;
+      
+      // Use existing method to get NFTs by student ID
+      const nfts = nftService.getNFTsByStudentId(studentId);
+      
+      return res.status(200).json({
+        success: true,
+        count: nfts.length,
+        nfts
+      });
+    } catch (error) {
+      logger.error(`Get current user NFTs error: ${error.message}`);
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }
 }
 
 module.exports = new NFTController();
