@@ -11,4 +11,11 @@ module.exports = {
     origin: process.env.CORS_ORIGIN || "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
+  // Logging configuration
+  logLevel: process.env.LOG_LEVEL || "INFO",
+  consoleLog: process.env.CONSOLE_LOG === "true" || true,
+  logRequestBody: process.env.LOG_REQUEST_BODY === "true" || false,
+  logToFile: process.env.LOG_TO_FILE !== "false",
+  logFileMaxSize: parseInt(process.env.LOG_FILE_MAX_SIZE || 5 * 1024 * 1024), // 5MB default
+  maxLogFiles: parseInt(process.env.MAX_LOG_FILES || 10),
 };

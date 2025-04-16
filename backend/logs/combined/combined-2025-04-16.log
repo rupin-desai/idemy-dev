@@ -1,0 +1,10 @@
+[INFO] 2025-04-16T05:09:36.461Z: Genesis block created
+[INFO] 2025-04-16T05:09:36.475Z: Blockchain service initialized
+[INFO] 2025-04-16T05:13:07.737Z: Genesis block created
+[INFO] 2025-04-16T05:13:07.739Z: Blockchain service initialized
+[INFO] 2025-04-16T05:13:07.759Z: Server running on port 3000 in development mode
+[INFO] 2025-04-16T05:13:54.070Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.3624","params":{},"query":{}}
+[INFO] 2025-04-16T05:13:54.073Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T05:14:58.169Z: Request received: POST /api/transactions {"method":"POST","url":"/api/transactions","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.3624","params":{},"query":{}}
+[INFO] 2025-04-16T05:14:58.172Z: Transaction created: TXm9jh9cl8069b9343e83586af
+[INFO] 2025-04-16T05:14:58.173Z: Response sent: 201 {"statusCode":201,"responseTime":"unknown"}

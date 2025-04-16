@@ -28,8 +28,16 @@ app.get("/", (req, res) => {
   });
 });
 
+// 404 handler for undefined routes - must be before error handler
+app.use((req, res, next) => {
+  res.status(404).json({
+    success: false,
+    message: 'Endpoint not found'
+  });
+});
+
 // Error handling middleware
-app.use(errorMiddleware);
+app.use(errorMiddleware.errorHandler || errorMiddleware);
 
 // Start the server
 const PORT = config.port;
