@@ -10,6 +10,7 @@ const errorMiddleware = require("./middleware/error.middleware");
 const blockchainRoutes = require("./routes/blockchain.routes");
 const transactionRoutes = require("./routes/transaction.routes");
 const studentRoutes = require("./routes/student.routes");
+const nftRoutes = require('./routes/nft.routes');
 
 // Initialize the app
 const app = express();
@@ -25,6 +26,7 @@ app.use(loggerMiddleware);
 app.use("/api/blockchain", blockchainRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/students", studentRoutes);
+app.use('/api/nft', nftRoutes);
 
 // Root route
 app.get("/", (req, res) => {

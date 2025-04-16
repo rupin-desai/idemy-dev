@@ -26,5 +26,27 @@ module.exports = {
     const timestamp = Date.now().toString(36);
     const randomPart = crypto.randomBytes(6).toString('hex');
     return `${prefix}${timestamp}${randomPart}`;
+  },
+
+  generateStudentId() {
+    // Generate random 8-character alphanumeric ID
+    const randomPart = Math.random().toString(36).substring(2, 10).toUpperCase();
+    return `STU${randomPart}`;
+  },
+
+  validateStudentId(id) {
+    return /^STU[A-Z0-9]{8}$/i.test(id);
+  },
+
+  generateNftId() {
+    // Generate a unique NFT token ID with IDM (ID Management) prefix
+    const timestamp = Date.now().toString(36);
+    const randomPart = crypto.randomBytes(6).toString('hex');
+    return `IDM${timestamp}${randomPart}`;
+  },
+
+  generateIdCardFilename(studentId) {
+    // Generate a filename for the ID card image
+    return `${studentId}_${Date.now()}.png`;
   }
 };

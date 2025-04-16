@@ -1,0 +1,23 @@
+{
+  "name": "STUDENT ID Card - STU7F4E1DA1",
+  "description": "Official STUDENT ID Card for student STU7F4E1DA1",
+  "image": "/api/nft/idcards/STU7F4E1DA1/image",
+  "attributes": [
+    {
+      "trait_type": "Card Type",
+      "value": "STUDENT"
+    },
+    {
+      "trait_type": "Issue Date",
+      "value": "2023-04-16T00:00:00.000Z"
+    },
+    {
+      "trait_type": "Expiry Date",
+      "value": "2027-04-15T00:00:00.000Z"
+    },
+    {
+      "trait_type": "Status",
+      "value": "ACTIVE"
+    }
+  ]
+}
