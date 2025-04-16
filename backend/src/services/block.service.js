@@ -1,47 +1,90 @@
+const Block = require("../models/block.model");
+const blockchainService = require("./blockchain.service");
+const logger = require("../utils/logger.utils");
+
 class BlockService {
-    constructor() {
-        this.blocks = [];
+  constructor() {
+    this.blocks = [];
+  }
+
+  getBlockByIndex(index) {
+    return blockchainService.getBlockByIndex(index);
+  }
+
+  getBlockByHash(hash) {
+    return blockchainService.getBlockByHash(hash);
+  }
+
+  getLatestBlock() {
+    const chain = blockchainService.getChain();
+    return chain[chain.length - 1];
+  }
+
+  createBlock(transactions, metadata = {}) {
+    try {
+      const previousBlock = this.getLatestBlock();
+      const newBlock = new Block(
+        previousBlock.index + 1,
+        Date.now(),
+        transactions,
+        previousBlock.hash,
+        metadata
+      );
+      logger.info(`Block created with index ${newBlock.index}`);
+      return newBlock;
+    } catch (error) {
+      logger.error(`Create block error: ${error.message}`);
+      throw error;
+    }
+  }
+
+  mineBlock(block, difficulty) {
+    try {
+      logger.info(`Mining block ${block.index}...`);
+      const hash = block.mineBlock(
+        difficulty || blockchainService.getBlockchainDifficulty()
+      );
+      logger.info(`Block mined: ${hash}`);
+      return block;
+    } catch (error) {
+      logger.error(`Mine block error: ${error.message}`);
+      throw error;
+    }
+  }
+
+  validateBlock(block, previousBlock) {
+    // Check index
+    if (block.index !== previousBlock.index + 1) {
+      return { valid: false, reason: "Invalid index" };
     }
 
-    createBlock(data, previousHash) {
-        const index = this.blocks.length + 1;
-        const timestamp = new Date().toISOString();
-        const hash = this.calculateHash(index, timestamp, data, previousHash);
-        
-        const newBlock = {
-            index,
-            timestamp,
-            data,
-            previousHash,
-            hash
-        };
-
-        this.blocks.push(newBlock);
-        return newBlock;
+    // Check previousHash
+    if (block.previousHash !== previousBlock.hash) {
+      return { valid: false, reason: "Invalid previous hash" };
     }
 
-    calculateHash(index, timestamp, data, previousHash) {
-        return require('crypto')
-            .createHash('sha256')
-            .update(index + timestamp + JSON.stringify(data) + previousHash)
-            .digest('hex');
+    // Check hash
+    if (block.hash !== block.calculateHash()) {
+      return { valid: false, reason: "Invalid hash" };
     }
 
-    getBlock(index) {
-        return this.blocks[index - 1] || null;
-    }
+    return { valid: true };
+  }
 
-    validateBlock(block) {
-        if (!block || !block.hash) return false;
+  calculateHash(index, timestamp, data, previousHash) {
+    return require("crypto")
+      .createHash("sha256")
+      .update(index + timestamp + JSON.stringify(data) + previousHash)
+      .digest("hex");
+  }
 
-        const { index, timestamp, data, previousHash } = block;
-        const calculatedHash = this.calculateHash(index, timestamp, data, previousHash);
-        return block.hash === calculatedHash;
-    }
+  getBlock(index) {
+    return this.blocks[index - 1] || null;
+  }
 
-    getAllBlocks() {
-        return this.blocks;
-    }
+  getAllBlocks() {
+    return this.blocks;
+  }
 }
 
-module.exports = BlockService;
+module.exports = new BlockService();
