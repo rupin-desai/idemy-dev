@@ -1199,3 +1199,286 @@
 [INFO] 2025-04-16T09:15:12.088Z: Auto-saved blockchain (interval: 5 minutes)
 [INFO] 2025-04-16T09:15:18.046Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
 [INFO] 2025-04-16T09:15:18.048Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:15:40.466Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:15:40.469Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:15:42.706Z: Request received: GET /api/students?_t=1744794942701 {"method":"GET","url":"/api/students?_t=1744794942701","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744794942701"}}
+[INFO] 2025-04-16T09:15:42.708Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:15:42.711Z: Request received: GET /api/students?_t=1744794942702 {"method":"GET","url":"/api/students?_t=1744794942702","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744794942702"}}
+[INFO] 2025-04-16T09:15:42.713Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:15:46.947Z: Request received: GET /api/students?_t=1744794946945 {"method":"GET","url":"/api/students?_t=1744794946945","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744794946945"}}
+[INFO] 2025-04-16T09:15:46.949Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:15:46.952Z: Request received: GET /api/students?_t=1744794946945 {"method":"GET","url":"/api/students?_t=1744794946945","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744794946945"}}
+[INFO] 2025-04-16T09:15:46.954Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:09.204Z: Request received: GET /api/students?_t=1744795029197 {"method":"GET","url":"/api/students?_t=1744795029197","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795029197"}}
+[INFO] 2025-04-16T09:17:09.206Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:09.209Z: Request received: GET /api/students?_t=1744795029198 {"method":"GET","url":"/api/students?_t=1744795029198","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795029198"}}
+[INFO] 2025-04-16T09:17:09.211Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:11.659Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795031654 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795031654","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795031654"}}
+[INFO] 2025-04-16T09:17:11.661Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:11.664Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795031655 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795031655","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795031655"}}
+[INFO] 2025-04-16T09:17:11.666Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:13.760Z: Request received: GET /api/students?_t=1744795033756 {"method":"GET","url":"/api/students?_t=1744795033756","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795033756"}}
+[INFO] 2025-04-16T09:17:13.762Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:13.768Z: Request received: GET /api/students?_t=1744795033758 {"method":"GET","url":"/api/students?_t=1744795033758","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795033758"}}
+[INFO] 2025-04-16T09:17:13.770Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:14.743Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795034737 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795034737","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795034737"}}
+[INFO] 2025-04-16T09:17:14.746Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:14.750Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795034737 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795034737","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795034737"}}
+[INFO] 2025-04-16T09:17:14.753Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:16.228Z: Request received: GET /api/students?_t=1744795036225 {"method":"GET","url":"/api/students?_t=1744795036225","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795036225"}}
+[INFO] 2025-04-16T09:17:16.231Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:16.235Z: Request received: GET /api/students?_t=1744795036226 {"method":"GET","url":"/api/students?_t=1744795036226","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795036226"}}
+[INFO] 2025-04-16T09:17:16.238Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:18.402Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795038397 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795038397","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795038397"}}
+[INFO] 2025-04-16T09:17:18.404Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:18.407Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795038399 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795038399","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795038399"}}
+[INFO] 2025-04-16T09:17:18.409Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:42.225Z: Request received: GET /api/blockchain/validate {"method":"GET","url":"/api/blockchain/validate","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:17:42.227Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:43.087Z: Request received: POST /api/blockchain/save {"method":"POST","url":"/api/blockchain/save","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:17:43.096Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T09:17:43.097Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:45.032Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795065028 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795065028","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795065028"}}
+[INFO] 2025-04-16T09:17:45.034Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:45.038Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795065028 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795065028","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795065028"}}
+[INFO] 2025-04-16T09:17:45.040Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:46.065Z: Request received: GET /api/students?_t=1744795066062 {"method":"GET","url":"/api/students?_t=1744795066062","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795066062"}}
+[INFO] 2025-04-16T09:17:46.068Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:46.071Z: Request received: GET /api/students?_t=1744795066063 {"method":"GET","url":"/api/students?_t=1744795066063","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795066063"}}
+[INFO] 2025-04-16T09:17:46.074Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:51.681Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795071675 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795071675","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795071675"}}
+[INFO] 2025-04-16T09:17:51.684Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:51.688Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795071676 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795071676","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795071676"}}
+[INFO] 2025-04-16T09:17:51.690Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:52.399Z: Request received: GET /api/students?_t=1744795072395 {"method":"GET","url":"/api/students?_t=1744795072395","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795072395"}}
+[INFO] 2025-04-16T09:17:52.401Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:52.405Z: Request received: GET /api/students?_t=1744795072396 {"method":"GET","url":"/api/students?_t=1744795072396","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795072396"}}
+[INFO] 2025-04-16T09:17:52.407Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:53.108Z: Request received: GET /api/students/STUAC94EDDA?_t=1744795073105 {"method":"GET","url":"/api/students/STUAC94EDDA?_t=1744795073105","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795073105"}}
+[INFO] 2025-04-16T09:17:53.109Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:53.112Z: Request received: GET /api/students/STUAC94EDDA?_t=1744795073106 {"method":"GET","url":"/api/students/STUAC94EDDA?_t=1744795073106","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795073106"}}
+[INFO] 2025-04-16T09:17:53.114Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:57.286Z: Request received: GET /api/students?_t=1744795077283 {"method":"GET","url":"/api/students?_t=1744795077283","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795077283"}}
+[INFO] 2025-04-16T09:17:57.288Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:57.291Z: Request received: GET /api/students?_t=1744795077284 {"method":"GET","url":"/api/students?_t=1744795077284","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795077284"}}
+[INFO] 2025-04-16T09:17:57.295Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:58.317Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795078314 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795078314","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795078314"}}
+[INFO] 2025-04-16T09:17:58.320Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:58.323Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795078315 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795078315","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795078315"}}
+[INFO] 2025-04-16T09:17:58.325Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:59.655Z: Request received: GET /api/students?_t=1744795079649 {"method":"GET","url":"/api/students?_t=1744795079649","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795079649"}}
+[INFO] 2025-04-16T09:17:59.657Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:17:59.660Z: Request received: GET /api/students?_t=1744795079650 {"method":"GET","url":"/api/students?_t=1744795079650","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795079650"}}
+[INFO] 2025-04-16T09:17:59.664Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:00.485Z: Request received: GET /api/students/STUAC94EDDA?_t=1744795080479 {"method":"GET","url":"/api/students/STUAC94EDDA?_t=1744795080479","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795080479"}}
+[INFO] 2025-04-16T09:18:00.487Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:00.490Z: Request received: GET /api/students/STUAC94EDDA?_t=1744795080480 {"method":"GET","url":"/api/students/STUAC94EDDA?_t=1744795080480","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795080480"}}
+[INFO] 2025-04-16T09:18:00.493Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:02.416Z: Request received: GET /api/students?_t=1744795082412 {"method":"GET","url":"/api/students?_t=1744795082412","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795082412"}}
+[INFO] 2025-04-16T09:18:02.418Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:02.421Z: Request received: GET /api/students?_t=1744795082413 {"method":"GET","url":"/api/students?_t=1744795082413","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795082413"}}
+[INFO] 2025-04-16T09:18:02.424Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:03.129Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795083126 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795083126","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795083126"}}
+[INFO] 2025-04-16T09:18:03.131Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:03.134Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795083127 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795083127","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795083127"}}
+[INFO] 2025-04-16T09:18:03.136Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:03.806Z: Request received: GET /api/students?_t=1744795083803 {"method":"GET","url":"/api/students?_t=1744795083803","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795083803"}}
+[INFO] 2025-04-16T09:18:03.809Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:03.811Z: Request received: GET /api/students?_t=1744795083804 {"method":"GET","url":"/api/students?_t=1744795083804","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795083804"}}
+[INFO] 2025-04-16T09:18:03.816Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:04.742Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795084738 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795084738","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795084738"}}
+[INFO] 2025-04-16T09:18:04.744Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:04.747Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795084739 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795084739","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795084739"}}
+[INFO] 2025-04-16T09:18:04.749Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:05.348Z: Request received: GET /api/students?_t=1744795085345 {"method":"GET","url":"/api/students?_t=1744795085345","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795085345"}}
+[INFO] 2025-04-16T09:18:05.350Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:05.353Z: Request received: GET /api/students?_t=1744795085346 {"method":"GET","url":"/api/students?_t=1744795085346","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795085346"}}
+[INFO] 2025-04-16T09:18:05.356Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:05.976Z: Request received: GET /api/students/STUAC94EDDA?_t=1744795085972 {"method":"GET","url":"/api/students/STUAC94EDDA?_t=1744795085972","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795085972"}}
+[INFO] 2025-04-16T09:18:05.978Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:05.980Z: Request received: GET /api/students/STUAC94EDDA?_t=1744795085973 {"method":"GET","url":"/api/students/STUAC94EDDA?_t=1744795085973","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795085973"}}
+[INFO] 2025-04-16T09:18:05.982Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:06.435Z: Request received: GET /api/students?_t=1744795086433 {"method":"GET","url":"/api/students?_t=1744795086433","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795086433"}}
+[INFO] 2025-04-16T09:18:06.438Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:06.442Z: Request received: GET /api/students?_t=1744795086433 {"method":"GET","url":"/api/students?_t=1744795086433","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795086433"}}
+[INFO] 2025-04-16T09:18:06.444Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:07.092Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795087089 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795087089","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795087089"}}
+[INFO] 2025-04-16T09:18:07.095Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:07.098Z: Request received: GET /api/students/STU7F4E1DA1/history?_t=1744795087089 {"method":"GET","url":"/api/students/STU7F4E1DA1/history?_t=1744795087089","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795087089"}}
+[INFO] 2025-04-16T09:18:07.100Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:07.104Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744795087090 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744795087090","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795087090"}}
+[INFO] 2025-04-16T09:18:07.106Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:07.109Z: Request received: GET /api/students/STU7F4E1DA1/history?_t=1744795087090 {"method":"GET","url":"/api/students/STU7F4E1DA1/history?_t=1744795087090","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744795087090"}}
+[INFO] 2025-04-16T09:18:07.111Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:12.296Z: Request received: GET /api/blockchain/block/index/undefined {"method":"GET","url":"/api/blockchain/block/index/undefined","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:12.301Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:12.304Z: Request received: GET /api/blockchain/block/index/undefined {"method":"GET","url":"/api/blockchain/block/index/undefined","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:12.310Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:16.624Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:16.627Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:16.630Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:16.632Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:16.637Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:16.639Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:16.642Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:16.644Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:16.649Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:16.653Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:16.656Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:16.658Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:19.544Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:19.546Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:19.548Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:19.550Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:19.553Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:19.555Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:19.556Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:19.559Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:19.561Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:19.562Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:19.564Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:19.566Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:30.042Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:30.044Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:30.046Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:30.048Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:30.050Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:30.051Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:40.044Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:40.045Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:40.046Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:40.048Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:40.050Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:40.052Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:50.039Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:50.041Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:50.043Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:50.045Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:18:50.047Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:18:50.049Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:00.041Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:00.043Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:00.044Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:00.046Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:00.048Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:00.050Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:10.041Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:10.042Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:10.044Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:10.046Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:10.048Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:10.050Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:20.040Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:20.042Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:20.044Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:20.046Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:20.048Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:20.050Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:37.583Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:37.586Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:37.589Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:37.591Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:37.594Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:37.597Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:40.040Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:40.043Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:40.045Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:40.048Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:40.051Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:40.054Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:50.055Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:50.056Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:50.058Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:50.060Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:19:50.063Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:19:50.065Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:00.040Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:00.042Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:00.044Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:00.046Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:00.048Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:00.049Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:10.048Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:10.049Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:10.052Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:10.053Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:10.055Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:10.057Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:12.093Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T09:20:12.094Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T09:20:20.042Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:20.044Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:20.046Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:20.048Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:20.050Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:20.052Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:30.040Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:30.042Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:30.045Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:30.047Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:30.048Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:30.050Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:42.703Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:42.706Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:42.711Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:42.713Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:20:42.717Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:20:42.719Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:25:12.102Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T09:25:12.104Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T09:30:12.109Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T09:30:12.110Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T09:30:26.695Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T09:30:26.697Z: Genesis block created
+[INFO] 2025-04-16T09:30:26.699Z: Blockchain restored with 3 blocks
+[INFO] 2025-04-16T09:30:26.701Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T09:30:26.703Z: Blockchain service initialized
+[INFO] 2025-04-16T09:30:26.705Z: Starting student transaction mining process...
+[INFO] 2025-04-16T09:30:26.706Z: Mining 3 pending transactions...
+[INFO] 2025-04-16T09:30:26.708Z: Mining block 3...
+[INFO] 2025-04-16T09:30:27.532Z: Block 3 mined: 0000d5ef6acdf005ead25b700540ce132d9b313b9b9f883794c128596099f64b
+[INFO] 2025-04-16T09:30:27.535Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T09:30:27.536Z: Block #3 successfully mined with hash 0000d5ef6acdf005ead25b700540ce132d9b313b9b9f883794c128596099f64b and nonce 54764
+[INFO] 2025-04-16T09:30:27.537Z: 4 student transactions added to blockchain
+[INFO] 2025-04-16T09:30:27.538Z: Mining successful!
+[INFO] 2025-04-16T09:30:27.540Z: Block #3 added to blockchain
+[INFO] 2025-04-16T09:30:27.541Z: Hash: 0000d5ef6acdf005ead25b700540ce132d9b313b9b9f883794c128596099f64b
+[INFO] 2025-04-16T09:30:27.542Z: Nonce: 54764
+[INFO] 2025-04-16T09:31:06.407Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T09:31:06.411Z: Genesis block created
+[INFO] 2025-04-16T09:31:06.412Z: Blockchain restored with 4 blocks
+[INFO] 2025-04-16T09:31:06.413Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T09:31:06.414Z: Blockchain service initialized
+[INFO] 2025-04-16T09:31:06.427Z: Loaded 2 students from file
+[INFO] 2025-04-16T09:31:06.434Z: Server running on port 3000 in development mode
+[INFO] 2025-04-16T09:31:18.277Z: Request received: POST /api/blockchain/mine-students {"method":"POST","url":"/api/blockchain/mine-students","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.3624","params":{},"query":{}}
+[INFO] 2025-04-16T09:31:18.281Z: No pending transactions to mine
+[INFO] 2025-04-16T09:31:18.285Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:32:05.994Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T09:32:05.997Z: Genesis block created
+[INFO] 2025-04-16T09:32:05.999Z: Blockchain restored with 4 blocks
+[INFO] 2025-04-16T09:32:06.000Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T09:32:06.001Z: Blockchain service initialized
+[INFO] 2025-04-16T09:32:06.003Z: Starting student transaction mining process...
+[INFO] 2025-04-16T09:32:06.004Z: No pending transactions to mine
+[INFO] 2025-04-16T09:32:06.006Z: No transactions were mined
+[INFO] 2025-04-16T09:32:55.560Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:32:55.564Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:32:55.568Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:32:55.571Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:32:55.574Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:32:55.577Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:32:55.580Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:32:55.583Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:32:55.587Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:32:55.589Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:32:55.592Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:32:55.595Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:32:57.860Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:32:57.863Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:32:57.867Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:32:57.870Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:33:08.042Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:33:08.044Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T09:33:18.048Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T09:33:18.050Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}

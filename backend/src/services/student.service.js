@@ -12,6 +12,10 @@ class StudentService {
     this.studentsFile = path.join(this.dataDir, "students.json");
     this.students = new Map();
     this.loadStudents();
+
+    // Add this for auto-mining after a certain number of transactions
+    this.transactionCountSinceMining = 0;
+    this.mineAfterTransactions = 3;
   }
 
   loadStudents() {
@@ -160,10 +164,7 @@ class StudentService {
       };
       
       // Create a special transaction to record student data change
-      // Use a designated system address as both sender and receiver
       const systemAddress = "SYSTEM_STUDENT_REGISTRY";
-      
-      // Create and add the transaction (with 0 amount since it's just for record-keeping)
       const transaction = transactionService.createTransaction(
         systemAddress, 
         systemAddress, 
@@ -175,10 +176,33 @@ class StudentService {
       transactionService.addTransaction(transaction);
       
       logger.info(`Student ${action} recorded in blockchain for ${student.studentId}`);
+      
+      // Check if we should trigger mining
+      this.transactionCountSinceMining++;
+      if (this.transactionCountSinceMining >= this.mineAfterTransactions) {
+        setTimeout(() => {
+          this.mineStudentTransactions();
+        }, 1000);
+      }
+      
       return transaction;
     } catch (error) {
       logger.error(`Failed to record student change in blockchain: ${error.message}`);
-      // We don't throw here to avoid disrupting the main flow if blockchain recording fails
+      return null;
+    }
+  }
+
+  async mineStudentTransactions() {
+    try {
+      const mineStudentTransactions = require("../utils/mineStudentTransactions");
+      const block = await mineStudentTransactions();
+      if (block) {
+        this.transactionCountSinceMining = 0;
+        logger.info(`Mined student transactions into block #${block.index}`);
+      }
+      return block;
+    } catch (error) {
+      logger.error(`Failed to mine student transactions: ${error.message}`);
       return null;
     }
   }

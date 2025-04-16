@@ -39,6 +39,14 @@ class Block {
     }
     return this.hash;
   }
+  
+  // Add utility method for student transactions
+  getStudentTransactions() {
+    return this.transactions.filter(tx => 
+      tx.fromAddress === "SYSTEM_STUDENT_REGISTRY" && 
+      tx.metadata?.action
+    );
+  }
 }
 
 module.exports = Block;

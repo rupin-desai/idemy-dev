@@ -183,6 +183,37 @@ class BlockchainController {
             });
         }
     }
+
+    async mineStudentTransactions(req, res) {
+        try {
+            const mineStudentTransactions = require("../utils/mineStudentTransactions");
+            const newBlock = await mineStudentTransactions();
+            
+            if (newBlock) {
+                return res.status(200).json({
+                    success: true,
+                    message: 'Student transactions successfully mined',
+                    block: {
+                        index: newBlock.index,
+                        hash: newBlock.hash,
+                        nonce: newBlock.nonce,
+                        transactionCount: newBlock.transactions.length
+                    }
+                });
+            } else {
+                return res.status(200).json({
+                    success: true,
+                    message: 'No pending student transactions to mine'
+                });
+            }
+        } catch (error) {
+            logger.error(`Mine student transactions error: ${error.message}`);
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            });
+        }
+    }
 }
 
 module.exports = new BlockchainController();

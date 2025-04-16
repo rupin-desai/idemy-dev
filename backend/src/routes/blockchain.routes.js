@@ -11,6 +11,9 @@ router.get('/info', blockchainController.getBlockchainInfo);
 // Mine pending transactions
 router.post('/mine', blockchainController.minePendingTransactions);
 
+// Mine student transactions
+router.post('/mine-students', blockchainController.mineStudentTransactions);
+
 // Validate the blockchain
 router.get('/validate', blockchainController.validateChain);
 
