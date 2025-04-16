@@ -1601,3 +1601,281 @@
 [INFO] 2025-04-16T10:09:45.215Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
 [INFO] 2025-04-16T10:09:45.219Z: Request received: GET /api/students?_t=1744798185207 {"method":"GET","url":"/api/students?_t=1744798185207","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744798185207"}}
 [INFO] 2025-04-16T10:09:45.221Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:11:34.378Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T10:11:34.379Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T10:16:34.391Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T10:16:34.393Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T10:21:34.399Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T10:21:34.401Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T10:26:34.408Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T10:26:34.410Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T10:31:34.420Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T10:31:34.421Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T10:36:34.429Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T10:36:34.431Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T10:41:34.430Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T10:41:34.431Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T10:46:31.146Z: Request received: GET /api/students?_t=1744800391141 {"method":"GET","url":"/api/students?_t=1744800391141","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800391141"}}
+[INFO] 2025-04-16T10:46:31.148Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:46:31.153Z: Request received: GET /api/students?_t=1744800391143 {"method":"GET","url":"/api/students?_t=1744800391143","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800391143"}}
+[INFO] 2025-04-16T10:46:31.155Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:46:34.437Z: Blockchain saved to file successfully
+[INFO] 2025-04-16T10:46:34.438Z: Auto-saved blockchain (interval: 5 minutes)
+[INFO] 2025-04-16T10:46:47.069Z: Request received: GET /api/students?_t=1744800407065 {"method":"GET","url":"/api/students?_t=1744800407065","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800407065"}}
+[INFO] 2025-04-16T10:46:47.071Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:46:47.078Z: Request received: GET /api/students?_t=1744800407066 {"method":"GET","url":"/api/students?_t=1744800407066","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800407066"}}
+[INFO] 2025-04-16T10:46:47.082Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:46:48.817Z: Request received: GET /api/students?_t=1744800408814 {"method":"GET","url":"/api/students?_t=1744800408814","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800408814"}}
+[INFO] 2025-04-16T10:46:48.820Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:46:48.823Z: Request received: GET /api/students?_t=1744800408815 {"method":"GET","url":"/api/students?_t=1744800408815","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800408815"}}
+[INFO] 2025-04-16T10:46:48.826Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:10.671Z: Request received: GET /api/nft?_t=1744800430662 {"method":"GET","url":"/api/nft?_t=1744800430662","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800430662"}}
+[INFO] 2025-04-16T10:47:10.675Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:10.682Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:47:10.686Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:10.690Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:47:10.694Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:10.697Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:47:10.701Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:10.704Z: Request received: GET /api/nft?_t=1744800430674 {"method":"GET","url":"/api/nft?_t=1744800430674","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800430674"}}
+[INFO] 2025-04-16T10:47:10.708Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:10.712Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:47:10.716Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:10.719Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:47:10.723Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:10.727Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:47:10.730Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:12.200Z: Request received: GET /api/nft?_t=1744800432198 {"method":"GET","url":"/api/nft?_t=1744800432198","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800432198"}}
+[INFO] 2025-04-16T10:47:12.202Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:12.639Z: Request received: GET /api/nft?_t=1744800432638 {"method":"GET","url":"/api/nft?_t=1744800432638","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800432638"}}
+[INFO] 2025-04-16T10:47:12.641Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:12.840Z: Request received: GET /api/nft?_t=1744800432838 {"method":"GET","url":"/api/nft?_t=1744800432838","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800432838"}}
+[INFO] 2025-04-16T10:47:12.841Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:33.819Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T10:47:33.822Z: Genesis block created
+[INFO] 2025-04-16T10:47:33.823Z: Blockchain restored with 5 blocks
+[INFO] 2025-04-16T10:47:33.824Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T10:47:33.826Z: Blockchain service initialized
+[INFO] 2025-04-16T10:47:33.843Z: Loaded 2 students from file
+[WARN] 2025-04-16T10:47:33.873Z: Font registration error: ENOENT: no such file or directory, lstat 'C:\Users\rupin\Desktop\Dev_Files\Git_Repos\Development\idemy-dev\backend\src\assets'. Using system fonts.
+[INFO] 2025-04-16T10:47:33.876Z: Loaded 1 NFTs from file
+[INFO] 2025-04-16T10:47:33.878Z: Loaded 1 ID cards from file
+[INFO] 2025-04-16T10:47:33.885Z: Server running on port 3000 in development mode
+[INFO] 2025-04-16T10:47:41.811Z: Request received: GET /api/nft?_t=1744800461795 {"method":"GET","url":"/api/nft?_t=1744800461795","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{"_t":"1744800461795"}}
+[INFO] 2025-04-16T10:47:41.816Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:41.825Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:47:41.828Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:41.831Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:47:41.834Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:41.836Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:47:41.840Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:41.843Z: Request received: GET /api/nft?_t=1744800461806 {"method":"GET","url":"/api/nft?_t=1744800461806","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{"_t":"1744800461806"}}
+[INFO] 2025-04-16T10:47:41.846Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:42.389Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:47:42.392Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:42.395Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:47:42.398Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:47:42.402Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:47:42.405Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:48:44.571Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T10:48:44.574Z: Genesis block created
+[INFO] 2025-04-16T10:48:44.576Z: Blockchain restored with 5 blocks
+[INFO] 2025-04-16T10:48:44.577Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T10:48:44.578Z: Blockchain service initialized
+[INFO] 2025-04-16T10:48:44.593Z: Loaded 2 students from file
+[WARN] 2025-04-16T10:48:44.623Z: Font registration error: ENOENT: no such file or directory, lstat 'C:\Users\rupin\Desktop\Dev_Files\Git_Repos\Development\idemy-dev\backend\src\assets'. Using system fonts.
+[INFO] 2025-04-16T10:48:44.626Z: Loaded 1 NFTs from file
+[INFO] 2025-04-16T10:48:44.628Z: Loaded 1 ID cards from file
+[INFO] 2025-04-16T10:48:44.636Z: Server running on port 3000 in development mode
+[INFO] 2025-04-16T10:48:52.098Z: Request received: GET /api/nft?_t=1744800532083 {"method":"GET","url":"/api/nft?_t=1744800532083","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{"_t":"1744800532083"}}
+[INFO] 2025-04-16T10:48:52.104Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:48:52.114Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:48:52.118Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:48:52.120Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:48:52.122Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:48:52.125Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:48:52.128Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:48:52.131Z: Request received: GET /api/nft?_t=1744800532091 {"method":"GET","url":"/api/nft?_t=1744800532091","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{"_t":"1744800532091"}}
+[INFO] 2025-04-16T10:48:52.133Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:48:52.681Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:48:52.683Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:48:52.688Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:48:52.691Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:48:52.696Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:48:52.699Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:48:55.613Z: Request received: GET /api/nft?_t=1744800535610 {"method":"GET","url":"/api/nft?_t=1744800535610","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800535610"}}
+[INFO] 2025-04-16T10:48:55.615Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:50:25.124Z: Request received: GET /api/nft?_t=1744800625118 {"method":"GET","url":"/api/nft?_t=1744800625118","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{"_t":"1744800625118"}}
+[INFO] 2025-04-16T10:50:25.127Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:50:25.131Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:50:25.134Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:50:25.135Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:50:25.137Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:50:25.140Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:50:25.142Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:50:25.146Z: Request received: GET /api/nft?_t=1744800625128 {"method":"GET","url":"/api/nft?_t=1744800625128","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{"_t":"1744800625128"}}
+[INFO] 2025-04-16T10:50:25.148Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:50:25.720Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:50:25.722Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:50:25.725Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:50:25.727Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:50:25.731Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:50:25.733Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:50:53.325Z: Blockchain loaded from file successfully
+[INFO] 2025-04-16T10:50:53.328Z: Genesis block created
+[INFO] 2025-04-16T10:50:53.329Z: Blockchain restored with 5 blocks
+[INFO] 2025-04-16T10:50:53.331Z: Blockchain auto-save configured for every 5 minutes
+[INFO] 2025-04-16T10:50:53.332Z: Blockchain service initialized
+[INFO] 2025-04-16T10:50:53.349Z: Loaded 2 students from file
+[WARN] 2025-04-16T10:50:53.384Z: Font registration error: ENOENT: no such file or directory, lstat 'C:\Users\rupin\Desktop\Dev_Files\Git_Repos\Development\idemy-dev\backend\src\assets'. Using system fonts.
+[INFO] 2025-04-16T10:50:53.387Z: Loaded 1 NFTs from file
+[INFO] 2025-04-16T10:50:53.390Z: Loaded 1 ID cards from file
+[INFO] 2025-04-16T10:50:53.398Z: Server running on port 3000 in development mode
+[INFO] 2025-04-16T10:51:00.818Z: Request received: GET /api/nft?_t=1744800660802 {"method":"GET","url":"/api/nft?_t=1744800660802","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{"_t":"1744800660802"}}
+[INFO] 2025-04-16T10:51:00.823Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:00.834Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:51:00.837Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:00.840Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:51:00.842Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:00.846Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:51:00.848Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:00.850Z: Request received: GET /api/nft?_t=1744800660811 {"method":"GET","url":"/api/nft?_t=1744800660811","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{"_t":"1744800660811"}}
+[INFO] 2025-04-16T10:51:00.853Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:01.402Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:51:01.404Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:01.407Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:51:01.409Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:01.413Z: Request received: GET /api/blockchain/info {"method":"GET","url":"/api/blockchain/info","ip":"::1","userAgent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Mobile Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:51:01.416Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:06.915Z: Request received: GET /api/nft/IDMm9jrqstgfe193251ec20?_t=1744800666910 {"method":"GET","url":"/api/nft/IDMm9jrqstgfe193251ec20?_t=1744800666910","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800666910"}}
+[INFO] 2025-04-16T10:51:06.919Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:06.923Z: Request received: GET /api/nft/IDMm9jrqstgfe193251ec20?_t=1744800666911 {"method":"GET","url":"/api/nft/IDMm9jrqstgfe193251ec20?_t=1744800666911","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800666911"}}
+[INFO] 2025-04-16T10:51:06.926Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:10.835Z: Request received: GET /api/nft?_t=1744800670832 {"method":"GET","url":"/api/nft?_t=1744800670832","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800670832"}}
+[INFO] 2025-04-16T10:51:10.837Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:10.841Z: Request received: GET /api/nft?_t=1744800670833 {"method":"GET","url":"/api/nft?_t=1744800670833","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800670833"}}
+[INFO] 2025-04-16T10:51:10.843Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:12.068Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744800672064 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744800672064","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800672064"}}
+[INFO] 2025-04-16T10:51:12.070Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:12.074Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744800672064 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744800672064","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800672064"}}
+[INFO] 2025-04-16T10:51:12.076Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:14.282Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744800674279 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744800674279","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800674279"}}
+[INFO] 2025-04-16T10:51:14.285Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:14.288Z: Request received: GET /api/students/STU7F4E1DA1/history?_t=1744800674280 {"method":"GET","url":"/api/students/STU7F4E1DA1/history?_t=1744800674280","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800674280"}}
+[INFO] 2025-04-16T10:51:14.291Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:14.296Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744800674281 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744800674281","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800674281"}}
+[INFO] 2025-04-16T10:51:14.298Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:14.301Z: Request received: GET /api/students/STU7F4E1DA1/history?_t=1744800674281 {"method":"GET","url":"/api/students/STU7F4E1DA1/history?_t=1744800674281","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800674281"}}
+[INFO] 2025-04-16T10:51:14.303Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:24.100Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744800684096 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744800684096","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800684096"}}
+[INFO] 2025-04-16T10:51:24.104Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:24.110Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744800684096 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744800684096","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800684096"}}
+[INFO] 2025-04-16T10:51:24.112Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:25.752Z: Request received: GET /api/students?_t=1744800685748 {"method":"GET","url":"/api/students?_t=1744800685748","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800685748"}}
+[INFO] 2025-04-16T10:51:25.755Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:25.758Z: Request received: GET /api/students?_t=1744800685749 {"method":"GET","url":"/api/students?_t=1744800685749","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800685749"}}
+[INFO] 2025-04-16T10:51:25.761Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:28.075Z: Request received: GET /api/nft?_t=1744800688072 {"method":"GET","url":"/api/nft?_t=1744800688072","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800688072"}}
+[INFO] 2025-04-16T10:51:28.077Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:28.080Z: Request received: GET /api/nft?_t=1744800688073 {"method":"GET","url":"/api/nft?_t=1744800688073","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800688073"}}
+[INFO] 2025-04-16T10:51:28.083Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:31.274Z: Request received: GET /api/nft/IDMm9jrqstgfe193251ec20?_t=1744800691267 {"method":"GET","url":"/api/nft/IDMm9jrqstgfe193251ec20?_t=1744800691267","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800691267"}}
+[INFO] 2025-04-16T10:51:31.276Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:31.280Z: Request received: GET /api/nft/IDMm9jrqstgfe193251ec20?_t=1744800691267 {"method":"GET","url":"/api/nft/IDMm9jrqstgfe193251ec20?_t=1744800691267","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800691267"}}
+[INFO] 2025-04-16T10:51:31.282Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:35.172Z: Request received: GET /api/nft/idcards/STU7F4E1DA1/metadata {"method":"GET","url":"/api/nft/idcards/STU7F4E1DA1/metadata","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:51:35.175Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:35.315Z: Request received: GET /favicon.ico {"method":"GET","url":"/favicon.ico","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:51:35.317Z: Response sent: 404 {"statusCode":404,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:44.569Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744800704564 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744800704564","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800704564"}}
+[INFO] 2025-04-16T10:51:44.571Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:44.575Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744800704565 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744800704565","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800704565"}}
+[INFO] 2025-04-16T10:51:44.578Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:57.373Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744800717369 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744800717369","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800717369"}}
+[INFO] 2025-04-16T10:51:57.375Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:57.383Z: Request received: GET /api/students/STU7F4E1DA1?_t=1744800717378 {"method":"GET","url":"/api/students/STU7F4E1DA1?_t=1744800717378","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800717378"}}
+[INFO] 2025-04-16T10:51:57.386Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:58.623Z: Request received: GET /api/nft?_t=1744800718617 {"method":"GET","url":"/api/nft?_t=1744800718617","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800718617"}}
+[INFO] 2025-04-16T10:51:58.625Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:51:58.630Z: Request received: GET /api/nft?_t=1744800718618 {"method":"GET","url":"/api/nft?_t=1744800718618","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800718618"}}
+[INFO] 2025-04-16T10:51:58.632Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:52:20.105Z: Request received: GET /api/nft/IDMm9jrqstgfe193251ec20?_t=1744800740101 {"method":"GET","url":"/api/nft/IDMm9jrqstgfe193251ec20?_t=1744800740101","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800740101"}}
+[INFO] 2025-04-16T10:52:20.108Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:52:20.111Z: Request received: GET /api/nft/IDMm9jrqstgfe193251ec20?_t=1744800740101 {"method":"GET","url":"/api/nft/IDMm9jrqstgfe193251ec20?_t=1744800740101","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800740101"}}
+[INFO] 2025-04-16T10:52:20.114Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:52:23.786Z: Request received: GET /api/nft/idcards/STU7F4E1DA1/metadata {"method":"GET","url":"/api/nft/idcards/STU7F4E1DA1/metadata","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:52:23.789Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:52:33.439Z: Request received: GET /api/nft?_t=1744800753436 {"method":"GET","url":"/api/nft?_t=1744800753436","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800753436"}}
+[INFO] 2025-04-16T10:52:33.441Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:52:33.446Z: Request received: GET /api/nft?_t=1744800753437 {"method":"GET","url":"/api/nft?_t=1744800753437","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800753437"}}
+[INFO] 2025-04-16T10:52:33.448Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:06.582Z: Request received: GET /api/students?_t=1744800846582 {"method":"GET","url":"/api/students?_t=1744800846582","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800846582"}}
+[INFO] 2025-04-16T10:54:06.585Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:06.589Z: Request received: GET /api/students?_t=1744800846583 {"method":"GET","url":"/api/students?_t=1744800846583","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800846583"}}
+[INFO] 2025-04-16T10:54:06.591Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:09.157Z: Request received: GET /api/students?_t=1744800849158 {"method":"GET","url":"/api/students?_t=1744800849158","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800849158"}}
+[INFO] 2025-04-16T10:54:09.159Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:09.163Z: Request received: GET /api/students?_t=1744800849159 {"method":"GET","url":"/api/students?_t=1744800849159","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800849159"}}
+[INFO] 2025-04-16T10:54:09.165Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:09.797Z: Request received: GET /api/nft?_t=1744800849796 {"method":"GET","url":"/api/nft?_t=1744800849796","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800849796"}}
+[INFO] 2025-04-16T10:54:09.798Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:09.801Z: Request received: GET /api/nft?_t=1744800849797 {"method":"GET","url":"/api/nft?_t=1744800849797","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800849797"}}
+[INFO] 2025-04-16T10:54:09.803Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:10.199Z: Request received: GET /api/students?_t=1744800850200 {"method":"GET","url":"/api/students?_t=1744800850200","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800850200"}}
+[INFO] 2025-04-16T10:54:10.201Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:10.204Z: Request received: GET /api/students?_t=1744800850201 {"method":"GET","url":"/api/students?_t=1744800850201","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800850201"}}
+[INFO] 2025-04-16T10:54:10.206Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:12.489Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:54:12.491Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:12.495Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:54:12.498Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:13.365Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:54:13.367Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:13.371Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:54:13.374Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:14.815Z: Request received: GET /api/nft?_t=1744800854807 {"method":"GET","url":"/api/nft?_t=1744800854807","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800854807"}}
+[INFO] 2025-04-16T10:54:14.816Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:14.819Z: Request received: GET /api/nft?_t=1744800854808 {"method":"GET","url":"/api/nft?_t=1744800854808","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800854808"}}
+[INFO] 2025-04-16T10:54:14.821Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:15.128Z: Request received: GET /api/students?_t=1744800855129 {"method":"GET","url":"/api/students?_t=1744800855129","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800855129"}}
+[INFO] 2025-04-16T10:54:15.130Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:15.133Z: Request received: GET /api/students?_t=1744800855130 {"method":"GET","url":"/api/students?_t=1744800855130","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800855130"}}
+[INFO] 2025-04-16T10:54:15.136Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:24.351Z: Request received: GET /api/nft?_t=1744800864348 {"method":"GET","url":"/api/nft?_t=1744800864348","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800864348"}}
+[INFO] 2025-04-16T10:54:24.353Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:24.358Z: Request received: GET /api/nft?_t=1744800864348 {"method":"GET","url":"/api/nft?_t=1744800864348","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800864348"}}
+[INFO] 2025-04-16T10:54:24.360Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:24.811Z: Request received: GET /api/students?_t=1744800864812 {"method":"GET","url":"/api/students?_t=1744800864812","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800864812"}}
+[INFO] 2025-04-16T10:54:24.813Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:24.816Z: Request received: GET /api/students?_t=1744800864813 {"method":"GET","url":"/api/students?_t=1744800864813","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800864813"}}
+[INFO] 2025-04-16T10:54:24.818Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:26.621Z: Request received: GET /api/students?_t=1744800866622 {"method":"GET","url":"/api/students?_t=1744800866622","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800866622"}}
+[INFO] 2025-04-16T10:54:26.623Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:26.626Z: Request received: GET /api/students?_t=1744800866623 {"method":"GET","url":"/api/students?_t=1744800866623","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{"_t":"1744800866623"}}
+[INFO] 2025-04-16T10:54:26.628Z: Response sent: 200 {"statusCode":200,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:27.779Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:54:27.781Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:27.784Z: Request received: GET /api/transactions/pending {"method":"GET","url":"/api/transactions/pending","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:54:27.787Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:31.827Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:54:31.829Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:31.834Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:54:31.836Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:35.228Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:54:35.230Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:35.234Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:54:35.237Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:45.232Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:54:45.234Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:54:55.243Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:54:55.245Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:55:05.230Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:55:05.232Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:55:16.042Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:55:16.044Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:55:26.041Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:55:26.043Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:55:36.047Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:55:36.049Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}
+[INFO] 2025-04-16T10:55:46.036Z: Request received: GET /api/blockchain {"method":"GET","url":"/api/blockchain","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36","params":{},"query":{}}
+[INFO] 2025-04-16T10:55:46.037Z: Response sent: 304 {"statusCode":304,"responseTime":"unknown"}

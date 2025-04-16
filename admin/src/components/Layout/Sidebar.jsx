@@ -13,7 +13,8 @@ const Sidebar = () => {
     { path: '/mine', label: 'Mine Block' },
     { path: '/wallet', label: 'Wallet' },
     { path: '/student-transactions', label: 'Student Transactions' },
-    { path: '/students', label: 'Student Management' }, // Add this line
+    { path: '/students', label: 'Student Management' },
+    { path: '/nfts', label: 'NFT Management' }, // Add this line
   ];
   
   return (

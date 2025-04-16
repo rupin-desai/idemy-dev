@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const nftController = require('../controllers/nft.controller');
 
+// Add this new route at the beginning of the file
+router.get('/', nftController.getAllNFTs);
+
 // Create ID card for student
 router.post('/idcards/:studentId', nftController.createIDCard);
 

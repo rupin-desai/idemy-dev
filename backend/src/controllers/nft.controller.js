@@ -192,6 +192,24 @@ class NFTController {
       });
     }
   }
+
+  async getAllNFTs(req, res) {
+    try {
+      const nftsArray = Array.from(nftService.nfts.values()).map(nft => nft.toJSON());
+      
+      return res.status(200).json({
+        success: true,
+        count: nftsArray.length,
+        nfts: nftsArray
+      });
+    } catch (error) {
+      logger.error(`Get all NFTs error: ${error.message}`);
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }
 }
 
 module.exports = new NFTController();
