@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isStudent, setIsStudent] = useState(false); // Add this state
 
   // Check if token exists and load user on mount
   useEffect(() => {
@@ -24,6 +25,13 @@ export const AuthProvider = ({ children }) => {
     try {
       const result = await authApi.getProfile();
       setCurrentUser(result.user);
+      
+      // Set isStudent based on user data
+      setIsStudent(
+        result.user.role === 'student' || 
+        (result.user.student && result.user.student.studentId)
+      );
+      
       setIsAuthenticated(true);
     } catch (err) {
       authApi.setAuthToken(null);
@@ -74,22 +82,24 @@ export const AuthProvider = ({ children }) => {
   const updateProfile = async (userData) => {
     setError(null);
     try {
-      // If there's student info but it wasn't in the original profile,
-      // we need to handle it separately
-      const updatedUserData = {...userData};
+      // Merge with current user data
+      const updatedUser = {
+        ...currentUser,
+        ...userData
+      };
       
-      // Remove student field from data sent to profile update
-      const studentInfo = updatedUserData.student;
-      delete updatedUserData.student;
+      // Call API to update profile
+      const result = await authApi.updateProfile(updatedUser);
       
-      const result = await authApi.updateProfile(updatedUserData);
-      
-      // Add the student info back to the current user object
-      if (studentInfo) {
-        result.user.student = studentInfo;
-      }
-      
+      // Update state with new user data
       setCurrentUser(result.user);
+      
+      // Update student status
+      setIsStudent(
+        result.user.role === 'student' || 
+        (result.user.student && result.user.student.studentId)
+      );
+      
       return result;
     } catch (err) {
       setError(err.response?.data?.message || 'Profile update failed');
@@ -102,12 +112,14 @@ export const AuthProvider = ({ children }) => {
       value={{
         currentUser,
         isAuthenticated,
+        isStudent, // Add this to the context
         loading,
         error,
         register,
         login,
         logout,
-        updateProfile // Add this to the context value
+        updateProfile,
+        getUserProfile
       }}
     >
       {children}

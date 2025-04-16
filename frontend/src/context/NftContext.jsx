@@ -21,32 +21,36 @@ export const NftProvider = ({ children }) => {
       return;
     }
     
+    // Don't fetch if user isn't a student
+    if (!currentUser.student || !currentUser.student.studentId) {
+      setError({
+        type: 'not_student',
+        message: 'You need to be registered as a student to access NFTs'
+      });
+      setUserNfts([]);
+      setFetchAttempted(true);
+      setLoading(false);
+      return;
+    }
+    
     setLoading(true);
     setError(null);
     
     try {
-      // Try to get NFTs using the fixed API call
-      const result = await nftApi.getCurrentUserNfts();
+      // Use the student ID directly if available
+      const studentId = currentUser.student.studentId;
+      const result = await nftApi.getNftsByStudentId(studentId);
       
       if (result.success === false) {
-        if (result.error?.type === 'not_student') {
-          setError({
-            type: 'not_student',
-            message: 'You need to be registered as a student to access NFTs'
-          });
-        } else {
-          setError({
-            type: 'data',
-            message: result.error?.message || 'Failed to load NFTs'
-          });
-        }
+        setError({
+          type: 'data',
+          message: result.error?.message || 'Failed to load NFTs'
+        });
         setUserNfts([]);
       } else {
-        // Success case
         setUserNfts(result.nfts || []);
       }
     } catch (err) {
-      // This would be an unexpected error
       setError({
         type: 'unknown',
         message: 'An unexpected error occurred'

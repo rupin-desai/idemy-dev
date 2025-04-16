@@ -1,4 +1,5 @@
 const studentService = require("../services/student.service");
+const authService = require('../services/auth.service');
 const idGenerator = require("../utils/idGenerator.utils");
 const logger = require("../utils/logger.utils");
 
@@ -144,8 +145,8 @@ class StudentController {
         });
       }
       
-      // Generate student ID using your existing utilities
-      const studentId = `STU${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+      // Generate student ID using pattern
+      const studentId = idGenerator.generateStudentId();
       
       // Create student data object
       const studentData = {
@@ -153,17 +154,36 @@ class StudentController {
         email,
         firstName: req.body.firstName || '',
         lastName: req.body.lastName || '',
-        institution,
-        department: department || '',
-        enrollmentYear: enrollmentYear || new Date().getFullYear(),
-        graduationYear: graduationYear || new Date().getFullYear() + 4,
-        createdAt: new Date().toISOString(),
-        status: 'ACTIVE',
-        firebaseUid: uid || null
+        additionalInfo: {
+          institution,
+          department: department || '',
+          enrollmentYear: enrollmentYear || new Date().getFullYear(),
+          graduationYear: graduationYear || new Date().getFullYear() + 4,
+          firebaseUid: uid || null,
+          role: 'student' // Add role explicitly
+        },
+        status: 'ACTIVE'
       };
       
       // Create student using service
       const student = await studentService.createStudent(studentData);
+      
+      // Link student to Firebase user if UID is provided
+      if (uid) {
+        try {
+          // Update Firebase user with student information
+          await authService.updateUser(uid, {
+            customClaims: { 
+              studentId: student.studentId,
+              role: 'student'
+            }
+          });
+          logger.info(`Associated student ${studentId} with user ${uid}`);
+        } catch (error) {
+          logger.error(`Failed to update Firebase user: ${error.message}`);
+          // Continue even if Firebase update fails
+        }
+      }
       
       return res.status(201).json({
         success: true,

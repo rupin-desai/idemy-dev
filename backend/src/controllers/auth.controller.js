@@ -174,27 +174,52 @@ class AuthController {
     }
   }
 
+  // Enhance the getUserProfile method
+
   async getUserProfile(req, res) {
     try {
       const uid = req.user.uid;
 
       // Get user data from Firebase
       const userRecord = await authService.getUserById(uid);
-
+      
+      // Check for custom claims that might contain student info
+      const customClaims = userRecord.customClaims || {};
+      
       // Check if user has an associated student record
       let student = null;
-      try {
-        // Find student by email or by firebaseUid in additionalInfo
-        const students = studentService.getAllStudents();
-        student = students.find(
-          (s) =>
-            s.email === userRecord.email ||
-            (s.additionalInfo && s.additionalInfo.firebaseUid === uid)
-        );
-      } catch (error) {
-        logger.warn(
-          `Failed to find student record for user ${uid}: ${error.message}`
-        );
+      if (customClaims.studentId) {
+        try {
+          student = studentService.getStudentById(customClaims.studentId);
+        } catch (err) {
+          // If student not found by ID from claims, try by email
+          try {
+            const students = studentService.getAllStudents();
+            student = students.find(
+              (s) =>
+                s.email === userRecord.email ||
+                (s.additionalInfo && s.additionalInfo.firebaseUid === uid)
+            );
+          } catch (e) {
+            logger.warn(
+              `Failed to find student record for user ${uid}: ${e.message}`
+            );
+          }
+        }
+      } else {
+        // If no claims, try to find by email or UID
+        try {
+          const students = studentService.getAllStudents();
+          student = students.find(
+            (s) =>
+              s.email === userRecord.email ||
+              (s.additionalInfo && s.additionalInfo.firebaseUid === uid)
+          );
+        } catch (error) {
+          logger.warn(
+            `Failed to find student record for user ${uid}: ${error.message}`
+          );
+        }
       }
 
       // Remove sensitive data before returning
@@ -206,6 +231,7 @@ class AuthController {
         emailVerified: userRecord.emailVerified,
         createdAt: userRecord.metadata.creationTime,
         lastSignInTime: userRecord.metadata.lastSignInTime,
+        role: customClaims.role || 'user'
       };
 
       if (student) {
@@ -213,6 +239,8 @@ class AuthController {
           studentId: student.studentId,
           firstName: student.firstName,
           lastName: student.lastName,
+          institution: student.additionalInfo?.institution,
+          department: student.additionalInfo?.department
         };
       }
 

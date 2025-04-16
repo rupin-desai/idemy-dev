@@ -77,6 +77,12 @@ class AuthService {
       if (userData.photoURL) updateData.photoURL = userData.photoURL;
       if (userData.emailVerified !== undefined)
         updateData.emailVerified = userData.emailVerified;
+      
+      // Handle custom claims (including student role and ID)
+      if (userData.customClaims) {
+        await admin.auth().setCustomUserClaims(uid, userData.customClaims);
+        logger.info(`Updated custom claims for user ${uid}`);
+      }
 
       const userRecord = await admin.auth().updateUser(uid, updateData);
       return userRecord;
