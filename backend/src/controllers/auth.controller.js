@@ -25,7 +25,9 @@ class AuthController {
 
       // Check Firebase initialization status
       if (!firebaseAdminModule.isInitialized) {
-        logger.error("Registration failed: Firebase Admin SDK is not initialized");
+        logger.error(
+          "Registration failed: Firebase Admin SDK is not initialized"
+        );
         return res.status(500).json({
           success: false,
           message: "Firebase authentication system is currently unavailable",
