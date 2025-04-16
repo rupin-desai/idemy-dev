@@ -8,8 +8,10 @@ module.exports = {
     miningReward: process.env.BLOCKCHAIN_MINING_REWARD || 100,
   },
   cors: {
-    origin: process.env.CORS_ORIGIN || "*",
+    origin: process.env.CORS_ORIGIN || "http://localhost:5173", // Explicitly allow your frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
   },
   // Logging configuration
   logLevel: process.env.LOG_LEVEL || "INFO",

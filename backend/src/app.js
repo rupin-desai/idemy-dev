@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const config = require("./app.config");
 const logger = require("./utils/logger.utils");
 const loggerMiddleware = require("./middleware/logger.middleware");
@@ -12,7 +13,10 @@ const transactionRoutes = require("./routes/transaction.routes");
 // Initialize the app
 const app = express();
 
-// Middleware
+// CORS should be the first middleware
+app.use(cors(config.cors));
+
+// Other middleware
 app.use(bodyParser.json());
 app.use(loggerMiddleware);
 
