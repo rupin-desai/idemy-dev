@@ -139,6 +139,33 @@ class TransactionController {
       });
     }
   }
+
+  async getTransactionsByStudentId(req, res) {
+    try {
+      const { studentId } = req.params;
+      
+      if (!studentId) {
+        return res.status(400).json({
+          success: false,
+          message: "Student ID is required"
+        });
+      }
+      
+      const transactions = transactionService.getTransactionsByStudentId(studentId);
+      
+      return res.status(200).json({
+        success: true,
+        count: transactions.length,
+        transactions
+      });
+    } catch (error) {
+      logger.error(`Get transactions by student ID error: ${error.message}`);
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }
 }
 
 module.exports = new TransactionController();

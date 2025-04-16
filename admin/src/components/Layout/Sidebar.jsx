@@ -10,6 +10,7 @@ const Sidebar = () => {
     { path: '/blockchain', label: 'Blockchain Explorer' },
     { path: '/transactions', label: 'Transactions' },
     { path: '/create-transaction', label: 'Create Transaction' },
+    { path: '/student-transactions', label: 'Student Tracker' }, // Add this line
     { path: '/mine', label: 'Mine Block' },
     { path: '/wallet', label: 'Wallet' },
   ];

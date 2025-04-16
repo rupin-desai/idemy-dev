@@ -122,6 +122,43 @@ class Blockchain {
     }
     return null;
   }
+
+  // Add this method to your Blockchain class
+  getTransactionsByStudentId(studentId) {
+    if (!studentId) {
+      throw new Error("Student ID is required");
+    }
+    
+    const transactions = [];
+    
+    // Search all transactions in confirmed blocks
+    for (const block of this.chain) {
+      for (const transaction of block.transactions) {
+        if (transaction.metadata && 
+            transaction.metadata.studentId === studentId) {
+          transactions.push({
+            ...transaction,
+            blockIndex: block.index,
+            blockHash: block.hash,
+            confirmed: true
+          });
+        }
+      }
+    }
+    
+    // Also search pending transactions
+    for (const transaction of this.pendingTransactions) {
+      if (transaction.metadata && 
+          transaction.metadata.studentId === studentId) {
+        transactions.push({
+          ...transaction,
+          confirmed: false
+        });
+      }
+    }
+    
+    return transactions;
+  }
 }
 
 module.exports = Blockchain;

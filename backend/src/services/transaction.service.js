@@ -70,6 +70,20 @@ class TransactionService {
       throw error;
     }
   }
+
+  getTransactionsByStudentId(studentId) {
+    try {
+      if (!studentId) {
+        throw new Error("Student ID is required");
+      }
+      
+      const transactions = blockchainService.blockchain.getTransactionsByStudentId(studentId);
+      return transactions;
+    } catch (error) {
+      logger.error(`Get transactions by student ID error: ${error.message}`);
+      throw error;
+    }
+  }
 }
 
 module.exports = new TransactionService();

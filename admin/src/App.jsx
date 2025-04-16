@@ -10,6 +10,7 @@ import TransactionsPage from './pages/TransactionsPage';
 import CreateTransactionPage from './pages/CreateTransactionPage';
 import MinePage from './pages/MinePage';
 import WalletPage from './pages/WalletPage';
+import StudentTransactionsPage from './pages/StudentTransactionsPage';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
               <Route path="create-transaction" element={<CreateTransactionPage />} />
               <Route path="mine" element={<MinePage />} />
               <Route path="wallet" element={<WalletPage />} />
+              <Route path="student-transactions" element={<StudentTransactionsPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -28,6 +28,12 @@ const transactionApi = {
   getAddressBalance: async (address) => {
     const response = await axios.get(`${API_BASE_URL}/transactions/balance/${address}`);
     return response.data;
+  },
+
+  getTransactionsByStudentId: async (studentId) => {
+    // Add timestamp to prevent caching
+    const response = await axios.get(`${API_BASE_URL}/transactions/student/${studentId}?_t=${Date.now()}`);
+    return response.data;
   }
 };
 

@@ -122,6 +122,15 @@ class BlockchainService {
     }
   }
 
+  getTransactionsByStudentId(studentId) {
+    try {
+      return this.blockchain.getTransactionsByStudentId(studentId);
+    } catch (error) {
+      logger.error(`Get transactions by student ID error: ${error.message}`);
+      throw error;
+    }
+  }
+
   getChainLength() {
     return this.blockchain.chain.length;
   }

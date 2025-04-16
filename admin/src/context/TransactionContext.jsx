@@ -6,6 +6,8 @@ export const TransactionContext = createContext();
 
 export function TransactionProvider({ children }) {
   const [pendingTransactions, setPendingTransactions] = useState([]);
+  const [studentTransactions, setStudentTransactions] = useState([]);
+  const [studentIdSearched, setStudentIdSearched] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -57,17 +59,37 @@ export function TransactionProvider({ children }) {
     }
   }, []);
 
+  const getTransactionsByStudentId = useCallback(async (studentId) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await transactionApi.getTransactionsByStudentId(studentId);
+      setStudentTransactions(data.transactions || []);
+      setStudentIdSearched(studentId);
+      return data;
+    } catch (err) {
+      setError(`Failed to fetch transactions for student ID: ${studentId}`);
+      console.error(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     fetchPendingTransactions();
   }, [fetchPendingTransactions]);
 
   const value = {
     pendingTransactions,
+    studentTransactions,
+    studentIdSearched,
     loading,
     error,
     fetchPendingTransactions,
     createTransaction,
     getAddressBalance,
+    getTransactionsByStudentId,
   };
 
   return (
