@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useBlockchain } from '../hooks/useBlockchain';
 import { useTransactions } from '../hooks/useTransactions';
 
 const Dashboard = () => {
-  const { blockchain, blockchainInfo, loading: blockchainLoading } = useBlockchain();
-  const { pendingTransactions, loading: txLoading } = useTransactions();
+  const { blockchain, blockchainInfo, fetchBlockchain, fetchBlockchainInfo, loading: blockchainLoading } = useBlockchain();
+  const { pendingTransactions, fetchPendingTransactions, loading: txLoading } = useTransactions();
+  
+  // Add polling for auto-refresh
+  useEffect(() => {
+    // Initial fetch is already handled by context providers
+    
+    // Set up polling interval (every 10 seconds)
+    const intervalId = setInterval(() => {
+      fetchBlockchain();
+      fetchBlockchainInfo();
+      fetchPendingTransactions();
+    }, 10000);
+    
+    // Clean up on unmount
+    return () => clearInterval(intervalId);
+  }, [fetchBlockchain, fetchBlockchainInfo, fetchPendingTransactions]);
   
   if (blockchainLoading || txLoading) {
     return <div className="text-center py-10">Loading dashboard data...</div>;

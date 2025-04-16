@@ -49,10 +49,17 @@ const MinePage = () => {
     
     try {
       const result = await mineTransactions(formData.miningRewardAddress, formData.metadata);
+      
+      // Refresh blockchain and transaction data after mining
+      await fetchPendingTransactions();
+      await fetchBlockchain();
+      await fetchBlockchainInfo();
+      
       alert(`Block successfully mined! Block index: ${result.block.index}`);
       navigate(`/block/${result.block.index}`);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to mine transactions');
+    } finally {
       setLoading(false);
     }
   };

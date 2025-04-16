@@ -1,6 +1,6 @@
 // src/context/TransactionContext.jsx
-import { createContext, useState, useEffect, useCallback } from 'react';
-import transactionApi from '../api/transaction.api';
+import { createContext, useState, useEffect, useCallback } from "react";
+import transactionApi from "../api/transaction.api";
 
 export const TransactionContext = createContext();
 
@@ -16,28 +16,31 @@ export function TransactionProvider({ children }) {
       const data = await transactionApi.getPendingTransactions();
       setPendingTransactions(data.transactions || []);
     } catch (err) {
-      setError('Failed to fetch pending transactions');
+      setError("Failed to fetch pending transactions");
       console.error(err);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const createTransaction = useCallback(async (transaction) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await transactionApi.createTransaction(transaction);
-      await fetchPendingTransactions();
-      return data;
-    } catch (err) {
-      setError('Failed to create transaction');
-      console.error(err);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [fetchPendingTransactions]);
+  const createTransaction = useCallback(
+    async (transaction) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await transactionApi.createTransaction(transaction);
+        await fetchPendingTransactions();
+        return data;
+      } catch (err) {
+        setError("Failed to create transaction");
+        console.error(err);
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [fetchPendingTransactions]
+  );
 
   const getAddressBalance = useCallback(async (address) => {
     setLoading(true);

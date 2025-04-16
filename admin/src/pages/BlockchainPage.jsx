@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useBlockchain } from '../hooks/useBlockchain';
 import { Link } from 'react-router-dom';
 
 const BlockchainPage = () => {
   const { blockchain, loading, error, fetchBlockchain } = useBlockchain();
+
+  // Add polling for auto-refresh
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetchBlockchain();
+    }, 10000);
+    
+    return () => clearInterval(intervalId);
+  }, [fetchBlockchain]);
 
   if (loading) {
     return <div className="text-center py-10">Loading blockchain data...</div>;

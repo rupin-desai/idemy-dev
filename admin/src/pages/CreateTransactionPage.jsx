@@ -1,9 +1,11 @@
 // src/pages/CreateTransactionPage.jsx
 import React, { useState } from 'react';
 import { useTransactions } from '../hooks/useTransactions';
+import { useBlockchain } from '../hooks/useBlockchain';
 
 const CreateTransactionPage = () => {
-  const { createTransaction, loading } = useTransactions();
+  const { createTransaction, fetchPendingTransactions, loading } = useTransactions();
+  const { fetchBlockchain, fetchBlockchainInfo } = useBlockchain();
   const [formData, setFormData] = useState({
     fromAddress: '',
     toAddress: '',
@@ -49,6 +51,12 @@ const CreateTransactionPage = () => {
       };
       
       const result = await createTransaction(transactionData);
+      
+      // Refresh data after transaction is created
+      await fetchPendingTransactions();
+      await fetchBlockchain();
+      await fetchBlockchainInfo();
+      
       setTransactionResult(result);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to create transaction');

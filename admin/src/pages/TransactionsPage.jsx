@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTransactions } from '../hooks/useTransactions';
 
 const TransactionsPage = () => {
   const { pendingTransactions, loading, error, fetchPendingTransactions } = useTransactions();
+
+  // Add polling for auto-refresh
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetchPendingTransactions();
+    }, 10000);
+    
+    return () => clearInterval(intervalId);
+  }, [fetchPendingTransactions]);
 
   if (loading) {
     return <div className="text-center py-10">Loading transaction data...</div>;
