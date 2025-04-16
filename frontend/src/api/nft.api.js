@@ -76,9 +76,20 @@ export const getNftByTokenId = async (tokenId) => {
 };
 
 // Other methods with similar error handling pattern
+// Create ID card for student
 export const createIdCard = async (studentId, cardData) => {
   try {
-    const response = await axios.post(`${API_URL}/idcards/${studentId}`, cardData);
+    // Modified to match the simplified data structure
+    const payload = {
+      fullName: cardData.fullName,
+      dateOfBirth: cardData.dateOfBirth,
+      idType: cardData.idType || "STUDENT",
+      institution: cardData.institution,
+      department: cardData.department,
+      email: cardData.email
+    };
+    
+    const response = await axios.post(`${API_URL}/idcards/${studentId}`, payload);
     return response.data;
   } catch (error) {
     const errorData = handleApiError(error, 'create-id-card');

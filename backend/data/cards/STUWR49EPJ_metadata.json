@@ -1,0 +1,23 @@
+{
+  "name": "STUDENT ID Card - STUWR49EPJ",
+  "description": "Official STUDENT ID Card for student STUWR49EPJ",
+  "image": "/api/nft/idcards/STUWR49EPJ/image",
+  "attributes": [
+    {
+      "trait_type": "Card Type",
+      "value": "STUDENT"
+    },
+    {
+      "trait_type": "Issue Date",
+      "value": "2025-04-16T19:40:26.199Z"
+    },
+    {
+      "trait_type": "Expiry Date",
+      "value": "2029-04-15T19:40:26.199Z"
+    },
+    {
+      "trait_type": "Status",
+      "value": "ACTIVE"
+    }
+  ]
+}

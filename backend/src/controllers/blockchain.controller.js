@@ -240,16 +240,14 @@ class BlockchainController {
             for (const block of chain) {
                 for (const tx of block.transactions) {
                     // Check if this is a student registration transaction
-                    if (tx.fromAddress === "SYSTEM_STUDENT_REGISTRY" && 
-                        tx.metadata && 
-                        tx.metadata.action === "CREATE" &&
-                        tx.metadata.studentData && 
-                        tx.metadata.studentData.email && 
-                        tx.metadata.studentData.email.toLowerCase() === email.toLowerCase()) {
+                    if ((tx.fromAddress === "SYSTEM_STUDENT_REGISTRY" || tx.type === "STUDENT_REGISTRATION") && 
+                        tx.data && 
+                        tx.data.email && 
+                        tx.data.email.toLowerCase() === email.toLowerCase()) {
                         
                         // If we already found a student record, only update if this one is newer
-                        if (!studentData || tx.timestamp > timestamp) {
-                            studentData = tx.metadata.studentData;
+                        if (!studentData || new Date(tx.timestamp) > new Date(timestamp)) {
+                            studentData = tx.data;
                             timestamp = tx.timestamp;
                             blockIndex = block.index;
                         }
@@ -260,16 +258,14 @@ class BlockchainController {
             // Also check pending transactions
             const pendingTransactions = blockchainService.getPendingTransactions();
             for (const tx of pendingTransactions) {
-                if (tx.fromAddress === "SYSTEM_STUDENT_REGISTRY" && 
-                    tx.metadata && 
-                    tx.metadata.action === "CREATE" &&
-                    tx.metadata.studentData && 
-                    tx.metadata.studentData.email && 
-                    tx.metadata.studentData.email.toLowerCase() === email.toLowerCase()) {
+                if ((tx.fromAddress === "SYSTEM_STUDENT_REGISTRY" || tx.type === "STUDENT_REGISTRATION") && 
+                    tx.data && 
+                    tx.data.email && 
+                    tx.data.email.toLowerCase() === email.toLowerCase()) {
                     
                     // If we already found a student record, only update if this one is newer
-                    if (!studentData || tx.timestamp > timestamp) {
-                        studentData = tx.metadata.studentData;
+                    if (!studentData || new Date(tx.timestamp) > new Date(timestamp)) {
+                        studentData = tx.data;
                         timestamp = tx.timestamp;
                         blockIndex = 'pending';
                     }

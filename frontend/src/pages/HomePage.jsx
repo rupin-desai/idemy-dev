@@ -161,7 +161,7 @@ const HomePage = () => {
                   className="flex items-center bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors"
                 >
                   <Plus size={18} className="mr-1" />
-                  Create New ID
+                  {userNfts && userNfts.length > 0 ? "Update ID" : "Create New ID"}
                 </motion.button>
               </div>
               <p className="text-slate-600 mb-4">
