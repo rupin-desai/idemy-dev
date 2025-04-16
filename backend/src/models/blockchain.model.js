@@ -123,7 +123,8 @@ class Blockchain {
     return null;
   }
 
-  // Add this method to your Blockchain class
+  // Update the getTransactionsByStudentId method
+
   getTransactionsByStudentId(studentId) {
     if (!studentId) {
       throw new Error("Student ID is required");
@@ -134,8 +135,12 @@ class Blockchain {
     // Search all transactions in confirmed blocks
     for (const block of this.chain) {
       for (const transaction of block.transactions) {
-        if (transaction.metadata && 
-            transaction.metadata.studentId === studentId) {
+        // Check if transaction has metadata with studentId
+        if ((transaction.metadata && transaction.metadata.studentId === studentId) ||
+            (transaction.metadata && transaction.metadata.action && 
+             transaction.metadata.studentData && 
+             transaction.metadata.studentData.studentId === studentId)) {
+          
           transactions.push({
             ...transaction,
             blockIndex: block.index,
@@ -148,8 +153,11 @@ class Blockchain {
     
     // Also search pending transactions
     for (const transaction of this.pendingTransactions) {
-      if (transaction.metadata && 
-          transaction.metadata.studentId === studentId) {
+      if ((transaction.metadata && transaction.metadata.studentId === studentId) ||
+          (transaction.metadata && transaction.metadata.action && 
+           transaction.metadata.studentData && 
+           transaction.metadata.studentData.studentId === studentId)) {
+        
         transactions.push({
           ...transaction,
           confirmed: false
