@@ -1,7 +1,7 @@
 // src/pages/BlockDetailsPage.jsx
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useBlockchain } from '../hooks/useBlockchain';
+import React, { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { useBlockchain } from "../hooks/useBlockchain";
 
 const BlockDetailsPage = () => {
   const { index } = useParams();
@@ -35,9 +35,15 @@ const BlockDetailsPage = () => {
 
   if (error || !block) {
     return (
-      <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
+      <div
+        className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6"
+        role="alert"
+      >
         <p>{error || `Block #${index} not found`}</p>
-        <Link to="/blockchain" className="inline-block mt-2 bg-blue-500 hover:bg-blue-700 text-white py-1 px-3 rounded">
+        <Link
+          to="/blockchain"
+          className="inline-block mt-2 bg-blue-500 hover:bg-blue-700 text-white py-1 px-3 rounded"
+        >
           Back to Blockchain
         </Link>
       </div>
@@ -52,10 +58,10 @@ const BlockDetailsPage = () => {
         </Link>
         <h1 className="text-3xl font-bold">Block #{block.index}</h1>
       </div>
-      
+
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <h2 className="text-xl font-semibold mb-4">Block Details</h2>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <p className="text-sm text-gray-500">Block Index</p>
@@ -63,26 +69,30 @@ const BlockDetailsPage = () => {
           </div>
           <div>
             <p className="text-sm text-gray-500">Timestamp</p>
-            <p className="font-medium">{new Date(block.timestamp).toLocaleString()}</p>
+            <p className="font-medium">
+              {new Date(block.timestamp).toLocaleString()}
+            </p>
           </div>
           <div>
             <p className="text-sm text-gray-500">Nonce</p>
             <p className="font-medium">{block.nonce}</p>
           </div>
         </div>
-        
+
         <div className="mb-4">
           <p className="text-sm text-gray-500">Hash</p>
-          <p className="font-mono text-sm bg-gray-100 p-2 rounded">{block.hash}</p>
+          <p className="font-mono text-sm bg-gray-100 p-2 rounded">
+            {block.hash}
+          </p>
         </div>
-        
+
         <div className="mb-4">
           <p className="text-sm text-gray-500">Previous Hash</p>
           <p className="font-mono text-sm bg-gray-100 p-2 rounded">
             {block.previousHash === "0" ? "Genesis Block" : block.previousHash}
           </p>
         </div>
-        
+
         {block.metadata && Object.keys(block.metadata).length > 0 && (
           <div className="mb-4">
             <p className="text-sm text-gray-500">Metadata</p>
@@ -92,22 +102,34 @@ const BlockDetailsPage = () => {
           </div>
         )}
       </div>
-      
+
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="px-6 py-4 border-b">
-          <h2 className="text-xl font-semibold">Transactions ({block.transactions?.length || 0})</h2>
+          <h2 className="text-xl font-semibold">
+            Transactions ({block.transactions?.length || 0})
+          </h2>
         </div>
-        
+
         {block.transactions && block.transactions.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">From</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">To</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Timestamp</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Transaction ID
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    From
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    To
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Amount
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Timestamp
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -117,14 +139,12 @@ const BlockDetailsPage = () => {
                       {tx.id.substring(0, 10)}...
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {tx.fromAddress || 'Mining Reward'}
+                      {tx.fromAddress || "Mining Reward"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {tx.toAddress.substring(0, 10)}...
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {tx.amount}
-                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">{tx.amount}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {new Date(tx.timestamp).toLocaleString()}
                     </td>
