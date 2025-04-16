@@ -1,255 +1,299 @@
-// src/pages/NftDetailsPage.jsx
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Shield, ArrowLeft, Award, RefreshCcw, Share2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Shield,
+  CheckCircle,
+  AlertCircle,
+  Loader,
+} from "lucide-react";
 import { useNft } from "../hooks/useNft";
 import { useAuth } from "../hooks/useAuth";
+import axios from "axios";
 
 const NftDetailsPage = () => {
   const { tokenId } = useParams();
   const navigate = useNavigate();
-  const { getNftDetails, verifyUserNft, transferUserNft } = useNft();
-  const { isAuthenticated } = useAuth();
-  
-  const [nftDetails, setNftDetails] = useState(null);
+  const { verifyUserNft } = useNft();
+  const { isAuthenticated, loading: authLoading, currentUser } = useAuth();
+
+  const [nft, setNft] = useState(null);
+  const [studentData, setStudentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [verifying, setVerifying] = useState(false);
   const [verificationResult, setVerificationResult] = useState(null);
-  const [recipientId, setRecipientId] = useState("");
-  const [showTransfer, setShowTransfer] = useState(false);
-  
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
+
+  // Direct API call to avoid state conflicts
+  const fetchNftDetails = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/nft/${id}`);
+      console.log("NFT Response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching NFT:", error);
+      throw error;
     }
-    
-    const loadNftDetails = async () => {
-      setLoading(true);
+  };
+
+  // Get student data if available
+  const fetchStudentData = async (studentId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/students/${studentId}`
+      );
+      console.log("Student Response:", response.data);
+      return response.data.student;
+    } catch (error) {
+      console.error("Error fetching student:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadData = async () => {
+      if (!isAuthenticated && !authLoading) {
+        navigate("/login", { state: { from: `/nft/${tokenId}` } });
+        return;
+      }
+
+      if (!isAuthenticated || authLoading) {
+        return; // Wait for auth to complete
+      }
+
       try {
-        const response = await getNftDetails(tokenId);
-        setNftDetails(response.nft);
+        setLoading(true);
+        setError(null);
+
+        // Direct API call
+        const result = await fetchNftDetails(tokenId);
+
+        if (!result || !result.success) {
+          throw new Error("Failed to load NFT data");
+        }
+
+        let student = null;
+        if (result.nft?.studentId) {
+          student = await fetchStudentData(result.nft.studentId);
+        }
+
+        if (mounted) {
+          setNft(result.nft);
+          setStudentData(student);
+          setLoading(false);
+        }
       } catch (err) {
-        setError(err.response?.data?.message || 'Failed to load NFT details');
-      } finally {
-        setLoading(false);
+        console.error("Error in loadData:", err);
+        if (mounted) {
+          setError(err.message || "Failed to load NFT details");
+          setLoading(false);
+        }
       }
     };
-    
-    loadNftDetails();
-  }, [tokenId, getNftDetails, isAuthenticated, navigate]);
-  
+
+    loadData();
+
+    return () => {
+      mounted = false;
+    };
+  }, [tokenId, navigate, isAuthenticated, authLoading]);
+
   const handleVerify = async () => {
-    setVerifying(true);
-    setVerificationResult(null);
     try {
+      setVerifying(true);
       const result = await verifyUserNft(tokenId);
       setVerificationResult(result);
     } catch (err) {
-      setError(err.response?.data?.message || 'Verification failed');
+      setError(`Verification failed: ${err.message}`);
     } finally {
       setVerifying(false);
     }
   };
-  
-  const handleTransfer = async (e) => {
-    e.preventDefault();
-    if (!recipientId.trim()) {
-      setError('Recipient ID is required');
-      return;
-    }
-    
-    try {
-      await transferUserNft(tokenId, recipientId);
-      setShowTransfer(false);
-      navigate('/');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Transfer failed');
-    }
-  };
-  
+
+  if (authLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader className="animate-spin h-8 w-8 text-indigo-600" />
+        <span className="ml-2">Authenticating...</span>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-12 flex justify-center">
-        <div className="animate-spin h-8 w-8 text-indigo-600">
-          <RefreshCcw size={32} />
-        </div>
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader className="animate-spin h-8 w-8 text-indigo-600" />
+        <span className="ml-2">Loading NFT details...</span>
       </div>
     );
   }
-  
-  if (error) {
-    return (
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-2xl mx-auto bg-red-50 p-4 rounded-md">
-          <p className="text-red-700">{error}</p>
-          <button 
-            onClick={() => navigate('/')}
-            className="mt-3 text-indigo-600 flex items-center"
-          >
-            <ArrowLeft size={16} className="mr-1" />
-            Back to Home
-          </button>
-        </div>
-      </div>
-    );
-  }
-  
-  if (!nftDetails) {
-    return (
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-2xl mx-auto bg-yellow-50 p-4 rounded-md">
-          <p className="text-yellow-700">NFT not found</p>
-          <button 
-            onClick={() => navigate('/')}
-            className="mt-3 text-indigo-600 flex items-center"
-          >
-            <ArrowLeft size={16} className="mr-1" />
-            Back to Home
-          </button>
-        </div>
-      </div>
-    );
-  }
-  
+
+  // Prepare display data
+  const getStudentName = () => {
+    if (studentData?.firstName && studentData?.lastName) {
+      return `${studentData.firstName} ${studentData.lastName}`;
+    } else if (currentUser?.firstName && currentUser?.lastName) {
+      return `${currentUser.firstName} ${currentUser.lastName}`;
+    } else if (currentUser?.displayName) {
+      return currentUser.displayName;
+    }
+    return "Unknown Student";
+  };
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="container mx-auto px-4 py-12"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="container mx-auto px-4 py-8"
     >
-      <div className="max-w-2xl mx-auto">
-        <button 
-          onClick={() => navigate('/')}
-          className="mb-5 text-indigo-600 flex items-center"
-        >
-          <ArrowLeft size={16} className="mr-1" />
-          Back to Home
-        </button>
-        
-        <div className="bg-white shadow-md rounded-lg overflow-hidden">
-          <div className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white p-6">
-            <h1 className="text-2xl font-bold flex items-center">
-              <Award size={24} className="mr-2" />
-              Digital ID NFT #{tokenId}
-            </h1>
-            <p className="opacity-80 mt-1">
-              Blockchain-secured digital identification
-            </p>
-          </div>
-          
-          <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div>
-                <p className="text-sm text-slate-500">Token ID</p>
-                <p className="font-medium">{nftDetails.tokenId}</p>
-              </div>
-              <div>
-                <p className="text-sm text-slate-500">Status</p>
-                <span className={`text-xs font-medium px-2 py-1 rounded-full ${
-                  nftDetails.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : 
-                  nftDetails.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' : 
-                  'bg-gray-100 text-gray-700'
-                }`}>
-                  {nftDetails.status}
-                </span>
-              </div>
-              <div>
-                <p className="text-sm text-slate-500">Minted On</p>
-                <p className="font-medium">{new Date(nftDetails.mintedAt).toLocaleString()}</p>
-              </div>
-              <div>
-                <p className="text-sm text-slate-500">Student ID</p>
-                <p className="font-medium">{nftDetails.studentId}</p>
-              </div>
-            </div>
-            
-            {/* Blockchain details */}
-            <div className="bg-slate-50 p-4 rounded-md mb-6">
-              <h2 className="font-medium mb-2">Blockchain Details</h2>
-              <div className="text-sm">
-                <p><span className="text-slate-500">Transaction Hash:</span> {nftDetails.transactionHash}</p>
-                <p className="mt-1"><span className="text-slate-500">Block Number:</span> {nftDetails.blockNumber}</p>
-              </div>
-            </div>
-            
-            {/* Verification results */}
-            {verificationResult && (
-              <div className={`p-4 rounded-md mb-6 ${
-                verificationResult.isValid ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-              }`}>
-                <h2 className="font-medium mb-2">Verification Results</h2>
-                <p>{verificationResult.isValid ? 'This NFT is valid and authentic' : 'Invalid NFT'}</p>
-                {verificationResult.details && (
-                  <p className="mt-2 text-sm">{verificationResult.details}</p>
-                )}
-              </div>
-            )}
-            
-            {/* Action buttons */}
-            <div className="flex flex-wrap gap-3 mt-6">
-              <button
-                onClick={handleVerify}
-                disabled={verifying}
-                className="bg-blue-100 text-blue-700 px-4 py-2 rounded-md hover:bg-blue-200 transition-colors flex items-center"
-              >
-                <Shield size={18} className="mr-2" />
-                {verifying ? 'Verifying...' : 'Verify Authenticity'}
-              </button>
-              
-              <button
-                onClick={() => setShowTransfer(!showTransfer)}
-                className="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-md hover:bg-indigo-200 transition-colors flex items-center"
-              >
-                <Share2 size={18} className="mr-2" />
-                Transfer Ownership
-              </button>
-            </div>
-            
-            {/* Transfer form */}
-            {showTransfer && (
-              <motion.form 
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                onSubmit={handleTransfer}
-                className="mt-6 border-t pt-4"
-              >
-                <h2 className="font-medium mb-2">Transfer Ownership</h2>
-                <div className="mb-4">
-                  <label htmlFor="recipientId" className="block text-sm font-medium text-slate-700 mb-1">
-                    Recipient Student ID
-                  </label>
-                  <input
-                    type="text"
-                    id="recipientId"
-                    value={recipientId}
-                    onChange={(e) => setRecipientId(e.target.value)}
-                    className="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                    required
-                  />
-                </div>
-                <div className="flex space-x-2">
-                  <button
-                    type="submit"
-                    className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors"
-                  >
-                    Confirm Transfer
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowTransfer(false)}
-                    className="bg-slate-200 text-slate-700 px-4 py-2 rounded-md hover:bg-slate-300 transition-colors"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </motion.form>
-            )}
+      <button
+        onClick={() => navigate("/")}
+        className="mb-5 text-indigo-600 flex items-center"
+      >
+        <ArrowLeft size={16} className="mr-1" />
+        Back to Home
+      </button>
+
+      {error ? (
+        <div className="bg-red-50 border border-red-200 text-red-700 p-6 rounded-lg flex items-start">
+          <AlertCircle className="mr-3 mt-0.5 flex-shrink-0" />
+          <div>
+            <h3 className="font-bold text-lg">Error Loading NFT</h3>
+            <p>{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="mt-4 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-md transition-colors"
+            >
+              Try Again
+            </button>
           </div>
         </div>
-      </div>
+      ) : nft ? (
+        <div className="bg-white shadow-md rounded-lg overflow-hidden max-w-4xl mx-auto">
+          <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-6 text-white">
+            <h1 className="text-2xl font-bold">Digital ID Card NFT</h1>
+            <p className="opacity-80">TokenID: {tokenId}</p>
+          </div>
+
+          <div className="p-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h2 className="text-xl font-semibold mb-4">
+                  Student Information
+                </h2>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm text-gray-500">Full Name</p>
+                    <p className="font-medium">{getStudentName()}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Student ID</p>
+                    <p className="font-medium">{nft.studentId}</p>
+                  </div>
+                  {(studentData?.institution ||
+                    currentUser?.student?.institution) && (
+                    <div>
+                      <p className="text-sm text-gray-500">Institution</p>
+                      <p>
+                        {studentData?.institution ||
+                          currentUser?.student?.institution}
+                      </p>
+                    </div>
+                  )}
+                  {(studentData?.department ||
+                    currentUser?.student?.department) && (
+                    <div>
+                      <p className="text-sm text-gray-500">Department</p>
+                      <p>
+                        {studentData?.department ||
+                          currentUser?.student?.department}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-xl font-semibold mb-4">
+                  Blockchain Information
+                </h2>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm text-gray-500">Minted On</p>
+                    <p>{new Date(nft.mintedAt).toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Transaction Hash</p>
+                    <p className="font-mono text-sm break-all">
+                      {nft.mintTxHash}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Owner Address</p>
+                    <p className="font-mono text-sm break-all">
+                      {nft.ownerAddress}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Status</p>
+                    <p className="font-medium text-green-600">{nft.status}</p>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <button
+                    onClick={handleVerify}
+                    disabled={verifying}
+                    className={`flex items-center px-4 py-2 rounded-md ${
+                      verifying
+                        ? "bg-gray-300 text-gray-600"
+                        : "bg-indigo-600 text-white hover:bg-indigo-700"
+                    } transition-colors`}
+                  >
+                    {verifying ? (
+                      <>
+                        <Loader size={16} className="animate-spin mr-2" />
+                        Verifying...
+                      </>
+                    ) : (
+                      <>
+                        <Shield size={16} className="mr-2" />
+                        Verify Authentication
+                      </>
+                    )}
+                  </button>
+
+                  {verificationResult && (
+                    <div
+                      className={`mt-3 p-3 rounded-md ${
+                        verificationResult.valid
+                          ? "bg-green-50 text-green-700"
+                          : "bg-red-50 text-red-700"
+                      }`}
+                    >
+                      <div className="flex items-center">
+                        {verificationResult.valid ? (
+                          <CheckCircle size={18} className="mr-2" />
+                        ) : (
+                          <AlertCircle size={18} className="mr-2" />
+                        )}
+                        <span>
+                          {verificationResult.valid
+                            ? "NFT verified! This is an authentic digital ID."
+                            : "Verification failed. This NFT may not be authentic."}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </motion.div>
   );
 };

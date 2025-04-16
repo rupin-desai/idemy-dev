@@ -64,10 +64,13 @@ export const getNftsByStudentId = async (studentId) => {
   }
 };
 
+// Update the getNftByTokenId function
+
 // Get NFT by token ID with enhanced error handling
 export const getNftByTokenId = async (tokenId) => {
   try {
-    const response = await axios.get(`${API_URL}/token/${tokenId}`);
+    // Change from /token/${tokenId} to /${tokenId}
+    const response = await axios.get(`${API_URL}/${tokenId}`);
     return response.data;
   } catch (error) {
     const errorData = handleApiError(error, 'fetch-nft-details');

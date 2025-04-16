@@ -6,6 +6,8 @@ import {
 } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+// Add this import for the Loader component
+import { Loader } from "lucide-react";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
@@ -37,53 +39,80 @@ const SplashScreen = () => (
 
 // 2. Create a separate component for the routes that uses useAuth
 const AppRoutes = () => {
-  const { isAuthenticated, currentUser, isStudent } = useAuth();
-  
+  const { isAuthenticated, currentUser, isStudent, loading } = useAuth();
+
+  // Wait for auth to be checked before determining route access
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader className="animate-spin h-8 w-8 text-indigo-600" />
+        <span className="ml-2">Loading...</span>
+      </div>
+    );
+  }
+
   // Additional check for student status
   const checkStudentStatus = () => {
     if (!isAuthenticated) return false;
-    
+
     // Check for student ID in current user
     if (currentUser?.student?.studentId) return true;
-    
+
     // Check for student role
-    if (currentUser?.role === 'student') return true;
-    
+    if (currentUser?.role === "student") return true;
+
     return false;
   };
-  
+
   const userIsStudent = isStudent || checkStudentStatus();
-  
+
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/nft/:tokenId" element={<NftDetailsPage />} />
-      
+      <Route
+        path="/nft/:tokenId"
+        element={
+          isAuthenticated ? (
+            <NftDetailsPage />
+          ) : (
+            <Navigate to="/login" state={{ from: window.location.pathname }} />
+          )
+        }
+      />
+
       {/* Protected routes */}
-      <Route 
-        path="/create-id" 
+      <Route
+        path="/create-id"
         element={
           isAuthenticated ? (
-            userIsStudent ? <CreateIdPage /> : <Navigate to="/create-student" replace />
+            userIsStudent ? (
+              <CreateIdPage />
+            ) : (
+              <Navigate to="/create-student" replace />
+            )
           ) : (
             <Navigate to="/login" replace />
           )
-        } 
+        }
       />
-      
-      <Route 
-        path="/create-student" 
+
+      <Route
+        path="/create-student"
         element={
           isAuthenticated ? (
-            userIsStudent ? <Navigate to="/create-id" replace /> : <StudentRegistrationPage />
+            userIsStudent ? (
+              <Navigate to="/create-id" replace />
+            ) : (
+              <StudentRegistrationPage />
+            )
           ) : (
             <Navigate to="/login" replace />
           )
-        } 
+        }
       />
-      
+
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
