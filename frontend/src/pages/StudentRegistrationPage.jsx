@@ -53,6 +53,8 @@ const StudentRegistrationPage = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // Update the handleSubmit function to ensure proper blockchain integration
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -68,34 +70,43 @@ const StudentRegistrationPage = () => {
     try {
       // Call API to register student with proper data structure
       const response = await axios.post('http://localhost:3000/api/students/register', {
-        uid: currentUser?.uid, // Use uid instead of id
-        email: currentUser?.email, // Ensure email is sent for association
-        firstName: currentUser?.firstName || currentUser?.displayName?.split(' ')[0] || '',
-        lastName: currentUser?.lastName || currentUser?.displayName?.split(' ')[1] || '',
+        uid: currentUser?.uid,
+        email: currentUser?.email,
+        firstName: currentUser?.displayName?.split(' ')[0] || '',
+        lastName: currentUser?.displayName?.split(' ')[1] || '',
         institution: formData.institution,
         department: formData.department,
         enrollmentYear: formData.enrollmentYear,
-        graduationYear: formData.graduationYear
+        graduationYear: formData.graduationYear,
+        // Add explicit metadata for blockchain transaction
+        metadata: {
+          role: 'student',
+          transactionType: 'STUDENT_REGISTRATION'
+        }
       });
       
-      // Update user profile with student information
       if (response.data.success && response.data.student) {
+        // Store generated student ID
+        setGeneratedId(response.data.student.studentId);
+        
+        // Update user profile with student information
         await updateProfile({
           ...currentUser,
           student: {
             studentId: response.data.student.studentId,
-            firstName: response.data.student.firstName,
-            lastName: response.data.student.lastName
-          }
+            firstName: response.data.student.firstName || currentUser?.displayName?.split(' ')[0] || '',
+            lastName: response.data.student.lastName || currentUser?.displayName?.split(' ')[1] || '',
+            institution: formData.institution,
+            department: formData.department
+          },
+          role: 'student'
         });
         
-        // Store the generated ID to display to the user
-        setGeneratedId(response.data.student.studentId);
         setSuccess(true);
         
-        // Redirect after short delay
+        // Force reload user profile to ensure all changes are reflected
         setTimeout(() => {
-          navigate('/create-id');
+          window.location.href = '/create-id';  // Use window.location for full refresh
         }, 3000);
       }
     } catch (err) {

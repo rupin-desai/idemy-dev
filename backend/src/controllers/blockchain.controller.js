@@ -214,6 +214,92 @@ class BlockchainController {
             });
         }
     }
+
+    // Fix the getStudentByEmail method
+
+    async getStudentByEmail(req, res) {
+        try {
+            const { email } = req.params;
+            
+            if (!email) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Email parameter is required'
+                });
+            }
+            
+            // Get the blockchain
+            const chain = blockchainService.getChain();
+            
+            // Search for student transactions across all blocks
+            let studentData = null;
+            let timestamp = null;
+            let blockIndex = null;
+            
+            // First search in confirmed blocks
+            for (const block of chain) {
+                for (const tx of block.transactions) {
+                    // Check if this is a student registration transaction
+                    if (tx.fromAddress === "SYSTEM_STUDENT_REGISTRY" && 
+                        tx.metadata && 
+                        tx.metadata.action === "CREATE" &&
+                        tx.metadata.studentData && 
+                        tx.metadata.studentData.email && 
+                        tx.metadata.studentData.email.toLowerCase() === email.toLowerCase()) {
+                        
+                        // If we already found a student record, only update if this one is newer
+                        if (!studentData || tx.timestamp > timestamp) {
+                            studentData = tx.metadata.studentData;
+                            timestamp = tx.timestamp;
+                            blockIndex = block.index;
+                        }
+                    }
+                }
+            }
+            
+            // Also check pending transactions
+            const pendingTransactions = blockchainService.getPendingTransactions();
+            for (const tx of pendingTransactions) {
+                if (tx.fromAddress === "SYSTEM_STUDENT_REGISTRY" && 
+                    tx.metadata && 
+                    tx.metadata.action === "CREATE" &&
+                    tx.metadata.studentData && 
+                    tx.metadata.studentData.email && 
+                    tx.metadata.studentData.email.toLowerCase() === email.toLowerCase()) {
+                    
+                    // If we already found a student record, only update if this one is newer
+                    if (!studentData || tx.timestamp > timestamp) {
+                        studentData = tx.metadata.studentData;
+                        timestamp = tx.timestamp;
+                        blockIndex = 'pending';
+                    }
+                }
+            }
+            
+            if (!studentData) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'No student registration found for this email'
+                });
+            }
+            
+            return res.status(200).json({
+                success: true,
+                studentInfo: {
+                    ...studentData,
+                    timestamp,
+                    blockIndex,
+                    blockchainVerified: true
+                }
+            });
+        } catch (error) {
+            logger.error(`Error getting student by email: ${error.message}`);
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            });
+        }
+    }
 }
 
 module.exports = new BlockchainController();

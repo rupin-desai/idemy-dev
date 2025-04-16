@@ -37,39 +37,53 @@ const SplashScreen = () => (
 
 // 2. Create a separate component for the routes that uses useAuth
 const AppRoutes = () => {
-  // Now useAuth is used inside the AuthProvider context
-  const { isAuthenticated, isStudent } = useAuth();
-
+  const { isAuthenticated, currentUser, isStudent } = useAuth();
+  
+  // Additional check for student status
+  const checkStudentStatus = () => {
+    if (!isAuthenticated) return false;
+    
+    // Check for student ID in current user
+    if (currentUser?.student?.studentId) return true;
+    
+    // Check for student role
+    if (currentUser?.role === 'student') return true;
+    
+    return false;
+  };
+  
+  const userIsStudent = isStudent || checkStudentStatus();
+  
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/nft/:tokenId" element={<NftDetailsPage />} />
-
+      
       {/* Protected routes */}
-      <Route
-        path="/create-id"
+      <Route 
+        path="/create-id" 
         element={
-          isAuthenticated && isStudent ? (
-            <CreateIdPage />
+          isAuthenticated ? (
+            userIsStudent ? <CreateIdPage /> : <Navigate to="/create-student" replace />
           ) : (
-            <Navigate to="/create-student" replace />
+            <Navigate to="/login" replace />
           )
-        }
+        } 
       />
-
-      <Route
-        path="/create-student"
+      
+      <Route 
+        path="/create-student" 
         element={
-          isAuthenticated && isStudent ? (
-            <Navigate to="/create-id" replace />
+          isAuthenticated ? (
+            userIsStudent ? <Navigate to="/create-id" replace /> : <StudentRegistrationPage />
           ) : (
-            <StudentRegistrationPage />
+            <Navigate to="/login" replace />
           )
-        }
+        } 
       />
-
+      
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

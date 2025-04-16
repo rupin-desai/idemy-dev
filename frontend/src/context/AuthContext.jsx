@@ -21,17 +21,33 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  // Update getUserProfile to properly set student status
   const getUserProfile = async () => {
     try {
       const result = await authApi.getProfile();
+      
+      // Check if user has student information
+      let isStudentUser = false;
+      
+      if (result.user.student && result.user.student.studentId) {
+        isStudentUser = true;
+      } else if (result.user.role === 'student') {
+        isStudentUser = true;
+        
+        // Try to fetch student details if role is student but no student object exists
+        try {
+          const studentResponse = await axios.get(`http://localhost:3000/api/students/by-email/${result.user.email}`);
+          if (studentResponse.data.success && studentResponse.data.student) {
+            // Update the user object with student info
+            result.user.student = studentResponse.data.student;
+          }
+        } catch (studentErr) {
+          console.warn('Could not fetch student details:', studentErr);
+        }
+      }
+      
       setCurrentUser(result.user);
-      
-      // Set isStudent based on user data
-      setIsStudent(
-        result.user.role === 'student' || 
-        (result.user.student && result.user.student.studentId)
-      );
-      
+      setIsStudent(isStudentUser);
       setIsAuthenticated(true);
     } catch (err) {
       authApi.setAuthToken(null);

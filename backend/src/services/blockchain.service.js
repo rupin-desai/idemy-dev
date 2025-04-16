@@ -131,6 +131,48 @@ class BlockchainService {
     }
   }
 
+  getTransactionsByType(type) {
+    try {
+      const transactions = [];
+      
+      // Search all transactions in confirmed blocks
+      for (const block of this.blockchain.chain) {
+        for (const transaction of block.transactions) {
+          // Check if transaction has metadata with the specified type
+          if (transaction.metadata && 
+             ((transaction.metadata.type === type) || 
+              (transaction.metadata.action === type))) {
+            
+            transactions.push({
+              ...transaction,
+              blockIndex: block.index,
+              blockHash: block.hash,
+              confirmed: true
+            });
+          }
+        }
+      }
+      
+      // Also search pending transactions
+      for (const transaction of this.blockchain.pendingTransactions) {
+        if (transaction.metadata && 
+           ((transaction.metadata.type === type) || 
+            (transaction.metadata.action === type))) {
+          
+          transactions.push({
+            ...transaction,
+            confirmed: false
+          });
+        }
+      }
+      
+      return transactions;
+    } catch (error) {
+      logger.error(`Get transactions by type error: ${error.message}`);
+      throw error;
+    }
+  }
+
   getChainLength() {
     return this.blockchain.chain.length;
   }

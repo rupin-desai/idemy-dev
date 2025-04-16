@@ -26,4 +26,7 @@ router.get('/block/hash/:hash', blockchainController.getBlockByHash);
 // Manually save blockchain to file
 router.post('/save', blockchainController.saveBlockchain);
 
+// Add this new route
+router.get('/student-by-email/:email', blockchainController.getStudentByEmail);
+
 module.exports = router;

@@ -136,7 +136,7 @@ class StudentController {
 
   async registerStudent(req, res) {
     try {
-      const { email, institution, department, enrollmentYear, graduationYear, uid } = req.body;
+      const { email, institution, department, enrollmentYear, graduationYear, uid, metadata } = req.body;
       
       if (!email || !institution) {
         return res.status(400).json({
@@ -145,7 +145,7 @@ class StudentController {
         });
       }
       
-      // Generate student ID using pattern
+      // Generate student ID using blockchain pattern
       const studentId = idGenerator.generateStudentId();
       
       // Create student data object
@@ -154,36 +154,37 @@ class StudentController {
         email,
         firstName: req.body.firstName || '',
         lastName: req.body.lastName || '',
-        additionalInfo: {
-          institution,
-          department: department || '',
-          enrollmentYear: enrollmentYear || new Date().getFullYear(),
-          graduationYear: graduationYear || new Date().getFullYear() + 4,
-          firebaseUid: uid || null,
-          role: 'student' // Add role explicitly
-        },
-        status: 'ACTIVE'
+        institution,
+        department: department || '',
+        enrollmentYear: enrollmentYear || new Date().getFullYear(),
+        graduationYear: graduationYear || new Date().getFullYear() + 4,
+        createdAt: new Date().toISOString(),
+        status: 'ACTIVE',
+        firebaseUid: uid || null,
+        role: 'student'
       };
       
       // Create student using service
       const student = await studentService.createStudent(studentData);
       
-      // Link student to Firebase user if UID is provided
-      if (uid) {
-        try {
-          // Update Firebase user with student information
-          await authService.updateUser(uid, {
-            customClaims: { 
-              studentId: student.studentId,
-              role: 'student'
-            }
-          });
-          logger.info(`Associated student ${studentId} with user ${uid}`);
-        } catch (error) {
-          logger.error(`Failed to update Firebase user: ${error.message}`);
-          // Continue even if Firebase update fails
+      // Record to blockchain
+      await blockchainService.createTransaction({
+        type: 'STUDENT_REGISTRATION',
+        data: {
+          ...studentData,
+          // Include only non-sensitive data
+          firebaseUid: undefined
+        },
+        // Use email as a public identifier
+        from: email,
+        to: 'SYSTEM',
+        metadata: {
+          role: 'student',
+          ...(metadata || {})
         }
-      }
+      });
+      
+      logger.info(`Student registered and recorded in blockchain: ${studentId}`);
       
       return res.status(201).json({
         success: true,

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useNft } from "../hooks/useNft";
+import StudentInfo from '../components/StudentInfo';
 
 // Animation variants remain unchanged
 const containerVariants = {
@@ -166,7 +167,10 @@ const HomePage = () => {
               <p className="text-slate-600 mb-4">
                 Welcome back, {currentUser?.displayName || currentUser?.email}!
               </p>
-              
+
+              {/* Add student info component */}
+              {isAuthenticated && <StudentInfo currentUser={currentUser} />}
+
               {/* Display any errors */}
               {renderError()}
               
