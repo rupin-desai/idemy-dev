@@ -6,7 +6,7 @@ import { useAuth } from '../hooks/useAuth';
 export const NftContext = createContext();
 
 export const NftProvider = ({ children }) => {
-  const { currentUser, isAuthenticated } = useAuth();
+  const { currentUser, isAuthenticated, profileLoaded } = useAuth();
   const [userNfts, setUserNfts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -15,9 +15,16 @@ export const NftProvider = ({ children }) => {
   // Clear error
   const clearError = () => setError(null);
 
-  const fetchUserNfts = useCallback(async () => {
-    // Don't fetch if not authenticated
+  const fetchUserNfts = useCallback(async (force = false) => {
+    // Don't fetch if not authenticated or no forced fetch
     if (!isAuthenticated || !currentUser) {
+      setUserNfts([]);
+      setFetchAttempted(true);
+      return;
+    }
+    
+    // Don't re-fetch if already attempted, unless forced
+    if (fetchAttempted && !force) {
       return;
     }
     
@@ -51,9 +58,10 @@ export const NftProvider = ({ children }) => {
         setUserNfts(result.nfts || []);
       }
     } catch (err) {
+      console.error('Failed to fetch NFTs:', err);
       setError({
         type: 'unknown',
-        message: 'An unexpected error occurred'
+        message: 'An unexpected error occurred while fetching NFTs'
       });
       setUserNfts([]);
     } finally {
@@ -61,16 +69,14 @@ export const NftProvider = ({ children }) => {
       setLoading(false);
     }
   }, [isAuthenticated, currentUser]);
-
-  // Fetch NFTs when user is authenticated
+  
+  // Key improvement: react to profileLoaded changes from auth context
   useEffect(() => {
-    if (isAuthenticated && currentUser) {
-      fetchUserNfts();
-    } else {
-      setUserNfts([]);
-      setFetchAttempted(false);
+    if (profileLoaded && isAuthenticated && currentUser) {
+      console.log('Profile loaded, fetching NFTs');
+      fetchUserNfts(true); // Force fetch when profile is loaded
     }
-  }, [isAuthenticated, currentUser, fetchUserNfts]);
+  }, [profileLoaded, isAuthenticated, currentUser, fetchUserNfts]);
 
   // Other methods with improved error handling
   const verifyUserNft = async (tokenId) => {

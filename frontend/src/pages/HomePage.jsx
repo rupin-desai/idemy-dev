@@ -40,11 +40,29 @@ const itemVariants = {
 };
 
 const HomePage = () => {
-  const { isAuthenticated, currentUser } = useAuth();
-  const { userNfts, loading, error, clearError, fetchUserNfts, verifyUserNft } = useNft();
+  const { isAuthenticated, currentUser, loading: authLoading, profileLoaded } = useAuth();
+  const { 
+    userNfts, 
+    loading: nftLoading, 
+    error, 
+    clearError, 
+    fetchUserNfts, 
+    verifyUserNft 
+  } = useNft();
   const navigate = useNavigate();
   const [verifying, setVerifying] = useState(null);
   const [verificationError, setVerificationError] = useState(null);
+  
+  // Force refresh NFTs when profile is loaded
+  useEffect(() => {
+    if (isAuthenticated && currentUser && profileLoaded) {
+      console.log("Profile loaded in HomePage, fetching NFTs");
+      fetchUserNfts(true); // Force fetch
+    }
+  }, [isAuthenticated, currentUser, profileLoaded, fetchUserNfts]);
+
+  // Combined loading state - consider profile loading too
+  const isLoading = authLoading || nftLoading || (isAuthenticated && !profileLoaded);
 
   const handleVerifyNft = async (tokenId) => {
     try {
@@ -143,7 +161,12 @@ const HomePage = () => {
       className="container mx-auto px-4 py-12"
     >
       <div className="max-w-3xl mx-auto">
-        {isAuthenticated ? (
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-12">
+            <RefreshCcw className="animate-spin h-10 w-10 text-indigo-600 mb-4" />
+            <p className="text-slate-600">Loading your profile data...</p>
+          </div>
+        ) : isAuthenticated ? (
           <>
             <motion.div
               variants={itemVariants}
@@ -178,7 +201,7 @@ const HomePage = () => {
               <div className="border-t pt-4 mt-4">
                 <h2 className="font-semibold text-lg mb-2">Your Digital ID Cards</h2>
                 
-                {loading ? (
+                {nftLoading ? ( // Change from loading to nftLoading
                   <div className="flex flex-col items-center justify-center py-8">
                     <RefreshCcw className="animate-spin h-8 w-8 text-indigo-600 mb-3" />
                     <p className="text-slate-500">Loading your ID cards...</p>

@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isStudent, setIsStudent] = useState(false); // Add this state
+  const [profileLoaded, setProfileLoaded] = useState(false); // Add profileLoaded state
 
   // Check if token exists and load user on mount
   useEffect(() => {
@@ -21,9 +22,10 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Update getUserProfile to properly set student status
+  // Update getUserProfile to be more robust
   const getUserProfile = async () => {
     try {
+      setLoading(true);
       const result = await authApi.getProfile();
       
       // Check if user has student information
@@ -49,6 +51,7 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(result.user);
       setIsStudent(isStudentUser);
       setIsAuthenticated(true);
+      setProfileLoaded(true); // Mark profile as loaded
     } catch (err) {
       authApi.setAuthToken(null);
       setError(err.response?.data?.message || 'Failed to load user profile');
@@ -131,11 +134,12 @@ export const AuthProvider = ({ children }) => {
         isStudent, // Add this to the context
         loading,
         error,
+        profileLoaded, // Add this to context
         register,
         login,
         logout,
         updateProfile,
-        getUserProfile
+        getUserProfile // Make this available to components
       }}
     >
       {children}

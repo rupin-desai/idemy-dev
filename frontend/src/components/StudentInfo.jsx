@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { GraduationCap, Loader } from 'lucide-react';
 import axios from 'axios';
+import { useAuth } from '../hooks/useAuth'; 
 
 const StudentInfo = ({ currentUser }) => {
   const [blockchainInfo, setBlockchainInfo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { profileLoaded } = useAuth(); // Get profileLoaded state from auth context
 
   useEffect(() => {
     const fetchBlockchainStudentInfo = async () => {
@@ -31,8 +33,27 @@ const StudentInfo = ({ currentUser }) => {
       }
     };
     
-    fetchBlockchainStudentInfo();
-  }, [currentUser?.email]);
+    // Only fetch when profile is fully loaded
+    if (currentUser?.email && profileLoaded) {
+      fetchBlockchainStudentInfo();
+    }
+  }, [currentUser?.email, profileLoaded]);
+  
+  // Return skeleton UI while loading or null if no data
+  if (loading) {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mt-4 p-4 bg-indigo-50 rounded-lg border border-indigo-100"
+      >
+        <h3 className="font-medium text-lg flex items-center text-indigo-700">
+          <Loader size={20} className="animate-spin mr-2" />
+          Loading Student Information...
+        </h3>
+      </motion.div>
+    );
+  }
   
   if (!currentUser?.student?.studentId && !blockchainInfo) return null;
   

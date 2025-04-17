@@ -41,7 +41,7 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const { login } = useAuth();
+  const { login, getUserProfile } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -65,12 +65,16 @@ const LoginPage = () => {
     setError("");
 
     try {
-      // Replace the mock implementation with actual API call
+      // First login to get the token
       await login(email, password);
+      
+      // Then explicitly get the full user profile
+      await getUserProfile();
+      
+      // Navigate to homepage
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Invalid credentials. Please try again.");
-    } finally {
       setIsSubmitting(false);
     }
   };

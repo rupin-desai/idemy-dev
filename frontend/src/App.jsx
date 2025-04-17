@@ -18,6 +18,7 @@ import NftDetailsPage from "./pages/NftDetailsPage";
 import CreateIdPage from "./pages/CreateIdPage";
 import StudentRegistrationPage from "./pages/StudentRegistrationPage";
 import { useAuth } from "./hooks/useAuth";
+import { useNft } from "./hooks/useNft";
 
 // 1. Create a splash screen component
 const SplashScreen = () => (
@@ -39,14 +40,30 @@ const SplashScreen = () => (
 
 // 2. Create a separate component for the routes that uses useAuth
 const AppRoutes = () => {
-  const { isAuthenticated, currentUser, isStudent, loading } = useAuth();
-
-  // Wait for auth to be checked before determining route access
-  if (loading) {
+  const { 
+    isAuthenticated, 
+    currentUser, 
+    isStudent, 
+    loading: authLoading, 
+    profileLoaded 
+  } = useAuth();
+  const { fetchUserNfts } = useNft();
+  
+  // Wait for auth to be fully checked and profile loaded
+  const isLoading = authLoading || (isAuthenticated && !profileLoaded);
+  
+  // Force refresh data when auth state is ready
+  useEffect(() => {
+    if (isAuthenticated && profileLoaded && currentUser) {
+      fetchUserNfts(true); // Always force fetch on route change
+    }
+  }, [isAuthenticated, profileLoaded, currentUser, fetchUserNfts]);
+  
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <Loader className="animate-spin h-8 w-8 text-indigo-600" />
-        <span className="ml-2">Loading...</span>
+        <span className="ml-2">Loading your profile...</span>
       </div>
     );
   }
