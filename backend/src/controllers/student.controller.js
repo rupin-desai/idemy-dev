@@ -1,7 +1,9 @@
 const studentService = require("../services/student.service");
-const authService = require('../services/auth.service');
+const authService = require("../services/auth.service");
 const idGenerator = require("../utils/idGenerator.utils");
 const logger = require("../utils/logger.utils");
+const blockchainService = require("../services/blockchain.service"); // Add this import!
+const transactionService = require("../services/transaction.service"); // Add this
 
 class StudentController {
   async createStudent(req, res) {
@@ -136,66 +138,84 @@ class StudentController {
 
   async registerStudent(req, res) {
     try {
-      const { email, institution, department, enrollmentYear, graduationYear, uid, metadata } = req.body;
-      
+      const {
+        email,
+        institution,
+        department,
+        enrollmentYear,
+        graduationYear,
+        uid,
+        metadata,
+      } = req.body;
+
       if (!email || !institution) {
         return res.status(400).json({
           success: false,
-          message: 'Email and institution are required'
+          message: "Email and institution are required",
         });
       }
-      
-      // Generate student ID using blockchain pattern
-      const studentId = idGenerator.generateStudentId();
-      
+
+      // Generate student ID
+      const studentId = `STU${Math.random()
+        .toString(36)
+        .substring(2, 9)
+        .toUpperCase()}`;
+
       // Create student data object
       const studentData = {
         studentId,
         email,
-        firstName: req.body.firstName || '',
-        lastName: req.body.lastName || '',
+        firstName: req.body.firstName || "",
+        lastName: req.body.lastName || "",
         institution,
-        department: department || '',
+        department: department || "",
         enrollmentYear: enrollmentYear || new Date().getFullYear(),
         graduationYear: graduationYear || new Date().getFullYear() + 4,
         createdAt: new Date().toISOString(),
-        status: 'ACTIVE',
+        status: "ACTIVE",
         firebaseUid: uid || null,
-        role: 'student'
+        role: "student",
       };
-      
+
       // Create student using service
       const student = await studentService.createStudent(studentData);
-      
-      // Record to blockchain
-      await blockchainService.createTransaction({
-        type: 'STUDENT_REGISTRATION',
-        data: {
-          ...studentData,
-          // Include only non-sensitive data
-          firebaseUid: undefined
-        },
-        // Use email as a public identifier
-        from: email,
-        to: 'SYSTEM',
-        metadata: {
+
+      // Create a blockchain transaction using transactionService instead of blockchainService
+      const transaction = transactionService.createTransaction(
+        email, // Use email as sender
+        'SYSTEM_STUDENT_REGISTRY',
+        0, // Zero amount for student registration
+        {
+          type: 'STUDENT_REGISTRATION',
           role: 'student',
+          action: 'CREATE',
+          studentId: studentId,
+          studentData: {
+            ...studentData,
+            firebaseUid: undefined // Exclude sensitive data
+          },
           ...(metadata || {})
         }
-      });
+      );
       
-      logger.info(`Student registered and recorded in blockchain: ${studentId}`);
-      
+      // Add transaction to blockchain
+      transactionService.addTransaction(transaction);
+
+      logger.info(
+        `Student registered and recorded in blockchain: ${studentId}`
+      );
+
       return res.status(201).json({
         success: true,
         student,
-        message: 'Student registered successfully'
+        blockchainTransaction: transaction.id,
+        message: "Student registered successfully",
       });
     } catch (error) {
       logger.error(`Student registration error: ${error.message}`);
       return res.status(500).json({
         success: false,
-        message: error.message
+        message: error.message,
       });
     }
   }
