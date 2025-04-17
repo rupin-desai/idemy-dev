@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useStudents } from '../hooks/useStudents';
+import { Users, PlusCircle, Eye, Edit, Trash, History, AlertCircle, RefreshCw } from 'lucide-react';
+import { pageVariants, buttonVariants, tableRowVariants, cardVariants, iconSizes } from '../utils/animations';
+import Alert from '../components/UI/Alert';
+import Button from '../components/UI/Button';
 
 const StudentsListPage = () => {
   const { students, loading, error, fetchAllStudents, deleteStudent } = useStudents();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [studentToDelete, setStudentToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     fetchAllStudents();
@@ -17,48 +23,85 @@ const StudentsListPage = () => {
   };
 
   const confirmDelete = async () => {
-    if (studentToDelete) {
-      try {
-        await deleteStudent(studentToDelete.studentId);
-        setShowDeleteModal(false);
-        setStudentToDelete(null);
-      } catch (err) {
-        console.error('Delete failed:', err);
-      }
+    if (!studentToDelete) return;
+    
+    setIsDeleting(true);
+    try {
+      await deleteStudent(studentToDelete.studentId);
+      setShowDeleteModal(false);
+      setStudentToDelete(null);
+    } catch (error) {
+      console.error('Error deleting student:', error);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
   if (loading && students.length === 0) {
-    return <div className="text-center py-10">Loading students data...</div>;
+    return (
+      <div className="flex justify-center items-center py-20">
+        <RefreshCw className="animate-spin text-blue-600 mr-2" size={iconSizes.lg} />
+        <span className="text-lg">Loading students data...</span>
+      </div>
+    );
   }
 
   return (
-    <div>
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+    >
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Students Management</h1>
-        <Link
-          to="/students/create"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
-        >
-          Add New Student
+        <h1 className="text-3xl font-bold flex items-center">
+          <Users size={iconSizes.lg} className="mr-3 text-blue-600" />
+          Students Management
+        </h1>
+        <Link to="/students/create">
+          <motion.button
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center"
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+          >
+            <PlusCircle size={iconSizes.sm} className="mr-2" />
+            Add New Student
+          </motion.button>
         </Link>
       </div>
 
       {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
-          <p>{error}</p>
-          <button
-            className="mt-2 bg-red-500 hover:bg-red-700 text-white py-1 px-3 rounded"
-            onClick={fetchAllStudents}
-          >
-            Retry
-          </button>
-        </div>
+        <Alert 
+          type="error" 
+          message={error} 
+          onClose={() => {}} 
+          show={true}
+          details={
+            <button
+              className="mt-2 bg-red-500 hover:bg-red-700 text-white py-1 px-3 rounded"
+              onClick={fetchAllStudents}
+            >
+              Retry
+            </button>
+          }
+        />
       )}
 
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <div className="px-6 py-4 border-b">
+      <motion.div 
+        className="bg-white shadow-md rounded-lg overflow-hidden"
+        variants={cardVariants}
+      >
+        <div className="px-6 py-4 border-b flex justify-between items-center">
           <h2 className="text-xl font-semibold">All Students ({students.length})</h2>
+          <Button
+            onClick={fetchAllStudents}
+            color="primary"
+            size="sm"
+            icon={<RefreshCw size={iconSizes.sm} />}
+          >
+            Refresh
+          </Button>
         </div>
 
         {students.length > 0 ? (
@@ -75,7 +118,11 @@ const StudentsListPage = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {students.map((student) => (
-                  <tr key={student.studentId}>
+                  <motion.tr 
+                    key={student.studentId}
+                    className="hover:bg-gray-50 transition-colors"
+                    variants={tableRowVariants}
+                  >
                     <td className="px-6 py-4 whitespace-nowrap font-mono">
                       {student.studentId}
                     </td>
@@ -89,73 +136,95 @@ const StudentsListPage = () => {
                       {new Date(student.updatedAt).toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex space-x-2">
+                      <div className="flex space-x-3">
                         <Link
                           to={`/students/${student.studentId}`}
-                          className="text-blue-600 hover:text-blue-900"
+                          className="text-blue-600 hover:text-blue-900 flex items-center"
                         >
+                          <Eye size={iconSizes.sm} className="mr-1" />
                           View
                         </Link>
                         <Link
                           to={`/students/${student.studentId}/edit`}
-                          className="text-green-600 hover:text-green-900"
+                          className="text-green-600 hover:text-green-900 flex items-center"
                         >
+                          <Edit size={iconSizes.sm} className="mr-1" />
                           Edit
                         </Link>
                         <button
                           onClick={() => handleDeleteClick(student)}
-                          className="text-red-600 hover:text-red-900"
+                          className="text-red-600 hover:text-red-900 flex items-center"
                         >
+                          <Trash size={iconSizes.sm} className="mr-1" />
                           Delete
                         </button>
                         <Link
                           to={`/students/${student.studentId}/history`}
-                          className="text-purple-600 hover:text-purple-900"
+                          className="text-purple-600 hover:text-purple-900 flex items-center"
                         >
+                          <History size={iconSizes.sm} className="mr-1" />
                           History
                         </Link>
                       </div>
                     </td>
-                  </tr>
+                  </motion.tr>
                 ))}
               </tbody>
             </table>
           </div>
         ) : (
-          <div className="p-6 text-gray-500">No students found</div>
+          <div className="p-6 text-gray-500 flex items-center justify-center">
+            <AlertCircle size={iconSizes.md} className="mr-2 text-gray-400" />
+            No students found
+          </div>
         )}
-      </div>
+      </motion.div>
 
       {/* Delete Confirmation Modal */}
-      {showDeleteModal && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Confirm Deletion</h3>
-            <p className="text-sm text-gray-500 mb-4">
-              Are you sure you want to delete student{' '}
-              <span className="font-bold">
-                {studentToDelete?.firstName} {studentToDelete?.lastName}
-              </span>{' '}
-              ({studentToDelete?.studentId})? This action cannot be undone.
-            </p>
-            <div className="flex justify-end space-x-3">
-              <button
-                onClick={() => setShowDeleteModal(false)}
-                className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={confirmDelete}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+      <AnimatePresence>
+        {showDeleteModal && (
+          <motion.div 
+            className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div 
+              className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+            >
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Confirm Deletion</h3>
+              <p className="text-sm text-gray-500 mb-4">
+                Are you sure you want to delete student{' '}
+                <span className="font-bold">
+                  {studentToDelete?.firstName} {studentToDelete?.lastName}
+                </span>{' '}
+                ({studentToDelete?.studentId})? This action cannot be undone.
+              </p>
+              <div className="flex justify-end space-x-3">
+                <Button 
+                  onClick={() => setShowDeleteModal(false)}
+                  color="secondary"
+                  disabled={isDeleting}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={confirmDelete}
+                  color="danger"
+                  loading={isDeleting}
+                  icon={<Trash size={iconSizes.sm} />}
+                >
+                  Delete
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 

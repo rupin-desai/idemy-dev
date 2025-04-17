@@ -1,7 +1,12 @@
 // src/pages/NFTListPage.jsx
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useNFTs } from "../hooks/useNFTs";
+import { Shield, RefreshCw, AlertCircle, Eye, CheckCircle } from "lucide-react";
+import { pageVariants, cardVariants, tableRowVariants, iconSizes } from "../utils/animations";
+import Button from "../components/UI/Button";
+import Alert from "../components/UI/Alert";
 
 const NFTListPage = () => {
   const { nfts, loading, error, fetchAllNFTs } = useNFTs();
@@ -11,28 +16,57 @@ const NFTListPage = () => {
   }, [fetchAllNFTs]);
 
   if (loading && nfts.length === 0) {
-    return <div className="text-center py-10">Loading NFTs data...</div>;
+    return (
+      <div className="flex justify-center items-center py-20">
+        <RefreshCw className="animate-spin text-blue-600 mr-2" size={iconSizes.lg} />
+        <span className="text-lg">Loading NFTs data...</span>
+      </div>
+    );
   }
 
   return (
-    <div>
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+    >
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">NFT Management</h1>
+        <h1 className="text-3xl font-bold flex items-center">
+          <Shield size={iconSizes.lg} className="mr-3 text-blue-600" />
+          NFT Management
+          <img src="/logo_icon_blue.png" alt="IDEMY" className="h-8 ml-3" />
+        </h1>
+        <Button
+          onClick={fetchAllNFTs}
+          color="primary"
+          icon={<RefreshCw size={iconSizes.sm} />}
+        >
+          Refresh NFTs
+        </Button>
       </div>
 
       {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
-          <p>{error}</p>
-          <button
-            className="mt-2 bg-red-500 hover:bg-red-700 text-white py-1 px-3 rounded"
-            onClick={fetchAllNFTs}
-          >
-            Retry
-          </button>
-        </div>
+        <Alert 
+          type="error" 
+          message={error} 
+          onClose={() => {}} 
+          show={true}
+          details={
+            <button
+              className="mt-2 bg-red-500 hover:bg-red-700 text-white py-1 px-3 rounded"
+              onClick={fetchAllNFTs}
+            >
+              Retry
+            </button>
+          }
+        />
       )}
 
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+      <motion.div 
+        className="bg-white shadow-md rounded-lg overflow-hidden"
+        variants={cardVariants}
+      >
         <div className="px-6 py-4 border-b">
           <h2 className="text-xl font-semibold">All NFTs ({nfts.length})</h2>
         </div>
@@ -64,7 +98,11 @@ const NFTListPage = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {nfts.map((nft) => (
-                  <tr key={nft.tokenId}>
+                  <motion.tr 
+                    key={nft.tokenId}
+                    className="hover:bg-gray-50 transition-colors"
+                    variants={tableRowVariants}
+                  >
                     <td className="px-6 py-4 whitespace-nowrap font-mono">
                       {nft.tokenId}
                     </td>
@@ -96,31 +134,36 @@ const NFTListPage = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex space-x-2">
+                      <div className="flex space-x-3">
                         <Link
                           to={`/nfts/${nft.tokenId}`}
-                          className="text-blue-600 hover:text-blue-900"
+                          className="text-blue-600 hover:text-blue-900 flex items-center"
                         >
+                          <Eye size={iconSizes.sm} className="mr-1" />
                           View
                         </Link>
                         <Link
                           to={`/nfts/${nft.tokenId}/verify`}
-                          className="text-green-600 hover:text-green-900"
+                          className="text-green-600 hover:text-green-900 flex items-center"
                         >
+                          <CheckCircle size={iconSizes.sm} className="mr-1" />
                           Verify
                         </Link>
                       </div>
                     </td>
-                  </tr>
+                  </motion.tr>
                 ))}
               </tbody>
             </table>
           </div>
         ) : (
-          <div className="p-6 text-gray-500">No NFTs found</div>
+          <div className="p-6 text-gray-500 flex items-center justify-center">
+            <AlertCircle size={iconSizes.md} className="mr-2 text-gray-400" />
+            No NFTs found
+          </div>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

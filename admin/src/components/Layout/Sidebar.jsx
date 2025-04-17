@@ -73,16 +73,14 @@ const Sidebar = () => {
       initial="initial"
       animate="animate"
     >
-      <motion.h1
-        className="text-2xl font-bold mb-8 flex items-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-      >
-        <Database className="mr-2" size={iconSizes.lg} />
-        Blockchain Admin
-      </motion.h1>
-
+      <div className="flex justify-center mb-8">
+        <img 
+          src="/logo_full_white.png" 
+          alt="IDEMY" 
+          className="h-10" 
+        />
+      </div>
+      
       <nav>
         <motion.ul>
           {navItems.map((item) => (
