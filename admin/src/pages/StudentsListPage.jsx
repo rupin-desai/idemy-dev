@@ -57,6 +57,7 @@ const StudentsListPage = () => {
         <h1 className="text-3xl font-bold flex items-center">
           <Users size={iconSizes.lg} className="mr-3 text-blue-600" />
           Students Management
+          <img src="/logo_icon_blue.png" alt="IDEMY" className="h-8 ml-3" />
         </h1>
         <Link to="/students/create">
           <motion.button
@@ -93,7 +94,10 @@ const StudentsListPage = () => {
         variants={cardVariants}
       >
         <div className="px-6 py-4 border-b flex justify-between items-center">
-          <h2 className="text-xl font-semibold">All Students ({students.length})</h2>
+          <div className="flex items-center">
+            <img src="/logo_icon_blue.png" alt="IDEMY" className="h-6 mr-3" />
+            <h2 className="text-xl font-semibold">All Students ({students.length})</h2>
+          </div>
           <Button
             onClick={fetchAllStudents}
             color="primary"
@@ -195,7 +199,10 @@ const StudentsListPage = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
             >
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Confirm Deletion</h3>
+              <div className="flex items-center mb-4">
+                <img src="/logo_icon_blue.png" alt="IDEMY" className="h-6 mr-3" />
+                <h3 className="text-lg font-medium text-gray-900">Confirm Deletion</h3>
+              </div>
               <p className="text-sm text-gray-500 mb-4">
                 Are you sure you want to delete student{' '}
                 <span className="font-bold">

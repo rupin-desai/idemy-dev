@@ -1,12 +1,14 @@
 // src/components/Layout/Header.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Save, CheckCircle, AlertCircle, RefreshCw, Database } from 'lucide-react';
+import { Save, CheckCircle, AlertCircle, RefreshCw, Database, LogOut, User } from 'lucide-react';
 import { useBlockchain } from '../../hooks/useBlockchain';
+import { useAuth } from '../../hooks/useAuth';
 import { buttonVariants, iconSizes } from '../../utils/animations';
 
 const Header = () => {
   const { saveBlockchain, validateBlockchain } = useBlockchain();
+  const { currentUser, logout } = useAuth();
   const [savingStatus, setSavingStatus] = useState('');
   const [validationStatus, setValidationStatus] = useState('');
   const [isValidating, setIsValidating] = useState(false);
@@ -67,6 +69,22 @@ const Header = () => {
           </h2>
         </div>
         
+        <div className="flex items-center">
+          <div className="mr-4 text-sm text-gray-600 hidden md:flex items-center">
+            <User size={iconSizes.sm} className="mr-1" />
+            {currentUser?.email || 'Admin'}
+          </div>
+          
+          <motion.button
+            onClick={logout}
+            className="flex items-center text-gray-700 hover:text-red-600 transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <LogOut size={iconSizes.sm} className="mr-1" />
+            <span className="hidden md:inline">Logout</span>
+          </motion.button>
+        </div>
       </div>
     </header>
   );
