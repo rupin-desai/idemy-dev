@@ -1,7 +1,7 @@
 // src/components/Layout/Header.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Save, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
+import { Save, CheckCircle, AlertCircle, RefreshCw, Database } from 'lucide-react';
 import { useBlockchain } from '../../hooks/useBlockchain';
 import { buttonVariants, iconSizes } from '../../utils/animations';
 
@@ -49,7 +49,10 @@ const Header = () => {
   return (
     <header className="bg-white shadow-md p-4 sticky top-0 z-10">
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold text-gray-800">Blockchain Control Panel</h2>
+        <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+          <Database size={iconSizes.md} className="mr-2 text-blue-600" />
+          Blockchain Control Panel
+        </h2>
         <div className="flex space-x-4">
           <motion.button 
             onClick={handleValidate}

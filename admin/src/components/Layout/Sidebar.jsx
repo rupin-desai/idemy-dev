@@ -5,9 +5,7 @@ import {
   LayoutDashboard,
   Database,
   FileText,
-  PlusCircle,
   Pickaxe,
-  Wallet,
   Rows,
   Users,
   Shield,
@@ -34,16 +32,10 @@ const Sidebar = () => {
       icon: <FileText size={iconSizes.md} />,
     },
     {
-      path: "/create-transaction",
-      label: "Create Transaction",
-      icon: <PlusCircle size={iconSizes.md} />,
-    },
-    {
       path: "/mine",
       label: "Mine Block",
       icon: <Pickaxe size={iconSizes.md} />,
     },
-    { path: "/wallet", label: "Wallet", icon: <Wallet size={iconSizes.md} /> },
     {
       path: "/student-transactions",
       label: "Student Transactions",
