@@ -1,28 +1,28 @@
-// src/api/blockchain.api.js
-import axios from 'axios';
-import { getAuthToken } from './auth.api';
+import axios from "axios";
+import { getAuthToken } from "./auth.api";
 
-const API_URL = 'http://localhost:3000/api/blockchain';
+const API_URL = "http://localhost:3000/api/blockchain";
 
 // Create axios instance with auth headers
 const axiosWithAuth = () => {
   const token = getAuthToken();
   return axios.create({
     headers: {
-      'Authorization': token ? `Bearer ${token}` : '',
-      'Content-Type': 'application/json',
-    }
+      Authorization: token ? `Bearer ${token}` : "",
+      "Content-Type": "application/json",
+    },
   });
 };
 
 // Helper function to handle API errors
 const handleApiError = (error, action) => {
   console.error(`Blockchain API error (${action}):`, error);
-  const errorMessage = error.response?.data?.message || error.message || 'Unknown error';
+  const errorMessage =
+    error.response?.data?.message || error.message || "Unknown error";
   return {
     message: errorMessage,
     status: error.response?.status || 500,
-    action
+    action,
   };
 };
 
@@ -32,7 +32,7 @@ export const getBlockchainData = async () => {
     const response = await axiosWithAuth().get(API_URL);
     return response.data;
   } catch (error) {
-    const errorData = handleApiError(error, 'get-blockchain');
+    const errorData = handleApiError(error, "get-blockchain");
     throw errorData;
   }
 };
@@ -43,7 +43,7 @@ export const getBlockchainInfo = async () => {
     const response = await axiosWithAuth().get(`${API_URL}/info`);
     return response.data;
   } catch (error) {
-    const errorData = handleApiError(error, 'get-blockchain-info');
+    const errorData = handleApiError(error, "get-blockchain-info");
     throw errorData;
   }
 };
@@ -51,100 +51,95 @@ export const getBlockchainInfo = async () => {
 // Get user transactions by student ID
 export const getUserTransactionsByStudentId = async (studentId) => {
   try {
-    const response = await axiosWithAuth().get(`http://localhost:3000/api/transactions/student/${studentId}`);
+    const response = await axiosWithAuth().get(
+      `http://localhost:3000/api/transactions/student/${studentId}`
+    );
     return response.data;
   } catch (error) {
     // If the endpoint doesn't exist, try a different approach
     try {
       // Get all blockchain data and filter client-side
       const allData = await getBlockchainData();
-      
+
       // Filter transactions for this student
       const studentTransactions = [];
-      
+
       if (allData && allData.chain) {
-        allData.chain.forEach(block => {
-          if (block.transactions && block.transactions.length > 0) {
-            block.transactions.forEach(tx => {
-              if (
-                (tx.metadata && tx.metadata.studentId === studentId) ||
-                tx.fromAddress === studentId ||
-                tx.toAddress === studentId
-              ) {
-                studentTransactions.push({
-                  ...tx,
-                  blockIndex: block.index,
-                  confirmed: true
-                });
-              }
-            });
-          }
+        allData.chain.forEach((block) => {
+          block.transactions.forEach((tx) => {
+            if (
+              (tx.metadata &&
+                (tx.metadata.studentId === studentId ||
+                  (tx.metadata.studentData &&
+                    tx.metadata.studentData.studentId === studentId))) ||
+              tx.fromAddress === studentId ||
+              tx.toAddress === studentId
+            ) {
+              studentTransactions.push({
+                ...tx,
+                blockIndex: block.index,
+                confirmed: true,
+              });
+            }
+          });
         });
       }
-      
+
       return studentTransactions;
     } catch (nestedError) {
-      const errorData = handleApiError(nestedError, 'get-user-transactions');
+      const errorData = handleApiError(
+        nestedError,
+        "get-user-transactions-by-studentId"
+      );
       throw errorData;
     }
   }
 };
 
-// Get student info by email from blockchain
-export const getStudentByEmail = async (email) => {
+// Get user transactions by email
+export const getUserTransactionsByEmail = async (email) => {
   try {
-    const response = await axiosWithAuth().get(`${API_URL}/student-by-email/${encodeURIComponent(email)}`);
+    const response = await axiosWithAuth().get(
+      `http://localhost:3000/api/transactions/user?email=${encodeURIComponent(
+        email
+      )}`
+    );
     return response.data;
   } catch (error) {
-    const errorData = handleApiError(error, 'get-student-by-email');
-    throw errorData;
-  }
-};
-
-// Get user transactions by email or student ID
-export const getUserTransactionsByEmailOrId = async (email, studentId = null) => {
-  try {
-    // Construct query params
-    const params = new URLSearchParams();
-    if (email) params.append('email', email);
-    if (studentId) params.append('studentId', studentId);
-    
-    // API endpoint using query parameters
-    const response = await axiosWithAuth().get(`${API_URL}/transactions/user?${params.toString()}`);
-    return response.data;
-  } catch (error) {
-    // Fallback to client-side filtering
+    // If the endpoint doesn't exist, try a different approach
     try {
+      // Get all blockchain data and filter client-side
       const allData = await getBlockchainData();
-      
-      // Filter transactions for this user
+
+      // Filter transactions for this email
       const userTransactions = [];
-      
+
       if (allData && allData.chain) {
-        allData.chain.forEach(block => {
-          if (block.transactions && block.transactions.length > 0) {
-            block.transactions.forEach(tx => {
-              if (
-                (tx.metadata && 
-                 ((email && tx.metadata.email === email) || 
-                  (studentId && tx.metadata.studentId === studentId))) ||
-                (email && (tx.fromAddress === email || tx.toAddress === email)) ||
-                (studentId && (tx.fromAddress === studentId || tx.toAddress === studentId))
-              ) {
-                userTransactions.push({
-                  ...tx,
-                  blockIndex: block.index,
-                  confirmed: true
-                });
-              }
-            });
-          }
+        allData.chain.forEach((block) => {
+          block.transactions.forEach((tx) => {
+            if (
+              (tx.metadata &&
+                ((tx.metadata.studentData &&
+                  tx.metadata.studentData.email === email) ||
+                  tx.metadata.email === email)) ||
+              (email && (tx.fromAddress === email || tx.toAddress === email))
+            ) {
+              userTransactions.push({
+                ...tx,
+                blockIndex: block.index,
+                confirmed: true,
+              });
+            }
+          });
         });
       }
-      
+
       return userTransactions;
     } catch (nestedError) {
-      const errorData = handleApiError(nestedError, 'get-user-transactions-by-email');
+      const errorData = handleApiError(
+        nestedError,
+        "get-user-transactions-by-email"
+      );
       throw errorData;
     }
   }
@@ -153,23 +148,51 @@ export const getUserTransactionsByEmailOrId = async (email, studentId = null) =>
 // Mine new block with pending transactions
 export const mineTransactions = async (rewardAddress, metadata = {}) => {
   try {
-    const response = await axiosWithAuth().post(`${API_URL}/mine`, { 
-      rewardAddress,
-      metadata
+    // Fix: Change parameter name from rewardAddress to miningRewardAddress
+    const response = await axiosWithAuth().post(`${API_URL}/mine`, {
+      miningRewardAddress: rewardAddress, // This parameter name needs to match what the backend expects
+      metadata,
     });
     return response.data;
   } catch (error) {
-    const errorData = handleApiError(error, 'mine-transactions');
+    const errorData = handleApiError(error, "mine-transactions");
+    throw errorData;
+  }
+};
+
+// Save blockchain state
+export const saveBlockchain = async () => {
+  try {
+    const response = await axiosWithAuth().post(`${API_URL}/save`);
+    return response.data;
+  } catch (error) {
+    const errorData = handleApiError(error, "save-blockchain");
+    throw errorData;
+  }
+};
+
+// Mine student transactions
+export const mineStudentTransactions = async () => {
+  try {
+    const response = await axiosWithAuth().post(
+      `${API_URL}/mine-student-transactions`
+    );
+    return response.data;
+  } catch (error) {
+    const errorData = handleApiError(error, "mine-student-transactions");
     throw errorData;
   }
 };
 
 // Default export combining all functions for compatibility
-export default {
+const blockchainApi = {
   getBlockchainData,
   getBlockchainInfo,
   getUserTransactionsByStudentId,
-  getStudentByEmail,
-  getUserTransactionsByEmailOrId,
-  mineTransactions
+  getUserTransactionsByEmail,
+  mineTransactions,
+  saveBlockchain,
+  mineStudentTransactions,
 };
+
+export default blockchainApi;
