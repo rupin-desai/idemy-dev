@@ -34,6 +34,27 @@ const UpdateNftPage = () => {
   const [imageBase64, setImageBase64] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    
+    try {
+      // Try to create a valid date
+      const date = new Date(dateString);
+      
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        console.warn("Invalid date encountered:", dateString);
+        return "";
+      }
+      
+      // Format the date as YYYY-MM-DD for the date input
+      return date.toISOString().split("T")[0];
+    } catch (err) {
+      console.error("Error formatting date:", err);
+      return "";
+    }
+  };
+
   useEffect(() => {
     const loadNft = async () => {
       if (!isAuthenticated && !authLoading) {
@@ -61,7 +82,7 @@ const UpdateNftPage = () => {
             setIdCard(idCardResponse.data);
             setFormData({
               cardType: idCardResponse.data.cardType || "STUDENT",
-              expiryDate: new Date(idCardResponse.data.expiryDate).toISOString().split("T")[0],
+              expiryDate: formatDate(idCardResponse.data.expiryDate),
               status: idCardResponse.data.status || "ACTIVE"
             });
           }
