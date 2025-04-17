@@ -20,6 +20,8 @@ import CreateIdPage from "./pages/CreateIdPage";
 import StudentRegistrationPage from "./pages/StudentRegistrationPage";
 import { useAuth } from "./hooks/useAuth";
 import { useNft } from "./hooks/useNft";
+// Add the import for BlockchainPage
+import BlockchainPage from "./pages/BlockchainPage";
 
 // 1. Create a splash screen component
 const SplashScreen = () => (
@@ -128,6 +130,17 @@ const AppRoutes = () => {
             )
           ) : (
             <Navigate to="/login" replace />
+          )
+        }
+      />
+
+      <Route
+        path="/blockchain"
+        element={
+          isAuthenticated ? (
+            <BlockchainPage />
+          ) : (
+            <Navigate to="/login" state={{ from: "/blockchain" }} />
           )
         }
       />

@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useNft } from "../hooks/useNft";
+import { Eye, Database, ChevronRight } from "lucide-react";
 import StudentInfo from "../components/StudentInfo";
 import LoadingState from "../components/home/LoadingState";
 import WelcomeHeader from "../components/home/WelcomeHeader";
 import ErrorDisplay from "../components/home/ErrorDisplay";
-import NftCardsList from "../components/home/NftCardsList";
+import NftCard from "../components/home/NftCard";
+import FeatureMenu from "../components/UI/FeatureMenu";
 
 // Animation variants
 const containerVariants = {
@@ -33,6 +36,7 @@ const itemVariants = {
 };
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const {
     isAuthenticated,
     currentUser,
@@ -78,17 +82,46 @@ const HomePage = () => {
     }
   };
 
-  // Find the latest NFT (should be the one with the most recent mintedAt date)
-  const getLatestNftId = () => {
+  // Get the latest NFT (with isLatestVersion=true or most recent if not flagged)
+  const getLatestNft = () => {
     if (!userNfts || userNfts.length === 0) return null;
     
-    // Sort NFTs by mintedAt (descending) and find the one marked as latest version
-    const latestNft = userNfts
+    return userNfts
       .sort((a, b) => new Date(b.mintedAt) - new Date(a.mintedAt))
       .find(nft => nft.isLatestVersion === true) || userNfts[0];
-    
-    return latestNft.tokenId;
   };
+
+  // Get latest NFT ID
+  const getLatestNftId = () => {
+    const latestNft = getLatestNft();
+    return latestNft ? latestNft.tokenId : null;
+  };
+
+  const latestNft = getLatestNft();
+  
+  // Define features for the FeatureMenu component
+  const homeFeatures = [
+    {
+      icon: <Eye size={20} className="text-white" />,
+      title: "View Your NFT ID",
+      description: "Access and manage your digital ID cards secured by blockchain",
+      path: userNfts && userNfts.length > 0 ? `/nft/${getLatestNftId()}` : '/create-id',
+      bgColorClass: "bg-gradient-to-br from-indigo-50 to-indigo-100",
+      borderColorClass: "border border-indigo-200",
+      iconBgClass: "bg-indigo-600",
+      arrowColorClass: "text-indigo-600"
+    },
+    {
+      icon: <Database size={20} className="text-white" />,
+      title: "Your Blockchain",
+      description: "Explore blockchain technology securing your digital identity",
+      path: '/blockchain',
+      bgColorClass: "bg-gradient-to-br from-purple-50 to-purple-100",
+      borderColorClass: "border border-purple-200",
+      iconBgClass: "bg-purple-600",
+      arrowColorClass: "text-purple-600"
+    }
+  ];
 
   return (
     <motion.div
@@ -116,7 +149,7 @@ const HomePage = () => {
                 Welcome back, {currentUser?.displayName || currentUser?.email}!
               </p>
 
-              {/* Add student info component */}
+              {/* Student info component */}
               {isAuthenticated && <StudentInfo currentUser={currentUser} />}
 
               {/* Display any errors */}
@@ -126,22 +159,56 @@ const HomePage = () => {
                 fetchUserNfts={fetchUserNfts}
               />
 
-              {/* Display NFTs section */}
-              <div className="border-t pt-4 mt-4">
-                <h2 className="font-semibold text-lg mb-2">
-                  Your Digital ID Cards
-                </h2>
+              {/* Latest ID Card Section */}
+              {!error && !nftLoading && (
+                <div className="border-t pt-4 mt-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <h2 className="font-semibold text-lg">Your Latest ID Card</h2>
+                    {userNfts && userNfts.length > 1 && (
+                      <button 
+                        onClick={() => navigate(`/nft/${getLatestNftId()}`)}
+                        className="flex items-center text-sm text-indigo-600 hover:text-indigo-800 transition-colors"
+                      >
+                        View All Cards <ChevronRight size={16} className="ml-1" />
+                      </button>
+                    )}
+                  </div>
 
-                <NftCardsList
-                  nfts={userNfts}
-                  loading={nftLoading}
-                  error={error}
-                  handleVerify={handleVerifyNft}
-                  verifying={verifying}
-                  verificationError={verificationError}
-                />
-              </div>
+                  {nftLoading ? (
+                    <LoadingState message="Loading your ID cards..." />
+                  ) : userNfts && userNfts.length > 0 && latestNft ? (
+                    <NftCard
+                      nft={latestNft}
+                      handleVerify={handleVerifyNft}
+                      verifying={verifying}
+                      verificationError={verificationError}
+                    />
+                  ) : (
+                    <div className="bg-blue-50 p-6 rounded-md text-center">
+                      <p className="text-slate-700 mb-4">
+                        You don't have any ID cards yet.
+                      </p>
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => navigate("/create-id")}
+                        className="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 transition-colors flex items-center mx-auto"
+                      >
+                        <Eye size={18} className="mr-2" />
+                        Create Your Digital ID
+                      </motion.button>
+                    </div>
+                  )}
+                </div>
+              )}
             </motion.div>
+
+            {/* Use the new FeatureMenu component */}
+            <FeatureMenu 
+              title="Features" 
+              features={homeFeatures}
+              className="mb-6"
+            />
           </>
         ) : (
           // Not logged in view
