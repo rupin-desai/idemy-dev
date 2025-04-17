@@ -1,17 +1,95 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Database, Shield, Lock, Layers, CheckCircle, FileText } from "lucide-react";
+import { ArrowLeft, Database, Shield, Lock, Layers, CheckCircle, AlertCircle, Clock, RefreshCcw, FileText } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
+import * as blockchainApi from "../api/blockchain.api.js";
 
 const BlockchainPage = () => {
   const navigate = useNavigate();
   const { isAuthenticated, currentUser } = useAuth();
-  const [blockData, setBlockData] = useState([
-    { id: 1, type: 'ID Creation', timestamp: '2023-12-01T09:15:30Z', hash: '0x7fde...2a41' },
-    { id: 2, type: 'Verification', timestamp: '2023-12-05T14:22:11Z', hash: '0x3a92...8c61' },
-    { id: 3, type: 'Update', timestamp: '2023-12-15T11:05:44Z', hash: '0x9d67...3f22' }
-  ]);
+  const [loading, setLoading] = useState(true);
+  const [blockchainInfo, setBlockchainInfo] = useState(null);
+  const [transactions, setTransactions] = useState([]);
+  const [error, setError] = useState(null);
+
+  // Improve the transaction type detection
+  const getTransactionType = (tx) => {
+    if (tx.metadata?.action === "MINT_NFT") return "ID Card Created";
+    if (tx.metadata?.action === "UPDATE_NFT") return "ID Card Updated";
+    if (tx.metadata?.action === "CREATE") return "Student Registration";
+    if (tx.metadata?.action === "UPDATE") return "Profile Updated";
+    if (tx.metadata?.type === "STUDENT_REGISTRATION") return "Student Registration";
+    if (tx.metadata?.type === "ID_CARD") return "ID Card";
+    if (tx.metadata?.type === "VERIFICATION") return "ID Verification";
+    if (tx.type === "STUDENT_REGISTRATION") return "Student Registration";
+    
+    // If we can't determine a specific type, check the content
+    if (tx.metadata?.studentId || tx.metadata?.studentData) return "Student Record";
+    if (tx.metadata?.tokenId) return "NFT Operation";
+    
+    return "Transaction";
+  };
+
+  // Format transaction hash for display
+  const formatHash = (hash) => {
+    if (!hash || hash.length < 12) return hash;
+    return `${hash.substring(0, 6)}...${hash.substring(hash.length - 4)}`;
+  };
+
+  useEffect(() => {
+    const fetchBlockchainData = async () => {
+      if (!isAuthenticated || !currentUser) return;
+      
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Get basic blockchain info
+        const infoResponse = await blockchainApi.getBlockchainInfo();
+        setBlockchainInfo(infoResponse);
+        
+        // Try to get student ID
+        let studentId = null;
+        try {
+          const studentResponse = await blockchainApi.getStudentByEmail(currentUser.email);
+          if (studentResponse.success) {
+            studentId = studentResponse.studentInfo.studentId;
+          }
+        } catch (studentError) {
+          console.warn("Could not find student by email:", studentError);
+          // If currentUser has a studentId field, use that instead
+          if (currentUser.studentId) {
+            studentId = currentUser.studentId;
+          }
+        }
+        
+        // Get transactions using the new API function
+        try {
+          const txResponse = await blockchainApi.getUserTransactionsByEmailOrId(
+            currentUser.email, 
+            studentId
+          );
+          
+          if (txResponse.success) {
+            setTransactions(txResponse.transactions);
+          } else {
+            setError("Failed to load user transactions");
+          }
+        } catch (txError) {
+          console.error("Transaction fetch error:", txError);
+          setError("Failed to load transactions: " + txError.message);
+        }
+      } catch (err) {
+        console.error("Blockchain data fetch error:", err);
+        setError(err.message || "Failed to load blockchain data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlockchainData();
+  }, [isAuthenticated, currentUser]);
 
   return (
     <motion.div
@@ -40,6 +118,7 @@ const BlockchainPage = () => {
           </div>
 
           <div className="p-6">
+            {/* Blockchain info cards */}
             <div className="grid md:grid-cols-3 gap-4 mb-8">
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
                 <div className="flex items-center mb-2">
@@ -72,50 +151,110 @@ const BlockchainPage = () => {
               </div>
             </div>
 
+            {/* Blockchain stats */}
+            {blockchainInfo && (
+              <div className="mb-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <h3 className="font-medium text-gray-700 mb-2">Blockchain Statistics</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                  <div>
+                    <span className="text-gray-500">Total Blocks:</span>
+                    <div className="font-medium">{blockchainInfo.blockCount}</div>
+                  </div>
+                  <div>
+                    <span className="text-gray-500">Difficulty:</span>
+                    <div className="font-medium">{blockchainInfo.difficulty}</div>
+                  </div>
+                  <div>
+                    <span className="text-gray-500">Latest Block:</span>
+                    <div className="font-medium">{formatHash(blockchainInfo.latestBlock?.hash)}</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <h2 className="text-xl font-semibold mb-4">Your Blockchain Activity</h2>
             
-            <div className="overflow-hidden border border-gray-200 rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Activity
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Date
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Transaction Hash
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Status
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {blockData.map((block) => (
-                    <tr key={block.id}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">{block.type}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">
-                          {new Date(block.timestamp).toLocaleString()}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-mono text-gray-900">{block.hash}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          <CheckCircle size={14} className="mr-1" /> Confirmed
-                        </span>
-                      </td>
+            {loading ? (
+              <div className="flex justify-center p-8">
+                <RefreshCcw className="animate-spin h-8 w-8 text-indigo-600" />
+              </div>
+            ) : error ? (
+              <div className="bg-red-50 border border-red-100 text-red-700 p-4 rounded-lg flex items-start">
+                <AlertCircle className="h-5 w-5 mt-0.5 mr-2 flex-shrink-0" />
+                <div>
+                  <p className="font-medium">Error loading blockchain data</p>
+                  <p className="mt-1 text-sm">{error}</p>
+                </div>
+              </div>
+            ) : transactions.length === 0 ? (
+              <div className="bg-yellow-50 border border-yellow-100 text-yellow-700 p-4 rounded-lg flex items-center justify-center">
+                <AlertCircle className="h-5 w-5 mr-2" />
+                <p>No blockchain transactions found for your account</p>
+              </div>
+            ) : (
+              <div className="overflow-hidden border border-gray-200 rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Activity
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Date
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Transaction Hash
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Status
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {transactions.map((tx) => (
+                      <tr key={tx.id}>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-medium text-gray-900">
+                            {getTransactionType(tx)}
+                          </div>
+                          {tx.metadata?.studentId && (
+                            <div className="text-xs text-gray-500">
+                              {tx.metadata.studentId}
+                            </div>
+                          )}
+                          {tx.metadata?.studentData?.email === currentUser.email && (
+                            <div className="text-xs text-green-500 mt-1">
+                              Includes your email
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm text-gray-500">
+                            {new Date(tx.timestamp).toLocaleString()}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-mono text-gray-900">
+                            {formatHash(tx.id)}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {tx.confirmed ? (
+                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                              <CheckCircle size={14} className="mr-1" /> Confirmed
+                            </span>
+                          ) : (
+                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                              <Clock size={14} className="mr-1" /> Pending
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
 
             <div className="mt-8 bg-gray-50 p-4 rounded-lg border border-gray-200">
               <div className="flex items-start">

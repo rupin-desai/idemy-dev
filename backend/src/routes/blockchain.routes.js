@@ -26,6 +26,9 @@ router.get('/block/hash/:hash', blockchainController.getBlockByHash);
 // Manually save blockchain to file
 router.post('/save', blockchainController.saveBlockchain);
 
+// Add this new route before any other routes with path parameters
+router.get('/transactions/user', blockchainController.getUserTransactions);
+
 // Add this new route
 router.get('/student-by-email/:email', blockchainController.getStudentByEmail);
 

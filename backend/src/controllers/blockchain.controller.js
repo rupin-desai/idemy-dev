@@ -353,6 +353,90 @@ class BlockchainController {
             });
         }
     }
+
+    // Add this new method to the BlockchainController class
+    async getUserTransactions(req, res) {
+        try {
+            const { email, studentId } = req.query;
+            
+            if (!email && !studentId) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Either email or studentId is required'
+                });
+            }
+            
+            logger.info(`Getting transactions for user with email: ${email}, studentId: ${studentId}`);
+            
+            // Get the blockchain
+            const chain = blockchainService.getChain();
+            const pendingTransactions = blockchainService.getPendingTransactions();
+            
+            const userTransactions = [];
+            
+            // Search confirmed blocks
+            for (const block of chain) {
+                for (const tx of block.transactions) {
+                    const isRelevantTransaction = 
+                        // Check studentId in various locations
+                        (studentId && tx.metadata?.studentId === studentId) ||
+                        (studentId && tx.metadata?.studentData?.studentId === studentId) ||
+                        (studentId && tx.fromAddress === studentId) ||
+                        // Check email in various locations
+                        (email && tx.metadata?.studentData?.email?.toLowerCase() === email.toLowerCase()) ||
+                        (email && tx.metadata?.email?.toLowerCase() === email.toLowerCase()) ||
+                        (email && tx.fromAddress?.toLowerCase() === email.toLowerCase()) ||
+                        (email && tx.data?.email?.toLowerCase() === email.toLowerCase());
+                    
+                    if (isRelevantTransaction) {
+                        userTransactions.push({
+                            ...tx,
+                            blockIndex: block.index,
+                            blockHash: block.hash,
+                            confirmed: true
+                        });
+                    }
+                }
+            }
+            
+            // Search pending transactions
+            for (const tx of pendingTransactions) {
+                const isRelevantTransaction = 
+                    // Same checks as above
+                    (studentId && tx.metadata?.studentId === studentId) ||
+                    (studentId && tx.metadata?.studentData?.studentId === studentId) ||
+                    (studentId && tx.fromAddress === studentId) ||
+                    (email && tx.metadata?.studentData?.email?.toLowerCase() === email.toLowerCase()) ||
+                    (email && tx.metadata?.email?.toLowerCase() === email.toLowerCase()) ||
+                    (email && tx.fromAddress?.toLowerCase() === email.toLowerCase()) ||
+                    (email && tx.data?.email?.toLowerCase() === email.toLowerCase());
+                
+                if (isRelevantTransaction) {
+                    userTransactions.push({
+                        ...tx,
+                        confirmed: false
+                    });
+                }
+            }
+            
+            // Sort by timestamp (newest first)
+            userTransactions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            logger.info(`Found ${userTransactions.length} transactions for user`);
+            
+            return res.status(200).json({
+                success: true,
+                count: userTransactions.length,
+                transactions: userTransactions
+            });
+        } catch (error) {
+            logger.error(`Error getting user transactions: ${error.message}`);
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            });
+        }
+    }
 }
 
 module.exports = new BlockchainController();
