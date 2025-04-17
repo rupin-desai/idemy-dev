@@ -1,11 +1,32 @@
 import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useBlockchain } from "../hooks/useBlockchain";
 import { Link } from "react-router-dom";
+import {
+  ChevronDown,
+  ChevronUp,
+  Database,
+  RefreshCw,
+  AlertCircle,
+  Copy,
+  Check,
+  ExternalLink,
+} from "lucide-react";
+import Card from "../components/UI/Card";
+import Button from "../components/UI/Button";
+import Alert from "../components/UI/Alert";
+import {
+  pageVariants,
+  tableRowVariants,
+  listItemVariants,
+  iconSizes,
+} from "../utils/animations";
 
 const BlockchainPage = () => {
   const { blockchain, loading, error, fetchBlockchain } = useBlockchain();
   const [expandedBlocks, setExpandedBlocks] = useState({});
   const [expandedTransactions, setExpandedTransactions] = useState({});
+  const [copiedHash, setCopiedHash] = useState(null);
 
   // Toggle block expansion
   const toggleBlockExpansion = (index) => {
@@ -23,275 +44,403 @@ const BlockchainPage = () => {
     }));
   };
 
+  // Copy text to clipboard with visual feedback
+  const copyToClipboard = (text, label) => {
+    navigator.clipboard.writeText(text);
+    setCopiedHash(label);
+    setTimeout(() => setCopiedHash(null), 2000);
+  };
+
   // Add polling for auto-refresh
   useEffect(() => {
     fetchBlockchain();
 
     const intervalId = setInterval(() => {
       fetchBlockchain();
-    }, 10000);
+    }, 30000); // Poll every 30 seconds
 
     return () => clearInterval(intervalId);
   }, [fetchBlockchain]);
 
   if (loading && !blockchain.chain?.length) {
-    return <div className="text-center py-10">Loading blockchain data...</div>;
-  }
-
-  if (error) {
     return (
-      <div
-        className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6"
-        role="alert"
-      >
-        <p>{error}</p>
-        <button
-          className="mt-2 bg-red-500 hover:bg-red-700 text-white py-1 px-3 rounded"
-          onClick={fetchBlockchain}
-        >
-          Retry
-        </button>
+      <div className="flex justify-center items-center py-20">
+        <RefreshCw
+          className="animate-spin text-blue-600 mr-2"
+          size={iconSizes.lg}
+        />
+        <span className="text-lg">Loading blockchain data...</span>
       </div>
     );
   }
 
+  if (error) {
+    return (
+      <Alert
+        type="error"
+        message="Failed to load blockchain data"
+        details={error}
+        onClose={() => {}}
+        show={true}
+      />
+    );
+  }
+
   return (
-    <div>
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+    >
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Blockchain Explorer</h1>
-        <button
+        <h1 className="text-3xl font-bold flex items-center">
+          <Database size={iconSizes.lg} className="mr-2 text-blue-600" />
+          Blockchain Explorer
+        </h1>
+        <Button
           onClick={() => fetchBlockchain()}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center"
-          disabled={loading}
+          color="primary"
+          loading={loading}
+          icon={<RefreshCw size={iconSizes.sm} />}
         >
           {loading ? "Refreshing..." : "Refresh Blockchain"}
-        </button>
-      </div>
-
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-2">Chain Information</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <p className="text-gray-500">Total Blocks</p>
-            <p className="text-2xl font-semibold">
-              {blockchain.chain?.length || 0}
-            </p>
-          </div>
-          <div>
-            <p className="text-gray-500">Mining Difficulty</p>
-            <p className="text-2xl font-semibold">
-              {blockchain.difficulty || 0}
-            </p>
-          </div>
-          <div>
-            <p className="text-gray-500">Mining Reward</p>
-            <p className="text-2xl font-semibold">
-              {blockchain.miningReward || 0}
-            </p>
-          </div>
-        </div>
+        </Button>
       </div>
 
       <div className="space-y-4">
-        {blockchain.chain?.map((block) => (
-          <div
-            key={block.index}
-            className="bg-white rounded-lg shadow-md overflow-hidden"
-          >
-            {/* Block Header - Always visible */}
-            <div
-              className="px-6 py-4 cursor-pointer flex justify-between items-center hover:bg-gray-50"
-              onClick={() => toggleBlockExpansion(block.index)}
-            >
-              <div>
-                <h2 className="text-xl font-semibold">
-                  {block.index === 0
-                    ? "Genesis Block"
-                    : `Block #${block.index}`}
-                </h2>
-                <p className="text-gray-500">
-                  {new Date(block.timestamp).toLocaleString()} •
-                  {block.transactions?.length || 0} Transactions
-                </p>
-              </div>
-              <div className="flex items-center">
-                <Link
-                  to={`/block/${block.index}`}
-                  className="text-blue-600 hover:text-blue-800 mr-4"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  View Details
-                </Link>
-                <span>{expandedBlocks[block.index] ? "▲" : "▼"}</span>
-              </div>
-            </div>
+        <AnimatePresence>
+          {blockchain.chain?.map((block) => (
+            <motion.div key={block.index} variants={listItemVariants} layout>
+              <Card
+                title={
+                  block.index === 0 ? "Genesis Block" : `Block #${block.index}`
+                }
+                titleClass="flex items-center"
+                headerRight={
+                  <div className="flex items-center">
+                    <Link
+                      to={`/block/${block.index}`}
+                      className="text-blue-600 hover:text-blue-800 mr-4 flex items-center"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span>View Details</span>
+                      <ExternalLink size={iconSizes.sm} className="ml-1" />
+                    </Link>
+                    <span>
+                      {expandedBlocks[block.index] ? (
+                        <ChevronUp size={iconSizes.md} />
+                      ) : (
+                        <ChevronDown size={iconSizes.md} />
+                      )}
+                    </span>
+                  </div>
+                }
+                onHeaderClick={() => toggleBlockExpansion(block.index)}
+                interactive={false}
+              >
+                <div className="px-6 py-2 text-gray-500">
+                  <span>{new Date(block.timestamp).toLocaleString()}</span>
+                  <span className="mx-2">•</span>
+                  <span>{block.transactions?.length || 0} Transactions</span>
+                </div>
 
-            {/* Block Details - Expandable */}
-            {expandedBlocks[block.index] && (
-              <div className="border-t border-gray-200 p-6">
-                {/* Block Metadata */}
-                <div className="mb-6">
-                  <h3 className="text-lg font-medium mb-2">
-                    Block Information
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                      <p className="text-sm text-gray-500">Hash</p>
-                      <p className="font-mono text-sm break-all bg-gray-100 p-2 rounded">
-                        {block.hash}
-                      </p>
+                {/* Block Details - Expandable */}
+                {expandedBlocks[block.index] && (
+                  <div className="border-t border-gray-200 p-6">
+                    {/* Block Metadata */}
+                    <div className="mb-6">
+                      <h3 className="text-lg font-medium mb-2">
+                        Block Information
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <p className="text-sm text-gray-500">Hash</p>
+                          <div className="flex items-center">
+                            <p className="font-mono text-sm break-all bg-gray-100 p-2 rounded flex-grow">
+                              {block.hash}
+                            </p>
+                            <motion.button
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.95 }}
+                              className="ml-2 p-1 hover:bg-gray-100 rounded"
+                              onClick={() =>
+                                copyToClipboard(
+                                  block.hash,
+                                  `hash-${block.index}`
+                                )
+                              }
+                            >
+                              {copiedHash === `hash-${block.index}` ? (
+                                <Check
+                                  size={iconSizes.sm}
+                                  className="text-green-600"
+                                />
+                              ) : (
+                                <Copy size={iconSizes.sm} />
+                              )}
+                            </motion.button>
+                          </div>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Previous Hash</p>
+                          <div className="flex items-center">
+                            <p className="font-mono text-sm break-all bg-gray-100 p-2 rounded flex-grow">
+                              {block.previousHash === "0"
+                                ? "Genesis Block"
+                                : block.previousHash}
+                            </p>
+                            {block.previousHash !== "0" && (
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="ml-2 p-1 hover:bg-gray-100 rounded"
+                                onClick={() =>
+                                  copyToClipboard(
+                                    block.previousHash,
+                                    `prevhash-${block.index}`
+                                  )
+                                }
+                              >
+                                {copiedHash === `prevhash-${block.index}` ? (
+                                  <Check
+                                    size={iconSizes.sm}
+                                    className="text-green-600"
+                                  />
+                                ) : (
+                                  <Copy size={iconSizes.sm} />
+                                )}
+                              </motion.button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                          <p className="text-sm text-gray-500">Timestamp</p>
+                          <p>{new Date(block.timestamp).toLocaleString()}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Nonce</p>
+                          <p>{block.nonce}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Transactions</p>
+                          <p>{block.transactions?.length || 0}</p>
+                        </div>
+                      </div>
                     </div>
+
+                    {/* Transactions */}
                     <div>
-                      <p className="text-sm text-gray-500">Previous Hash</p>
-                      <p className="font-mono text-sm break-all bg-gray-100 p-2 rounded">
-                        {block.previousHash === "0"
-                          ? "Genesis Block"
-                          : block.previousHash}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Nonce</p>
-                      <p className="font-medium">{block.nonce}</p>
+                      <h3 className="text-lg font-medium mb-2">Transactions</h3>
+                      {block.transactions && block.transactions.length > 0 ? (
+                        <div className="space-y-2">
+                          {block.transactions.map((tx) => (
+                            <motion.div
+                              key={tx.id}
+                              className="border border-gray-200 rounded-md overflow-hidden"
+                              variants={tableRowVariants}
+                              layout
+                            >
+                              {/* Transaction Header - Click to expand */}
+                              <motion.div
+                                className="bg-gray-50 px-4 py-3 flex justify-between items-center cursor-pointer hover:bg-gray-100"
+                                onClick={() =>
+                                  toggleTransactionExpansion(tx.id)
+                                }
+                                whileHover={{
+                                  backgroundColor: "rgba(243, 244, 246, 1)",
+                                }}
+                              >
+                                <div className="flex items-center">
+                                  <span className="font-mono text-sm mr-2 text-gray-600">
+                                    {tx.id.substring(0, 8)}...
+                                  </span>
+                                  <span className="text-gray-500 text-sm">
+                                    {tx.fromAddress
+                                      ? `From: ${tx.fromAddress.substring(
+                                          0,
+                                          10
+                                        )}...`
+                                      : "Mining Reward"}{" "}
+                                    → To: {tx.toAddress.substring(0, 10)}...
+                                  </span>
+                                </div>
+                                <div className="flex items-center">
+                                  <span className="font-medium mr-3 text-green-600">
+                                    {tx.amount}
+                                  </span>
+                                  <span>
+                                    {expandedTransactions[tx.id] ? (
+                                      <ChevronUp size={iconSizes.sm} />
+                                    ) : (
+                                      <ChevronDown size={iconSizes.sm} />
+                                    )}
+                                  </span>
+                                </div>
+                              </motion.div>
+
+                              {/* Transaction Details - Expandable */}
+                              <AnimatePresence>
+                                {expandedTransactions[tx.id] && (
+                                  <motion.div
+                                    className="bg-white p-4 border-t border-gray-200"
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: "auto", opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.3 }}
+                                  >
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <p className="text-sm text-gray-500">
+                                          Transaction ID
+                                        </p>
+                                        <div className="flex items-center">
+                                          <p className="font-mono text-sm break-all bg-gray-100 p-2 rounded flex-grow">
+                                            {tx.id}
+                                          </p>
+                                          <motion.button
+                                            whileHover={{ scale: 1.1 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            className="ml-2 p-1 hover:bg-gray-100 rounded"
+                                            onClick={() =>
+                                              copyToClipboard(
+                                                tx.id,
+                                                `txid-${tx.id}`
+                                              )
+                                            }
+                                          >
+                                            {copiedHash === `txid-${tx.id}` ? (
+                                              <Check
+                                                size={iconSizes.sm}
+                                                className="text-green-600"
+                                              />
+                                            ) : (
+                                              <Copy size={iconSizes.sm} />
+                                            )}
+                                          </motion.button>
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <p className="text-sm text-gray-500">
+                                          Timestamp
+                                        </p>
+                                        <p>
+                                          {new Date(
+                                            tx.timestamp
+                                          ).toLocaleString()}
+                                        </p>
+                                      </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                                      <div>
+                                        <p className="text-sm text-gray-500">
+                                          From Address
+                                        </p>
+                                        <div className="flex items-center">
+                                          <p className="font-mono text-sm break-all bg-gray-100 p-2 rounded flex-grow">
+                                            {tx.fromAddress ||
+                                              "Coinbase (Mining Reward)"}
+                                          </p>
+                                          {tx.fromAddress && (
+                                            <motion.button
+                                              whileHover={{ scale: 1.1 }}
+                                              whileTap={{ scale: 0.95 }}
+                                              className="ml-2 p-1 hover:bg-gray-100 rounded"
+                                              onClick={() =>
+                                                copyToClipboard(
+                                                  tx.fromAddress,
+                                                  `from-${tx.id}`
+                                                )
+                                              }
+                                            >
+                                              {copiedHash ===
+                                              `from-${tx.id}` ? (
+                                                <Check
+                                                  size={iconSizes.sm}
+                                                  className="text-green-600"
+                                                />
+                                              ) : (
+                                                <Copy size={iconSizes.sm} />
+                                              )}
+                                            </motion.button>
+                                          )}
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <p className="text-sm text-gray-500">
+                                          To Address
+                                        </p>
+                                        <div className="flex items-center">
+                                          <p className="font-mono text-sm break-all bg-gray-100 p-2 rounded flex-grow">
+                                            {tx.toAddress}
+                                          </p>
+                                          <motion.button
+                                            whileHover={{ scale: 1.1 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            className="ml-2 p-1 hover:bg-gray-100 rounded"
+                                            onClick={() =>
+                                              copyToClipboard(
+                                                tx.toAddress,
+                                                `to-${tx.id}`
+                                              )
+                                            }
+                                          >
+                                            {copiedHash === `to-${tx.id}` ? (
+                                              <Check
+                                                size={iconSizes.sm}
+                                                className="text-green-600"
+                                              />
+                                            ) : (
+                                              <Copy size={iconSizes.sm} />
+                                            )}
+                                          </motion.button>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div className="mt-3">
+                                      <p className="text-sm text-gray-500">
+                                        Amount
+                                      </p>
+                                      <p className="text-lg font-medium text-green-600">
+                                        {tx.amount}
+                                      </p>
+                                    </div>
+
+                                    {tx.metadata && (
+                                      <div className="mt-3">
+                                        <p className="text-sm text-gray-500">
+                                          Metadata
+                                        </p>
+                                        <pre className="bg-gray-100 p-2 rounded-md text-xs overflow-auto max-h-40">
+                                          {JSON.stringify(tx.metadata, null, 2)}
+                                        </pre>
+                                      </div>
+                                    )}
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </motion.div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-gray-500 p-4 bg-gray-50 rounded-md">
+                          No transactions in this block
+                        </div>
+                      )}
                     </div>
                   </div>
-
-                  {/* Block Metadata Object */}
-                  {block.metadata && Object.keys(block.metadata).length > 0 && (
-                    <div className="mb-4">
-                      <p className="text-sm text-gray-500">Block Metadata</p>
-                      <pre className="font-mono text-sm bg-gray-100 p-2 rounded overflow-auto">
-                        {JSON.stringify(block.metadata, null, 2)}
-                      </pre>
-                    </div>
-                  )}
-                </div>
-
-                {/* Transactions */}
-                <div>
-                  <h3 className="text-lg font-medium mb-2">
-                    Transactions ({block.transactions?.length || 0})
-                  </h3>
-
-                  {block.transactions && block.transactions.length > 0 ? (
-                    <div className="space-y-4">
-                      {block.transactions.map((tx) => (
-                        <div
-                          key={tx.id}
-                          className="border border-gray-200 rounded-md overflow-hidden"
-                        >
-                          {/* Transaction Header - Click to expand */}
-                          <div
-                            className="bg-gray-50 px-4 py-3 flex justify-between items-center cursor-pointer"
-                            onClick={() => toggleTransactionExpansion(tx.id)}
-                          >
-                            <div className="flex items-center">
-                              <span className="font-mono text-sm mr-2">
-                                {tx.id.substring(0, 8)}...
-                              </span>
-                              <span className="text-gray-500 text-sm">
-                                {tx.fromAddress
-                                  ? `From: ${tx.fromAddress.substring(
-                                      0,
-                                      10
-                                    )}...`
-                                  : "Mining Reward"}{" "}
-                                → To: {tx.toAddress.substring(0, 10)}...
-                              </span>
-                            </div>
-                            <div className="flex items-center">
-                              <span className="font-medium mr-3">
-                                {tx.amount}
-                              </span>
-                              <span>
-                                {expandedTransactions[tx.id] ? "▲" : "▼"}
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Transaction Details - Expandable */}
-                          {expandedTransactions[tx.id] && (
-                            <div className="px-4 py-3 border-t border-gray-200">
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                  <p className="text-sm text-gray-500">
-                                    Transaction ID
-                                  </p>
-                                  <p className="font-mono text-sm">{tx.id}</p>
-                                </div>
-                                <div>
-                                  <p className="text-sm text-gray-500">
-                                    Timestamp
-                                  </p>
-                                  <p className="text-sm">
-                                    {new Date(tx.timestamp).toLocaleString()}
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="text-sm text-gray-500">
-                                    From Address
-                                  </p>
-                                  <p className="font-mono text-sm">
-                                    {tx.fromAddress ||
-                                      "Mining Reward (Coinbase)"}
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="text-sm text-gray-500">
-                                    To Address
-                                  </p>
-                                  <p className="font-mono text-sm">
-                                    {tx.toAddress}
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="text-sm text-gray-500">
-                                    Amount
-                                  </p>
-                                  <p className="font-medium">{tx.amount}</p>
-                                </div>
-                              </div>
-
-                              {/* Transaction Metadata */}
-                              {tx.metadata &&
-                                Object.keys(tx.metadata).length > 0 && (
-                                  <div className="mt-4">
-                                    <p className="text-sm text-gray-500">
-                                      Transaction Metadata
-                                    </p>
-                                    <pre className="font-mono text-sm bg-gray-100 p-2 rounded overflow-auto mt-1">
-                                      {JSON.stringify(tx.metadata, null, 2)}
-                                    </pre>
-                                  </div>
-                                )}
-
-                              {/* Signature */}
-                              {tx.signature && (
-                                <div className="mt-4">
-                                  <p className="text-sm text-gray-500">
-                                    Signature
-                                  </p>
-                                  <p className="font-mono text-sm break-all bg-gray-100 p-2 rounded">
-                                    {tx.signature}
-                                  </p>
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-gray-500">
-                      No transactions in this block
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
+                )}
+              </Card>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

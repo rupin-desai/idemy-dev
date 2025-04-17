@@ -1,4 +1,23 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Save, User, Mail, Book, Calendar, Building, FileText } from "lucide-react";
+import Button from "./UI/Button";
+import { iconSizes } from "../utils/animations";
+
+const formVariants = {
+  initial: { opacity: 0 },
+  animate: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05
+    }
+  }
+};
+
+const fieldVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 }
+};
 
 const StudentForm = ({ student, onSubmit, submitButtonText = "Save" }) => {
   const [formData, setFormData] = useState({
@@ -12,6 +31,8 @@ const StudentForm = ({ student, onSubmit, submitButtonText = "Save" }) => {
       notes: "",
     },
   });
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (student) {
@@ -49,19 +70,34 @@ const StudentForm = ({ student, onSubmit, submitButtonText = "Save" }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    setLoading(true);
+    try {
+      await onSubmit(formData);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <motion.form 
+      onSubmit={handleSubmit} 
+      className="space-y-6"
+      variants={formVariants}
+      initial="initial"
+      animate="animate"
+    >
+      <motion.div 
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        variants={fieldVariants}
+      >
         <div>
           <label
             htmlFor="firstName"
-            className="block text-sm font-medium text-gray-700"
+            className="flex items-center text-sm font-medium text-gray-700 mb-1"
           >
+            <User size={iconSizes.sm} className="mr-2 text-gray-500" />
             First Name *
           </label>
           <input
@@ -70,7 +106,7 @@ const StudentForm = ({ student, onSubmit, submitButtonText = "Save" }) => {
             name="firstName"
             value={formData.firstName}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-shadow"
             required
           />
         </div>
@@ -78,8 +114,9 @@ const StudentForm = ({ student, onSubmit, submitButtonText = "Save" }) => {
         <div>
           <label
             htmlFor="lastName"
-            className="block text-sm font-medium text-gray-700"
+            className="flex items-center text-sm font-medium text-gray-700 mb-1"
           >
+            <User size={iconSizes.sm} className="mr-2 text-gray-500" />
             Last Name *
           </label>
           <input
@@ -88,17 +125,18 @@ const StudentForm = ({ student, onSubmit, submitButtonText = "Save" }) => {
             name="lastName"
             value={formData.lastName}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-shadow"
             required
           />
         </div>
-      </div>
+      </motion.div>
 
-      <div>
+      <motion.div variants={fieldVariants}>
         <label
           htmlFor="email"
-          className="block text-sm font-medium text-gray-700"
+          className="flex items-center text-sm font-medium text-gray-700 mb-1"
         >
+          <Mail size={iconSizes.sm} className="mr-2 text-gray-500" />
           Email *
         </label>
         <input
@@ -107,20 +145,27 @@ const StudentForm = ({ student, onSubmit, submitButtonText = "Save" }) => {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-shadow"
           required
         />
-      </div>
+      </motion.div>
 
-      <div className="border-t pt-4 mt-6">
-        <h3 className="text-lg font-medium mb-4">Additional Information</h3>
+      <motion.div 
+        className="border-t pt-4 mt-6"
+        variants={fieldVariants}
+      >
+        <h3 className="text-lg font-medium mb-4 flex items-center">
+          <FileText size={iconSizes.md} className="mr-2 text-gray-700" />
+          Additional Information
+        </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label
               htmlFor="program"
-              className="block text-sm font-medium text-gray-700"
+              className="flex items-center text-sm font-medium text-gray-700 mb-1"
             >
+              <Book size={iconSizes.sm} className="mr-2 text-gray-500" />
               Program
             </label>
             <input
@@ -129,15 +174,16 @@ const StudentForm = ({ student, onSubmit, submitButtonText = "Save" }) => {
               name="additionalInfo.program"
               value={formData.additionalInfo.program}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-shadow"
             />
           </div>
 
           <div>
             <label
               htmlFor="year"
-              className="block text-sm font-medium text-gray-700"
+              className="flex items-center text-sm font-medium text-gray-700 mb-1"
             >
+              <Calendar size={iconSizes.sm} className="mr-2 text-gray-500" />
               Year
             </label>
             <input
@@ -146,7 +192,7 @@ const StudentForm = ({ student, onSubmit, submitButtonText = "Save" }) => {
               name="additionalInfo.year"
               value={formData.additionalInfo.year}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-shadow"
             />
           </div>
         </div>
@@ -154,8 +200,9 @@ const StudentForm = ({ student, onSubmit, submitButtonText = "Save" }) => {
         <div className="mt-4">
           <label
             htmlFor="department"
-            className="block text-sm font-medium text-gray-700"
+            className="flex items-center text-sm font-medium text-gray-700 mb-1"
           >
+            <Building size={iconSizes.sm} className="mr-2 text-gray-500" />
             Department
           </label>
           <input
@@ -164,15 +211,16 @@ const StudentForm = ({ student, onSubmit, submitButtonText = "Save" }) => {
             name="additionalInfo.department"
             value={formData.additionalInfo.department}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-shadow"
           />
         </div>
 
         <div className="mt-4">
           <label
             htmlFor="notes"
-            className="block text-sm font-medium text-gray-700"
+            className="flex items-center text-sm font-medium text-gray-700 mb-1"
           >
+            <FileText size={iconSizes.sm} className="mr-2 text-gray-500" />
             Notes
           </label>
           <textarea
@@ -181,20 +229,25 @@ const StudentForm = ({ student, onSubmit, submitButtonText = "Save" }) => {
             rows="3"
             value={formData.additionalInfo.notes}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-shadow"
           ></textarea>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="flex justify-end">
-        <button
+      <motion.div 
+        className="flex justify-end"
+        variants={fieldVariants}
+      >
+        <Button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          color="primary"
+          loading={loading}
+          icon={<Save size={iconSizes.sm} />}
         >
           {submitButtonText}
-        </button>
-      </div>
-    </form>
+        </Button>
+      </motion.div>
+    </motion.form>
   );
 };
 

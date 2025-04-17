@@ -1,6 +1,8 @@
 // src/components/Layout/Layout.jsx
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { pageVariants } from '../../utils/animations';
 import Sidebar from './Sidebar';
 import Header from './Header';
 
@@ -10,9 +12,15 @@ const Layout = () => {
       <Sidebar />
       <div className="flex-1">
         <Header />
-        <main className="p-6">
+        <motion.main 
+          className="p-6"
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={pageVariants}
+        >
           <Outlet />
-        </main>
+        </motion.main>
       </div>
     </div>
   );
