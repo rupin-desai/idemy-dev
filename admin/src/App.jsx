@@ -5,9 +5,13 @@ import { BlockchainProvider } from "./context/BlockchainContext";
 import { TransactionProvider } from "./context/TransactionContext";
 import { StudentProvider } from "./context/StudentContext";
 import { NFTProvider } from "./context/NFTContext";
+import { InstitutionProvider } from "./context/InstitutionContext";
+import { ApplicationProvider } from "./context/ApplicationContext";
 import { AuthProvider } from "./context/AuthContext"; 
 import { useAuth } from "./hooks/useAuth";
 import Layout from "./components/Layout/Layout";
+
+// Import pages
 import Dashboard from "./pages/Dashboard";
 import BlockchainPage from "./pages/BlockchainPage";
 import BlockDetailsPage from "./pages/BlockDetailsPage";
@@ -23,6 +27,12 @@ import NFTListPage from "./pages/NFTListPage";
 import NFTDetailPage from "./pages/NFTDetailPage";
 import StudentIDCardPage from "./pages/StudentIDCardPage";
 import LoginPage from "./pages/LoginPage";
+import InstitutionsListPage from "./pages/InstitutionsListPage";
+import InstitutionDetailsPage from "./pages/InstitutionDetailsPage";
+import InstitutionCreatePage from "./pages/InstitutionCreatePage";
+import InstitutionEditPage from "./pages/InstitutionEditPage";
+import ApplicationsListPage from "./pages/ApplicationsListPage";
+import ApplicationDetailsPage from "./pages/ApplicationDetailsPage";
 
 // Protected route component
 const ProtectedRoute = ({ children }) => {
@@ -58,7 +68,7 @@ const AnimatedRoutes = () => {
           <Route path="blockchain" element={<BlockchainPage />} />
           <Route path="block/:index" element={<BlockDetailsPage />} />
           <Route path="transactions" element={<TransactionsPage />} />
-          <Route path="mine" element={<MinePage />} />
+          {MinePage && <Route path="mine" element={<MinePage />} />}
           <Route path="student-transactions" element={<StudentTransactionsPage />} />
           <Route path="students" element={<StudentsListPage />} />
           <Route path="students/create" element={<StudentCreatePage />} />
@@ -68,6 +78,18 @@ const AnimatedRoutes = () => {
           <Route path="students/:studentId/id-card" element={<StudentIDCardPage />} />
           <Route path="nfts" element={<NFTListPage />} />
           <Route path="nfts/:tokenId" element={<NFTDetailPage />} />
+          
+          {/* Institution Routes */}
+          <Route path="institutions" element={<InstitutionsListPage />} />
+          <Route path="institutions/create" element={<InstitutionCreatePage />} />
+          <Route path="institutions/:institutionId" element={<InstitutionDetailsPage />} />
+          <Route path="institutions/:institutionId/edit" element={<InstitutionEditPage />} />
+          
+          {/* Application Routes */}
+          <Route path="applications" element={<ApplicationsListPage />} />
+          <Route path="applications/:applicationId" element={<ApplicationDetailsPage />} />
+          <Route path="institutions/:institutionId/applications" element={<ApplicationsListPage />} />
+          <Route path="students/:studentId/applications" element={<ApplicationsListPage />} />
         </Route>
       </Routes>
     </AnimatePresence>
@@ -76,19 +98,23 @@ const AnimatedRoutes = () => {
 
 const App = () => {
   return (
-    <AuthProvider>
-      <BlockchainProvider>
-        <TransactionProvider>
-          <StudentProvider>
-            <NFTProvider>
-              <BrowserRouter>
-                <AnimatedRoutes />
-              </BrowserRouter>
-            </NFTProvider>
-          </StudentProvider>
-        </TransactionProvider>
-      </BlockchainProvider>
-    </AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <BlockchainProvider>
+          <TransactionProvider>
+            <StudentProvider>
+              <NFTProvider>
+                <InstitutionProvider>
+                  <ApplicationProvider>
+                    <AnimatedRoutes />
+                  </ApplicationProvider>
+                </InstitutionProvider>
+              </NFTProvider>
+            </StudentProvider>
+          </TransactionProvider>
+        </BlockchainProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 };
 

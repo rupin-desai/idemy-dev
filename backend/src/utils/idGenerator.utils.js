@@ -48,5 +48,20 @@ module.exports = {
   generateIdCardFilename(studentId) {
     // Generate a filename for the ID card image
     return `${studentId}_${Date.now()}.png`;
+  },
+
+  // New function for institution IDs
+  generateInstitutionId() {
+    // Generate a unique institution ID with INST prefix
+    const randomPart = crypto.randomBytes(4).toString('hex');
+    return `INST${randomPart.toUpperCase()}`;
+  },
+
+  // New function for application IDs
+  generateApplicationId() {
+    // Generate a unique application ID with APP prefix
+    const timestamp = Date.now().toString(36);
+    const randomPart = crypto.randomBytes(4).toString('hex');
+    return `APP${timestamp}${randomPart.toUpperCase()}`;
   }
 };

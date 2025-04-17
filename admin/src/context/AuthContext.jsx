@@ -7,13 +7,22 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   
   useEffect(() => {
-    const user = authApi.getCurrentUser();
-    if (user) {
-      setCurrentUser(user);
-    }
-    setLoading(false);
+    const checkAuth = async () => {
+      const user = authApi.getCurrentUser();
+      const token = authApi.getAuthToken();
+      
+      if (user && token) {
+        setCurrentUser(user);
+        setIsAuthenticated(true);
+      }
+      
+      setLoading(false);
+    };
+    
+    checkAuth();
   }, []);
   
   const login = async (email, password) => {
@@ -23,6 +32,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const data = await authApi.login(email, password);
       setCurrentUser(data.user);
+      setIsAuthenticated(true);
       return data;
     } catch (error) {
       setError(error.message);
@@ -35,15 +45,16 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     authApi.logout();
     setCurrentUser(null);
+    setIsAuthenticated(false);
   };
   
   const value = {
     currentUser,
     loading,
     error,
+    isAuthenticated,
     login,
-    logout,
-    isAuthenticated: !!currentUser
+    logout
   };
   
   return (

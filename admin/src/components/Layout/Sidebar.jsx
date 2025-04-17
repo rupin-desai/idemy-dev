@@ -9,6 +9,8 @@ import {
   Rows,
   Users,
   Shield,
+  Building,
+  ClipboardList
 } from "lucide-react";
 import { listItemVariants, iconSizes } from "../../utils/animations";
 
@@ -45,6 +47,16 @@ const Sidebar = () => {
       path: "/students",
       label: "Student Management",
       icon: <Users size={iconSizes.md} />,
+    },
+    {
+      path: "/institutions",
+      label: "Institution Management",
+      icon: <Building size={iconSizes.md} />,
+    },
+    {
+      path: "/applications",
+      label: "Applications",
+      icon: <ClipboardList size={iconSizes.md} />,
     },
     {
       path: "/nfts",

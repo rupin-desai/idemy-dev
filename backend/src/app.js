@@ -31,6 +31,8 @@ const transactionRoutes = require("./routes/transaction.routes");
 const studentRoutes = require("./routes/student.routes");
 const nftRoutes = require('./routes/nft.routes');
 const authRoutes = require('./routes/auth.routes'); // Add this line
+const institutionRoutes = require("./routes/institution.routes");
+const applicationRoutes = require("./routes/application.routes");
 
 // Initialize the app
 const app = express();
@@ -48,6 +50,8 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/students", studentRoutes);
 app.use('/api/nft', nftRoutes);
 app.use('/api/auth', authRoutes); // Add this line
+app.use("/api/institutions", institutionRoutes);
+app.use("/api/applications", applicationRoutes);
 
 // Root route
 app.get("/", (req, res) => {
