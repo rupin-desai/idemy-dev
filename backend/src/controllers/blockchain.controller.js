@@ -228,57 +228,114 @@ class BlockchainController {
                 });
             }
             
+            logger.info(`Looking for student with email: ${email} in blockchain`);
+            
             // Get the blockchain
             const chain = blockchainService.getChain();
+            const pendingTransactions = blockchainService.getPendingTransactions();
             
             // Search for student transactions across all blocks
             let studentData = null;
             let timestamp = null;
             let blockIndex = null;
             
-            // First search in confirmed blocks
+            // First search in confirmed blocks with more flexible matching
             for (const block of chain) {
                 for (const tx of block.transactions) {
-                    // Check if this is a student registration transaction
-                    if ((tx.fromAddress === "SYSTEM_STUDENT_REGISTRY" || tx.type === "STUDENT_REGISTRATION") && 
-                        tx.data && 
-                        tx.data.email && 
-                        tx.data.email.toLowerCase() === email.toLowerCase()) {
+                    // Check all possible locations where email might be stored
+                    const emailMatches = (
+                        // Check in data.email (original check)
+                        (tx.data && tx.data.email && tx.data.email.toLowerCase() === email.toLowerCase()) ||
+                        // Check in metadata.studentData.email (how it's actually stored)
+                        (tx.metadata && tx.metadata.studentData && 
+                         tx.metadata.studentData.email && 
+                         tx.metadata.studentData.email.toLowerCase() === email.toLowerCase()) ||
+                        // Check if the email itself is the sender
+                        (tx.fromAddress && tx.fromAddress.toLowerCase() === email.toLowerCase()) ||
+                        // Check in metadata.email
+                        (tx.metadata && tx.metadata.email && 
+                         tx.metadata.email.toLowerCase() === email.toLowerCase())
+                    );
+                    
+                    // Check transaction types that might represent student records
+                    const isStudentRecord = 
+                        tx.type === 'STUDENT_REGISTRATION' || 
+                        (tx.metadata && (tx.metadata.role === 'student' || tx.metadata.action === 'CREATE')) ||
+                        tx.fromAddress === 'SYSTEM_STUDENT_REGISTRY';
+                    
+                    if (emailMatches && isStudentRecord) {
+                        // Get the student data from wherever it exists
+                        const foundStudentData = 
+                            (tx.metadata && tx.metadata.studentData) ? tx.metadata.studentData : 
+                            (tx.data) ? tx.data : 
+                            {
+                                email: email,
+                                studentId: tx.metadata?.studentId || '',
+                                firstName: '',
+                                lastName: '',
+                                institution: ''
+                            };
                         
-                        // If we already found a student record, only update if this one is newer
+                        // Use newer transactions over older ones
                         if (!studentData || new Date(tx.timestamp) > new Date(timestamp)) {
-                            studentData = tx.data;
+                            studentData = foundStudentData;
                             timestamp = tx.timestamp;
                             blockIndex = block.index;
+                            
+                            logger.info(`Found student record in blockchain block ${block.index}, timestamp ${tx.timestamp}`);
                         }
                     }
                 }
             }
             
-            // Also check pending transactions
-            const pendingTransactions = blockchainService.getPendingTransactions();
+            // Also check pending transactions with the same checks
             for (const tx of pendingTransactions) {
-                if ((tx.fromAddress === "SYSTEM_STUDENT_REGISTRY" || tx.type === "STUDENT_REGISTRATION") && 
-                    tx.data && 
-                    tx.data.email && 
-                    tx.data.email.toLowerCase() === email.toLowerCase()) {
+                const emailMatches = (
+                    (tx.data && tx.data.email && tx.data.email.toLowerCase() === email.toLowerCase()) ||
+                    (tx.metadata && tx.metadata.studentData && 
+                     tx.metadata.studentData.email && 
+                     tx.metadata.studentData.email.toLowerCase()) ||
+                    (tx.fromAddress && tx.fromAddress.toLowerCase() === email.toLowerCase()) ||
+                    (tx.metadata && tx.metadata.email && 
+                     tx.metadata.email.toLowerCase() === email.toLowerCase())
+                );
+                
+                const isStudentRecord = 
+                    tx.type === 'STUDENT_REGISTRATION' || 
+                    (tx.metadata && (tx.metadata.role === 'student' || tx.metadata.action === 'CREATE')) ||
+                    tx.fromAddress === 'SYSTEM_STUDENT_REGISTRY';
+                
+                if (emailMatches && isStudentRecord) {
+                    const foundStudentData = 
+                        (tx.metadata && tx.metadata.studentData) ? tx.metadata.studentData : 
+                        (tx.data) ? tx.data : 
+                        {
+                            email: email,
+                            studentId: tx.metadata?.studentId || '',
+                            firstName: '',
+                            lastName: '',
+                            institution: ''
+                        };
                     
-                    // If we already found a student record, only update if this one is newer
                     if (!studentData || new Date(tx.timestamp) > new Date(timestamp)) {
-                        studentData = tx.data;
+                        studentData = foundStudentData;
                         timestamp = tx.timestamp;
                         blockIndex = 'pending';
+                        
+                        logger.info(`Found student record in pending transactions, timestamp ${tx.timestamp}`);
                     }
                 }
             }
             
             if (!studentData) {
+                logger.warn(`No student found with email ${email} in blockchain`);
                 return res.status(404).json({
                     success: false,
                     message: 'No student registration found for this email'
                 });
             }
             
+            logger.info(`Found student with email ${email} in blockchain`);
             return res.status(200).json({
                 success: true,
                 studentInfo: {
