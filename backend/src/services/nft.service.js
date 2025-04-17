@@ -448,33 +448,98 @@ class NFTService {
   async getIDCardImage(studentId) {
     try {
       logger.info(`Fetching ID card image for student ${studentId}`);
-      const idCard = this.idCards.get(studentId);
       
-      if (!idCard) {
+      // Extract version from query params if available
+      const version = parseInt(this.req?.query?.v) || null;
+      
+      // Check if ID card exists
+      if (!this.idCards.has(studentId)) {
         throw new Error(`ID card for student ${studentId} not found`);
       }
       
+      const idCard = this.idCards.get(studentId);
+      
       // Get all files in the directory
       const files = fs.readdirSync(this.cardsDir);
+      let imageFile = null;
       
-      // Find any file that starts with the student ID
-      const matchingFiles = files.filter(file => file.startsWith(`${studentId}_`));
-      
-      if (matchingFiles.length === 0) {
-        throw new Error(`No image file found for student ${studentId}`);
+      // Try to find version-specific image first
+      if (version) {
+        // Look for version-specific pattern: STU123_v2_timestamp.png
+        const versionFiles = files.filter(file => 
+          file.startsWith(`${studentId}_v${version}_`) && 
+          (file.endsWith('.png') || file.endsWith('.jpg'))
+        );
+        
+        if (versionFiles.length > 0) {
+          imageFile = versionFiles[0];
+          logger.info(`Found version ${version} image file: ${imageFile}`);
+        }
       }
       
-      // Use the first matching file (or sort by date if needed)
-      const imageFile = matchingFiles[0];
-      const imagePath = path.join(this.cardsDir, imageFile);
+      // If no version-specific image found, try any image for this student
+      if (!imageFile) {
+        // Look for any image matching this student ID
+        const studentFiles = files.filter(file => 
+          file.startsWith(`${studentId}_`) && 
+          (file.endsWith('.png') || file.endsWith('.jpg')) && 
+          !file.endsWith('_metadata.json')
+        );
+        
+        if (studentFiles.length > 0) {
+          imageFile = studentFiles[0];
+          logger.info(`Found image file: ${imageFile}`);
+        }
+      }
       
-      logger.info(`Found image file: ${imageFile}`);
+      if (imageFile) {
+        const imagePath = path.join(this.cardsDir, imageFile);
+        return {
+          buffer: fs.readFileSync(imagePath),
+          contentType: imageFile.endsWith('.png') ? 'image/png' : 'image/jpeg'
+        };
+      }
       
-      // Return the image buffer
+      // If no image file exists, generate one dynamically based on card data
+      logger.info(`No image file found for student ${studentId}, generating dynamically`);
+      
+      // Get student data
+      const student = studentService.getStudentById(studentId);
+      
+      // Generate a card with the appropriate version data
+      let cardData = idCard;
+      
+      // If a specific version was requested, try to get that NFT version
+      if (version && version > 1) {
+        const versionNfts = this.getAllNFTVersionsByStudentId(studentId)
+          .filter(nft => nft.version === version);
+        
+        if (versionNfts.length > 0) {
+          // Get metadata for this specific version
+          const metadataFilename = `${studentId}_v${version}_metadata.json`;
+          const metadataPath = path.join(this.cardsDir, metadataFilename);
+          
+          if (fs.existsSync(metadataPath)) {
+            const versionMetadata = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
+            
+            // Use this metadata to influence the generated image
+            cardData = {
+              ...idCard,
+              expiryDate: versionMetadata.attributes.find(a => a.trait_type === "Expiry Date")?.value || idCard.expiryDate,
+              cardType: versionMetadata.attributes.find(a => a.trait_type === "Card Type")?.value || idCard.cardType
+            };
+          }
+        }
+      }
+      
+      // Generate dynamic ID card
+      const imageBuffer = await idCardGenerator.generateIDCard(student, cardData);
+      
       return {
-        buffer: fs.readFileSync(imagePath),
+        buffer: imageBuffer,
         contentType: 'image/png'
       };
+      
     } catch (error) {
       logger.error(`Get ID card image error: ${error.message}`);
       throw error;
@@ -531,8 +596,9 @@ class NFTService {
       idCard.updatedAt = Date.now();
       
       // Save new image if provided
-      let imageUri = idCard.imageUri;
+      let imageUri = null;
       if (imageBase64) {
+        // User provided an image - save it with version marker
         const imageBuffer = Buffer.from(imageBase64.split(',')[1], 'base64');
         const filename = `${studentId}_v${newVersion}_${Date.now()}.png`;
         const imagePath = path.join(this.cardsDir, filename);
@@ -541,6 +607,29 @@ class NFTService {
         imageUri = `/api/nft/idcards/${studentId}/image?v=${newVersion}`;
         
         logger.info(`Saved updated ID card image for student ${studentId} (version ${newVersion})`);
+      } else {
+        // No image provided - generate one with the updated data
+        const student = studentService.getStudentById(studentId);
+        
+        // Create updated card data for image generation
+        const idCardData = {
+          cardNumber: idCard.cardNumber,
+          issueDate: idCard.issueDate, 
+          expiryDate: updateData.expiryDate || idCard.expiryDate,
+          cardType: updateData.cardType || idCard.cardType,
+          status: updateData.status || idCard.status,
+          version: newVersion
+        };
+        
+        // Generate a new image with updated data
+        const imageBuffer = await idCardGenerator.generateIDCard(student, idCardData);
+        const filename = `${studentId}_v${newVersion}_${Date.now()}.png`;
+        const imagePath = path.join(this.cardsDir, filename);
+        
+        fs.writeFileSync(imagePath, imageBuffer);
+        imageUri = `/api/nft/idcards/${studentId}/image?v=${newVersion}`;
+        
+        logger.info(`Generated updated ID card image for student ${studentId} (version ${newVersion})`);
       }
       
       // Create metadata JSON for the new NFT version

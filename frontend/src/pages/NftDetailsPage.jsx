@@ -165,8 +165,9 @@ const NftDetailsPage = () => {
   const getImageUrl = () => {
     if (!nft || !nft.studentId) return null;
     
-    // Always use the direct image endpoint with cache busting
-    return `http://localhost:3000/api/nft/idcards/${nft.studentId}/image?v=${retryCount}`;
+    // Use the NFT's version number to get the correct version of the image
+    // Also include retryCount for cache busting
+    return `http://localhost:3000/api/nft/idcards/${nft.studentId}/image?v=${nft.version}&t=${retryCount}`;
   };
 
   if (authLoading) {

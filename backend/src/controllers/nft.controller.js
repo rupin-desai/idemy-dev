@@ -148,25 +148,25 @@ class NFTController {
   async getIDCardImage(req, res) {
     try {
       const { studentId } = req.params;
-
-      // Add await here - this was missing
-      const { buffer, contentType } = await nftService.getIDCardImage(
-        studentId
-      );
-
-      // Set the correct content type and cache control headers
-      res.set("Content-Type", contentType);
-      res.set("Cache-Control", "public, max-age=86400"); // Cache for 24 hours
-
-      // Send the image buffer
+      
+      // Pass the request object to allow access to query parameters
+      nftService.req = req;
+      
+      const { buffer, contentType } = await nftService.getIDCardImage(studentId);
+      
+      // Clear the reference after use
+      nftService.req = null;
+      
+      // Set headers
+      res.set('Content-Type', contentType);
+      res.set('Cache-Control', 'public, max-age=86400'); // Cache for 24 hours
+      
       return res.send(buffer);
     } catch (error) {
       logger.error(`Get ID card image error: ${error.message}`);
-
-      // Return a 404 error
       return res.status(404).json({
         success: false,
-        message: error.message,
+        message: error.message
       });
     }
   }

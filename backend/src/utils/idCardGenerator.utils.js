@@ -129,6 +129,13 @@ class IDCardGenerator {
     ctx.strokeStyle = "rgba(0,0,0,0.3)";
     ctx.strokeRect(30, 300, 80, 80);
 
+    // Add version information if available
+    if (idCardData.version && idCardData.version > 1) {
+      ctx.fillStyle = "#4F46E5";
+      ctx.font = "bold 16px OpenSans";
+      ctx.fillText(`Version ${idCardData.version}`, 500, 350);
+    }
+
     // Convert to buffer
     return canvas.toBuffer("image/png");
   }
