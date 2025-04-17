@@ -184,6 +184,21 @@ export const mineStudentTransactions = async () => {
   }
 };
 
+// Get block by index
+export const getBlockByIndex = async (index) => {
+  try {
+    const response = await axiosWithAuth().get(`${API_URL}/block/${index}`);
+    return response.data;
+  } catch (error) {
+    // Try to handle errors gracefully
+    if (error.response && error.response.status === 404) {
+      return { success: false, message: `Block #${index} not found` };
+    }
+    const errorData = handleApiError(error, "get-block-by-index");
+    throw errorData;
+  }
+};
+
 // Default export combining all functions for compatibility
 const blockchainApi = {
   getBlockchainData,
@@ -193,6 +208,7 @@ const blockchainApi = {
   mineTransactions,
   saveBlockchain,
   mineStudentTransactions,
+  getBlockByIndex,
 };
 
 export default blockchainApi;

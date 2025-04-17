@@ -15,10 +15,21 @@ const BlockDetailsPage = () => {
       setLoading(true);
       try {
         const response = await getBlockByIndex(index);
-        setBlock(response.block);
-        setError(null);
+        
+        // Check if we have a valid block in the response
+        if (response && response.success && response.block) {
+          setBlock(response.block);
+          setError(null);
+        } else if (response && response.block) {
+          // Handle case where success flag might be missing but block is present
+          setBlock(response.block);
+          setError(null);
+        } else {
+          throw new Error(`Failed to load block #${index}`);
+        }
       } catch (err) {
-        setError(`Failed to load block #${index}`);
+        console.error("Block loading error:", err);
+        setError(`Failed to load block #${index}: ${err.message}`);
       } finally {
         setLoading(false);
       }

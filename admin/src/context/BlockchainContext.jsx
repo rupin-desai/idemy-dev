@@ -1,6 +1,9 @@
 // src/context/BlockchainContext.jsx
 import { createContext, useState, useEffect, useCallback } from "react";
 import blockchainApi from "../api/blockchain.api";
+import axios from "axios";
+// Fix the import path - was trying to import from utils/auth which doesn't exist
+import { getAuthToken } from "../api/auth.api";
 
 export const BlockchainContext = createContext();
 
@@ -102,19 +105,34 @@ export function BlockchainProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
-      // Fallback implementation that gets the whole chain then filters
-      const data = await blockchainApi.getBlockchainData();
-      const block = data.chain.find(b => b.index === parseInt(index));
-      
-      if (!block) {
-        throw new Error(`Block with index ${index} not found`);
-      }
-      
-      return block;
+      // Try to use the direct API endpoint first
+      const response = await axios.get(`${API_URL}/block/${index}`, {
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      });
+
+      return response.data; // This should already have the correct format with { success, block }
     } catch (err) {
-      setError(`Failed to get block with index ${index}`);
-      console.error(err);
-      throw err;
+      // Fallback: get all blockchain data and filter
+      try {
+        const data = await blockchainApi.getBlockchainData();
+        const block = data.chain.find((b) => b.index === parseInt(index, 10));
+
+        if (!block) {
+          throw new Error(`Block with index ${index} not found`);
+        }
+
+        // Return in the same format as the API would
+        return {
+          success: true,
+          block: block,
+        };
+      } catch (innerErr) {
+        setError(`Failed to get block with index ${index}`);
+        console.error(innerErr);
+        throw innerErr;
+      }
     } finally {
       setLoading(false);
     }
@@ -135,7 +153,7 @@ export function BlockchainProvider({ children }) {
     mineTransactions,
     validateBlockchain,
     saveBlockchain,
-    getBlockByIndex,
+    getBlockByIndex, // Make sure this is included
   };
 
   return (
