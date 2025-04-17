@@ -445,27 +445,33 @@ class NFTService {
     }
   }
   
-  getIDCardImage(studentId) {
+  async getIDCardImage(studentId) {
     try {
+      logger.info(`Fetching ID card image for student ${studentId}`);
       const idCard = this.idCards.get(studentId);
+      
       if (!idCard) {
         throw new Error(`ID card for student ${studentId} not found`);
       }
       
-      // Extract filename from imageUri
-      const imageUri = idCard.imageUri;
-      if (!imageUri) {
-        throw new Error(`No image found for student ${studentId}`);
+      // Get all files in the directory
+      const files = fs.readdirSync(this.cardsDir);
+      
+      // Find any file that starts with the student ID
+      const matchingFiles = files.filter(file => file.startsWith(`${studentId}_`));
+      
+      if (matchingFiles.length === 0) {
+        throw new Error(`No image file found for student ${studentId}`);
       }
       
-      const filename = `${studentId}_${idCard.imageUri.split('_').pop()}`;
-      const imagePath = path.join(this.cardsDir, filename);
+      // Use the first matching file (or sort by date if needed)
+      const imageFile = matchingFiles[0];
+      const imagePath = path.join(this.cardsDir, imageFile);
       
-      if (!fs.existsSync(imagePath)) {
-        throw new Error(`Image file not found for student ${studentId}`);
-      }
+      logger.info(`Found image file: ${imageFile}`);
       
-      return { 
+      // Return the image buffer
+      return {
         buffer: fs.readFileSync(imagePath),
         contentType: 'image/png'
       };

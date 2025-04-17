@@ -1,0 +1,23 @@
+{
+  "name": "STUDENT ID Card - STU6FOUBVB",
+  "description": "Official STUDENT ID Card for student STU6FOUBVB",
+  "image": "/api/nft/idcards/STU6FOUBVB/image",
+  "attributes": [
+    {
+      "trait_type": "Card Type",
+      "value": "STUDENT"
+    },
+    {
+      "trait_type": "Issue Date",
+      "value": "2025-04-17T04:53:06.305Z"
+    },
+    {
+      "trait_type": "Expiry Date",
+      "value": "2029-04-16T04:53:06.305Z"
+    },
+    {
+      "trait_type": "Status",
+      "value": "ACTIVE"
+    }
+  ]
+}

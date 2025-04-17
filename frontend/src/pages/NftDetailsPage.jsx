@@ -7,6 +7,7 @@ import {
   CheckCircle,
   AlertCircle,
   Loader,
+  Download,
 } from "lucide-react";
 import { useNft } from "../hooks/useNft";
 import { useAuth } from "../hooks/useAuth";
@@ -24,6 +25,9 @@ const NftDetailsPage = () => {
   const [error, setError] = useState(null);
   const [verifying, setVerifying] = useState(false);
   const [verificationResult, setVerificationResult] = useState(null);
+  const [metadata, setMetadata] = useState(null);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   // Direct API call to avoid state conflicts
   const fetchNftDetails = async (id) => {
@@ -34,6 +38,23 @@ const NftDetailsPage = () => {
     } catch (error) {
       console.error("Error fetching NFT:", error);
       throw error;
+    }
+  };
+
+  // Fetch NFT metadata to get the image URL
+  const fetchNftMetadata = async (metadataUri) => {
+    if (!metadataUri) return null;
+
+    try {
+      setImageLoading(true);
+      const url = `http://localhost:3000${metadataUri}`;
+      const response = await axios.get(url);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching NFT metadata:", error);
+      return null;
+    } finally {
+      setImageLoading(false);
     }
   };
 
@@ -80,9 +101,13 @@ const NftDetailsPage = () => {
           student = await fetchStudentData(result.nft.studentId);
         }
 
+        // Fetch metadata to get the image URL
+        const nftMetadata = await fetchNftMetadata(result.nft.metadataUri);
+
         if (mounted) {
           setNft(result.nft);
           setStudentData(student);
+          setMetadata(nftMetadata);
           setLoading(false);
         }
       } catch (err) {
@@ -111,6 +136,14 @@ const NftDetailsPage = () => {
     } finally {
       setVerifying(false);
     }
+  };
+
+  // Function to get the full image URL - directly use the studentId endpoint
+  const getImageUrl = () => {
+    if (!nft || !nft.studentId) return null;
+    
+    // Always use the direct image endpoint with cache busting
+    return `http://localhost:3000/api/nft/idcards/${nft.studentId}/image?v=${retryCount}`;
   };
 
   if (authLoading) {
@@ -179,6 +212,54 @@ const NftDetailsPage = () => {
           </div>
 
           <div className="p-6">
+            {/* NFT ID Card Image */}
+            {nft && (
+              <div className="mb-6 flex flex-col items-center">
+                <div className="relative rounded-lg overflow-hidden shadow-md border border-gray-200 mb-3">
+                  {imageLoading ? (
+                    <div className="w-full h-64 flex items-center justify-center bg-gray-100">
+                      <Loader className="animate-spin h-8 w-8 text-indigo-600" />
+                    </div>
+                  ) : (
+                    <img 
+                      src={getImageUrl()} 
+                      alt="Student ID Card" 
+                      className="w-full max-w-md mx-auto"
+                      onLoad={() => setImageLoading(false)}
+                      onError={(e) => {
+                        console.error("Failed to load image:", e);
+                        setImageLoading(false);
+                        // Increment retry count to trigger a URL change
+                        setTimeout(() => setRetryCount(prev => prev + 1), 500);
+                      }}
+                    />
+                  )}
+                </div>
+                <button
+                  onClick={() => {
+                    // Use the more reliable fetch and download method
+                    fetch(getImageUrl())
+                      .then(res => res.blob())
+                      .then(blob => {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `ID_Card_${nft.studentId}.png`;
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        a.remove();
+                      })
+                      .catch(err => console.error("Download failed:", err));
+                  }}
+                  className="flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
+                >
+                  <Download size={16} className="mr-2" />
+                  Download ID Card
+                </button>
+              </div>
+            )}
+
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <h2 className="text-xl font-semibold mb-4">
@@ -212,6 +293,30 @@ const NftDetailsPage = () => {
                           currentUser?.student?.department}
                       </p>
                     </div>
+                  )}
+                  {metadata && metadata.attributes && (
+                    <>
+                      <div>
+                        <p className="text-sm text-gray-500">Issue Date</p>
+                        <p>
+                          {new Date(
+                            metadata.attributes.find(
+                              (attr) => attr.trait_type === "Issue Date"
+                            )?.value || ""
+                          ).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Expiry Date</p>
+                        <p>
+                          {new Date(
+                            metadata.attributes.find(
+                              (attr) => attr.trait_type === "Expiry Date"
+                            )?.value || ""
+                          ).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
