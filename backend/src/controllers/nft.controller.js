@@ -257,6 +257,135 @@ class NFTController {
       });
     }
   }
+
+  /**
+   * Update an ID card and create a new NFT version
+   */
+  async updateNFTVersion(req, res) {
+    try {
+      const { tokenId } = req.params;
+      const { cardData, imageBase64 } = req.body;
+      
+      const result = await nftService.updateIDCardAndCreateNewVersion(tokenId, cardData, imageBase64);
+      
+      return res.status(201).json({
+        success: true,
+        message: "NFT version created successfully",
+        newVersion: result.newVersion,
+        previousVersion: result.previousVersion,
+        idCard: result.idCard
+      });
+    } catch (error) {
+      logger.error(`Update NFT version error: ${error.message}`);
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }
+
+  /**
+   * Get all NFT versions for a student
+   */
+  async getNFTVersionsByStudentId(req, res) {
+    try {
+      const { studentId } = req.params;
+      
+      const nftVersions = await nftService.getAllNFTVersionsByStudentId(studentId);
+      
+      return res.status(200).json({
+        success: true,
+        versions: nftVersions
+      });
+    } catch (error) {
+      logger.error(`Get NFT versions error: ${error.message}`);
+      return res.status(404).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }
+
+  /**
+   * Get latest NFT version for a student
+   */
+  async getLatestNFTVersionByStudentId(req, res) {
+    try {
+      const { studentId } = req.params;
+      
+      const latestNft = await nftService.getLatestNFTVersionByStudentId(studentId);
+      
+      return res.status(200).json({
+        success: true,
+        nft: latestNft
+      });
+    } catch (error) {
+      logger.error(`Get latest NFT version error: ${error.message}`);
+      return res.status(404).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }
+
+  /**
+   * Get NFT version metadata
+   */
+  async getNFTVersionMetadata(req, res) {
+    try {
+      const { studentId } = req.params;
+      const { version } = req.query;
+      
+      const metadata = nftService.getNFTVersionMetadata(studentId, version ? parseInt(version) : null);
+      
+      return res.status(200).json(metadata);
+    } catch (error) {
+      logger.error(`Get NFT version metadata error: ${error.message}`);
+      return res.status(404).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }
+
+  /**
+   * Get NFT version image
+   */
+  async getNFTVersionImage(req, res) {
+    try {
+      const { studentId } = req.params;
+      const { v: version } = req.query;
+      
+      // Try to find image file with specific version
+      let imageFile = null;
+      
+      if (version) {
+        // Look for version-specific image
+        const files = fs.readdirSync(nftService.cardsDir);
+        imageFile = files.find(file => file.startsWith(`${studentId}_v${version}_`) && !file.endsWith('_metadata.json'));
+      }
+      
+      // If no version-specific image, find any image for this student
+      if (!imageFile) {
+        const files = fs.readdirSync(nftService.cardsDir);
+        imageFile = files.find(file => file.startsWith(`${studentId}_`) && !file.endsWith('_metadata.json'));
+      }
+      
+      if (imageFile) {
+        const imagePath = path.join(nftService.cardsDir, imageFile);
+        return res.sendFile(imagePath);
+      }
+      
+      // If no image found, generate one (you would need a similar method as in your existing code)
+      throw new Error(`Image file not found for student ${studentId}`);
+    } catch (error) {
+      logger.error(`Get NFT version image error: ${error.message}`);
+      return res.status(404).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }
 }
 
 module.exports = new NFTController();

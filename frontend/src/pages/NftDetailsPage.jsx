@@ -8,10 +8,12 @@ import {
   AlertCircle,
   Loader,
   Download,
+  Pencil,
 } from "lucide-react";
 import { useNft } from "../hooks/useNft";
 import { useAuth } from "../hooks/useAuth";
 import axios from "axios";
+import NftVersionsList from '../components/NftVersionsList';
 
 const NftDetailsPage = () => {
   const { tokenId } = useParams();
@@ -28,6 +30,8 @@ const NftDetailsPage = () => {
   const [metadata, setMetadata] = useState(null);
   const [imageLoading, setImageLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
+  const [showVersions, setShowVersions] = useState(false);
+  const [nftVersions, setNftVersions] = useState([]);
 
   // Direct API call to avoid state conflicts
   const fetchNftDetails = async (id) => {
@@ -125,6 +129,25 @@ const NftDetailsPage = () => {
       mounted = false;
     };
   }, [tokenId, navigate, isAuthenticated, authLoading]);
+
+  useEffect(() => {
+    const loadVersions = async () => {
+      if (nft && nft.studentId) {
+        try {
+          const response = await axios.get(`http://localhost:3000/api/nft/student/${nft.studentId}/versions`);
+          if (response.data.success) {
+            setNftVersions(response.data.versions);
+          }
+        } catch (err) {
+          console.error("Failed to load NFT versions:", err);
+        }
+      }
+    };
+    
+    if (nft && nft.studentId) {
+      loadVersions();
+    }
+  }, [nft]);
 
   const handleVerify = async () => {
     try {
@@ -257,6 +280,15 @@ const NftDetailsPage = () => {
                   <Download size={16} className="mr-2" />
                   Download ID Card
                 </button>
+                {nft.isLatestVersion && (
+                  <button
+                    onClick={() => navigate(`/update-nft/${nft.tokenId}`)}
+                    className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors ml-2"
+                  >
+                    <Pencil size={16} className="mr-2" />
+                    Update ID
+                  </button>
+                )}
               </div>
             )}
 
@@ -395,6 +427,30 @@ const NftDetailsPage = () => {
                   )}
                 </div>
               </div>
+            </div>
+
+            <div className="mt-8 border-t pt-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold">Version Information</h2>
+                <button
+                  onClick={() => setShowVersions(!showVersions)}
+                  className="text-sm text-indigo-600 hover:text-indigo-800"
+                >
+                  {showVersions ? 'Hide History' : 'Show Version History'}
+                </button>
+              </div>
+              
+              <div className="mb-4">
+                <p className="text-sm text-gray-500">Current Version</p>
+                <p className="font-medium text-lg">{nft.version}</p>
+                {nft.previousVersionId && (
+                  <p className="text-sm text-gray-600 mt-1">
+                    Previous version: {nft.previousVersionId}
+                  </p>
+                )}
+              </div>
+              
+              {showVersions && <NftVersionsList versions={nftVersions} currentTokenId={tokenId} />}
             </div>
           </div>
         </div>

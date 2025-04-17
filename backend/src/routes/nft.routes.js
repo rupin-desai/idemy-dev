@@ -27,7 +27,12 @@ router.post('/mint/:studentId', nftController.mintNFT);
 // Transfer NFT ownership
 router.post('/transfer/:tokenId', nftController.transferNFT);
 
-// Get NFTs by student ID
+// Add these new version-related routes
+router.put('/update/:tokenId', nftController.updateNFTVersion);
+router.get('/student/:studentId/versions', nftController.getNFTVersionsByStudentId);
+router.get('/student/:studentId/latest', nftController.getLatestNFTVersionByStudentId);
+
+// Get NFTs by student ID - keep this after the more specific /student/ routes
 router.get('/student/:studentId', nftController.getNFTsByStudent);
 
 // Get NFT by token ID

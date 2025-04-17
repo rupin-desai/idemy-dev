@@ -497,6 +497,219 @@ class NFTService {
       throw error;
     }
   }
+
+  /**
+   * Update an existing ID card and create a new NFT version
+   */
+  async updateIDCardAndCreateNewVersion(tokenId, updateData, imageBase64 = null) {
+    try {
+      // Find the current NFT by token ID
+      if (!this.nfts.has(tokenId)) {
+        throw new Error(`NFT with token ID ${tokenId} not found`);
+      }
+      
+      const currentNft = this.nfts.get(tokenId);
+      const studentId = currentNft.studentId;
+      
+      // Find the ID card
+      if (!this.idCards.has(studentId)) {
+        throw new Error(`ID card for student ${studentId} not found`);
+      }
+      
+      const idCard = this.idCards.get(studentId);
+      
+      // Mark the current version as not latest
+      currentNft.isLatestVersion = false;
+      
+      // Calculate the new version number
+      const newVersion = currentNft.version + 1;
+      
+      // Update the ID card with new data
+      if (updateData.expiryDate) idCard.expiryDate = updateData.expiryDate;
+      if (updateData.cardType) idCard.cardType = updateData.cardType;
+      if (updateData.status) idCard.status = updateData.status;
+      idCard.updatedAt = Date.now();
+      
+      // Save new image if provided
+      let imageUri = idCard.imageUri;
+      if (imageBase64) {
+        const imageBuffer = Buffer.from(imageBase64.split(',')[1], 'base64');
+        const filename = `${studentId}_v${newVersion}_${Date.now()}.png`;
+        const imagePath = path.join(this.cardsDir, filename);
+        
+        fs.writeFileSync(imagePath, imageBuffer);
+        imageUri = `/api/nft/idcards/${studentId}/image?v=${newVersion}`;
+        
+        logger.info(`Saved updated ID card image for student ${studentId} (version ${newVersion})`);
+      }
+      
+      // Create metadata JSON for the new NFT version
+      const metadata = idCard.toMetadata(newVersion);
+      const metadataFilename = `${studentId}_v${newVersion}_metadata.json`;
+      const metadataPath = path.join(this.cardsDir, metadataFilename);
+      fs.writeFileSync(metadataPath, JSON.stringify(metadata, null, 2));
+      
+      const metadataUri = `/api/nft/idcards/${studentId}/metadata?v=${newVersion}`;
+      
+      // Create a new NFT version
+      const newNft = new NFT(
+        null, // Auto-generate new token ID
+        studentId,
+        currentNft.ownerAddress,
+        metadataUri,
+        idCard.cardNumber, // Keep the same card number
+        newVersion,
+        currentNft.tokenId // Reference the previous version
+      );
+      
+      // Record NFT minting on blockchain
+      const mintTransaction = await this.recordNFTVersionOnBlockchain(newNft, currentNft.tokenId);
+      newNft.mintTxHash = mintTransaction.id;
+      
+      // Add NFT to collection
+      this.nfts.set(newNft.tokenId, newNft);
+      
+      // Link NFT to ID card
+      idCard.linkToNFT(newNft.tokenId);
+      
+      // Save both collections
+      this.saveNFTs();
+      this.saveIDCards();
+      
+      logger.info(`Created NFT version ${newVersion} (${newNft.tokenId}) for student ${studentId}`);
+      
+      return { 
+        newVersion: newNft, 
+        previousVersion: currentNft,
+        idCard 
+      };
+    } catch (error) {
+      logger.error(`Update ID card and create new version error: ${error.message}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Record NFT version creation on blockchain
+   */
+  async recordNFTVersionOnBlockchain(nft, previousVersionId) {
+    try {
+      // Create metadata for the transaction
+      const metadata = {
+        action: 'UPDATE_NFT',
+        tokenId: nft.tokenId,
+        studentId: nft.studentId,
+        metadataUri: nft.metadataUri,
+        previousVersionId: previousVersionId,
+        version: nft.version,
+        cardNumber: nft.cardNumber,
+        type: 'ID_CARD',
+        updatedAt: nft.mintedAt
+      };
+      
+      // Create a transaction for NFT version update
+      const transaction = transactionService.createTransaction(
+        'SYSTEM_NFT_REGISTRY',
+        nft.ownerAddress,
+        0, // Zero amount for NFT version update
+        metadata
+      );
+      
+      // Add transaction to pending transactions
+      transactionService.addTransaction(transaction);
+      
+      logger.info(`NFT version ${nft.version} creation recorded in blockchain for student ${nft.studentId}`);
+      return transaction;
+    } catch (error) {
+      logger.error(`Failed to record NFT version in blockchain: ${error.message}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Get all versions of NFTs for a student
+   */
+  getAllNFTVersionsByStudentId(studentId) {
+    try {
+      const studentNfts = Array.from(this.nfts.values())
+        .filter(nft => nft.studentId === studentId)
+        .sort((a, b) => b.version - a.version); // Sort by version, newest first
+      
+      return studentNfts;
+    } catch (error) {
+      logger.error(`Get all NFT versions error: ${error.message}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Get the latest NFT version for a student
+   */
+  getLatestNFTVersionByStudentId(studentId) {
+    try {
+      const latestNft = Array.from(this.nfts.values())
+        .find(nft => nft.studentId === studentId && nft.isLatestVersion);
+      
+      if (!latestNft) {
+        throw new Error(`No NFT found for student ${studentId}`);
+      }
+      
+      return latestNft;
+    } catch (error) {
+      logger.error(`Get latest NFT version error: ${error.message}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Get a specific NFT version
+   */
+  getNFTVersion(tokenId) {
+    try {
+      if (!this.nfts.has(tokenId)) {
+        throw new Error(`NFT with token ID ${tokenId} not found`);
+      }
+      
+      return this.nfts.get(tokenId);
+    } catch (error) {
+      logger.error(`Get NFT version error: ${error.message}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Get metadata for a specific NFT version
+   */
+  getNFTVersionMetadata(studentId, version = null) {
+    try {
+      // Check if student has an ID card
+      if (!this.idCards.has(studentId)) {
+        throw new Error(`No ID card found for student ${studentId}`);
+      }
+      
+      const idCard = this.idCards.get(studentId);
+      
+      // If version is not specified, get the latest version
+      if (version === null) {
+        const latestNft = this.getLatestNFTVersionByStudentId(studentId);
+        version = latestNft.version;
+      }
+      
+      // Try to find metadata file with specific version
+      const metadataFilename = `${studentId}_v${version}_metadata.json`;
+      const metadataPath = path.join(this.cardsDir, metadataFilename);
+      
+      if (fs.existsSync(metadataPath)) {
+        return JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
+      }
+      
+      // Fallback to generating metadata if file doesn't exist
+      return idCard.toMetadata(version);
+    } catch (error) {
+      logger.error(`Get NFT version metadata error: ${error.message}`);
+      throw error;
+    }
+  }
 }
 
 module.exports = new NFTService();

@@ -8,6 +8,7 @@ export const NftContext = createContext();
 export const NftProvider = ({ children }) => {
   const { currentUser, isAuthenticated, profileLoaded } = useAuth();
   const [userNfts, setUserNfts] = useState([]);
+  const [nftVersions, setNftVersions] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [fetchAttempted, setFetchAttempted] = useState(false);
@@ -149,18 +150,98 @@ export const NftProvider = ({ children }) => {
     }
   };
 
+  const fetchNftVersions = async (studentId) => {
+    if (!studentId) return;
+    
+    setLoading(true);
+    try {
+      const result = await nftApi.getNftVersionsByStudentId(studentId);
+      
+      if (result.success) {
+        setNftVersions(prev => ({
+          ...prev,
+          [studentId]: result.versions
+        }));
+      } else {
+        setError({
+          type: 'data',
+          message: result.error?.message || 'Failed to load NFT versions'
+        });
+      }
+    } catch (err) {
+      setError({
+        type: 'unknown',
+        message: 'An error occurred while fetching NFT versions'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateNftAndCreateVersion = async (tokenId, cardData, imageBase64) => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const result = await nftApi.updateNftVersion(tokenId, cardData, imageBase64);
+      
+      // Update userNfts with the new version
+      if (result.success) {
+        setUserNfts(prev => {
+          const newNfts = [...prev];
+          const index = newNfts.findIndex(nft => nft.tokenId === tokenId);
+          
+          if (index !== -1) {
+            // Update the old NFT to not be latest version
+            newNfts[index] = {
+              ...newNfts[index],
+              isLatestVersion: false
+            };
+            // Add the new version to the array
+            newNfts.push(result.newVersion);
+          }
+          
+          return newNfts;
+        });
+        
+        // Update versions for this student
+        const studentId = result.newVersion.studentId;
+        setNftVersions(prev => {
+          const studentVersions = prev[studentId] || [];
+          return {
+            ...prev,
+            [studentId]: [result.newVersion, ...studentVersions.filter(v => v.tokenId !== result.newVersion.tokenId)]
+          };
+        });
+      }
+      
+      return result;
+    } catch (err) {
+      setError({
+        type: 'update',
+        message: err.message || 'Failed to update NFT'
+      });
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <NftContext.Provider
       value={{
         userNfts,
+        nftVersions,
         loading,
         error,
         fetchAttempted,
         fetchUserNfts,
+        fetchNftVersions,
         clearError,
         verifyUserNft,
         transferUserNft,
         createIdCardAndMintNft,
+        updateNftAndCreateVersion,
         getNftDetails
       }}
     >
@@ -170,3 +251,4 @@ export const NftProvider = ({ children }) => {
 };
 
 export default NftContext;
+

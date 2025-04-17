@@ -129,3 +129,50 @@ export const transferNft = async (tokenId, recipientId) => {
     throw errorData;
   }
 };
+
+// Add these methods to your existing API file
+
+// Update an NFT and create a new version
+export const updateNftVersion = async (tokenId, cardData, imageBase64 = null) => {
+  try {
+    const payload = {
+      cardData,
+      imageBase64
+    };
+    
+    const response = await axios.put(`${API_URL}/update/${tokenId}`, payload);
+    return response.data;
+  } catch (error) {
+    const errorData = handleApiError(error, 'update-nft-version');
+    throw errorData;
+  }
+};
+
+// Get all versions of NFTs for a student
+export const getNftVersionsByStudentId = async (studentId) => {
+  try {
+    const response = await axios.get(`${API_URL}/student/${studentId}/versions`);
+    return response.data;
+  } catch (error) {
+    const errorData = handleApiError(error, 'fetch-nft-versions');
+    return { 
+      success: false, 
+      error: errorData, 
+      versions: [] 
+    };
+  }
+};
+
+// Get the latest NFT version for a student
+export const getLatestNftVersionByStudentId = async (studentId) => {
+  try {
+    const response = await axios.get(`${API_URL}/student/${studentId}/latest`);
+    return response.data;
+  } catch (error) {
+    const errorData = handleApiError(error, 'fetch-latest-nft');
+    return { 
+      success: false, 
+      error: errorData
+    };
+  }
+};

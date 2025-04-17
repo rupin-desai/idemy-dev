@@ -78,6 +78,18 @@ const HomePage = () => {
     }
   };
 
+  // Find the latest NFT (should be the one with the most recent mintedAt date)
+  const getLatestNftId = () => {
+    if (!userNfts || userNfts.length === 0) return null;
+    
+    // Sort NFTs by mintedAt (descending) and find the one marked as latest version
+    const latestNft = userNfts
+      .sort((a, b) => new Date(b.mintedAt) - new Date(a.mintedAt))
+      .find(nft => nft.isLatestVersion === true) || userNfts[0];
+    
+    return latestNft.tokenId;
+  };
+
   return (
     <motion.div
       variants={containerVariants}
@@ -97,6 +109,7 @@ const HomePage = () => {
               <WelcomeHeader
                 currentUser={currentUser}
                 hasNfts={userNfts && userNfts.length > 0}
+                latestNftId={getLatestNftId()}
               />
 
               <p className="text-slate-600 mb-4">

@@ -11,6 +11,7 @@ import { Loader } from "lucide-react";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
+import UpdateNftPage from "./pages/UpdateNftPage";
 import Header from "./components/Layout/Header";
 import { AuthProvider } from "./context/AuthContext";
 import { NftProvider } from "./context/NftContext";
@@ -98,6 +99,7 @@ const AppRoutes = () => {
           )
         }
       />
+      <Route path="/update-nft/:tokenId" element={<UpdateNftPage />} />
 
       {/* Protected routes */}
       <Route
