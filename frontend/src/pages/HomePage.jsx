@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useNft } from "../hooks/useNft";
-import { Eye, Database, ChevronRight } from "lucide-react";
+import { Eye, Database, ChevronRight, Shield } from "lucide-react";
 import StudentInfo from "../components/StudentInfo";
 import LoadingState from "../components/home/LoadingState";
 import WelcomeHeader from "../components/home/WelcomeHeader";
@@ -120,6 +120,16 @@ const HomePage = () => {
       borderColorClass: "border border-purple-200",
       iconBgClass: "bg-purple-600",
       arrowColorClass: "text-purple-600"
+    },
+    {
+      title: "Blockchain Verified",
+      icon: <Shield size={20} className="text-white" />,
+      description: "Learn how blockchain technology secures your digital identity",
+      path: '/learn/blockchain', 
+      bgColorClass: "bg-gradient-to-br from-green-50 to-green-100",
+      borderColorClass: "border border-green-200",
+      iconBgClass: "bg-green-600",
+      arrowColorClass: "text-green-600"
     }
   ];
 

@@ -22,6 +22,8 @@ import { useAuth } from "./hooks/useAuth";
 import { useNft } from "./hooks/useNft";
 // Add the import for BlockchainPage
 import BlockchainPage from "./pages/BlockchainPage";
+// Add the import for LearnBlockchainPage
+import LearnBlockchainPage from "./pages/LearnBlockchainPage";
 
 // 1. Create a splash screen component
 const SplashScreen = () => (
@@ -144,6 +146,8 @@ const AppRoutes = () => {
           )
         }
       />
+
+      <Route path="/learn/blockchain" element={<LearnBlockchainPage />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

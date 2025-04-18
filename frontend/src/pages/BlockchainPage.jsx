@@ -14,9 +14,11 @@ import {
   FileText,
   ChevronDown,
   ChevronUp,
+  ChevronRight,
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import * as blockchainApi from "../api/blockchain.api.js";
+import { Link } from "react-router-dom";
 
 const BlockchainPage = () => {
   const navigate = useNavigate();
@@ -477,6 +479,13 @@ const BlockchainPage = () => {
                     modification to your digital ID is recorded as a
                     transaction, creating an immutable audit trail.
                   </p>
+                  <Link 
+                    to="/learn/blockchain" 
+                    className="inline-flex items-center text-indigo-600 hover:text-indigo-800 mt-2 text-sm"
+                  >
+                    Learn more about blockchain technology
+                    <ChevronRight size={14} className="ml-1" />
+                  </Link>
                 </div>
               </div>
             </div>
