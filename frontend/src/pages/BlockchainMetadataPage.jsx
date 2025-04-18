@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   ArrowLeft,
   Database,
@@ -355,39 +355,37 @@ const BlockchainMetadataPage = () => {
                               </pre>
                             </details>
                             
-                            {/* Action links based on type */}
+                            {/* Action links based on type - changed from <a> to <Link> */}
                             <div className="mt-4 flex flex-wrap gap-2">
                               {item.type === 'ID_CREATION' && (
-                                <a 
-                                  href={`/nft/${item.details.tokenId}`}
+                                <Link 
+                                  to={`/nft/${item.details.tokenId}`}
                                   className="inline-flex items-center px-3 py-1 rounded-md bg-green-100 text-green-700 text-xs hover:bg-green-200 transition-colors"
                                 >
                                   <FileCheck size={14} className="mr-1" />
                                   View ID Card
-                                </a>
+                                </Link>
                               )}
                               
                               {item.type === 'ID_UPDATE' && (
-                                <a 
-                                  href={`/nft/${item.details.tokenId}?v=${item.details.version}`}
+                                <Link 
+                                  to={`/nft/${item.details.tokenId}?v=${item.details.version}`}
                                   className="inline-flex items-center px-3 py-1 rounded-md bg-blue-100 text-blue-700 text-xs hover:bg-blue-200 transition-colors"
                                 >
                                   <FileCheck size={14} className="mr-1" />
                                   View Updated ID
-                                </a>
+                                </Link>
                               )}
                               
                               {(item.type === 'PROFILE_CREATED' || item.type === 'PROFILE_UPDATED') && (
-                                <a 
-                                  href="/profile-data"
+                                <Link 
+                                  to="/profile-data"
                                   className="inline-flex items-center px-3 py-1 rounded-md bg-purple-100 text-purple-700 text-xs hover:bg-purple-200 transition-colors"
                                 >
                                   <User size={14} className="mr-1" />
                                   View Profile
-                                </a>
+                                </Link>
                               )}
-                              
-                             
                             </div>
                           </div>
                         )}
@@ -398,7 +396,7 @@ const BlockchainMetadataPage = () => {
               </div>
             )}
             
-            {/* Blockchain Info */}
+            {/* Blockchain Info - updated Link */}
             <div className="mt-8 bg-gray-50 p-4 rounded-lg border border-gray-200">
               <div className="flex items-start">
                 <FileText className="h-5 w-5 text-gray-500 mr-2 mt-0.5" />
@@ -412,13 +410,13 @@ const BlockchainMetadataPage = () => {
                     your digital identity information. These records are immutable and 
                     cryptographically secure, ensuring your digital identity remains tamper-proof.
                   </p>
-                  <a 
-                    href="/learn/blockchain" 
+                  <Link 
+                    to="/learn/blockchain" 
                     className="inline-flex items-center text-indigo-600 hover:text-indigo-800 mt-2 text-sm"
                   >
                     Learn more about blockchain technology
                     <ArrowRight size={14} className="ml-1" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
