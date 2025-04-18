@@ -192,3 +192,155 @@ export const getUserTransactionsByEmailOrId = async (email, studentId = null) =>
     }
   }
 };
+
+// Get user metadata from blockchain
+export const getUserMetadata = async (userId, email) => {
+  try {
+    // First try to get transactions by user ID
+    const response = await axios.get(`${API_URL}/metadata?userId=${userId}&email=${email}`);
+    return {
+      success: true,
+      metadata: response.data.metadata
+    };
+  } catch (error) {
+    // If endpoint doesn't exist, fetch all blockchain data and filter client-side
+    try {
+      const allData = await getBlockchainData();
+      if (allData && allData.chain) {
+        // Extract and transform relevant metadata
+        const userMetadata = extractUserMetadata(allData.chain, userId, email);
+        
+        return {
+          success: true,
+          metadata: userMetadata
+        };
+      }
+      throw new Error('Could not retrieve blockchain data');
+    } catch (nestedError) {
+      const errorData = handleApiError(nestedError, 'get-user-metadata');
+      return { 
+        success: false, 
+        error: errorData,
+        metadata: []
+      };
+    }
+  }
+};
+
+// Helper function to extract user metadata from blockchain
+function extractUserMetadata(chain, userId, email) {
+  const metadata = [];
+  
+  // Process each block in the chain
+  chain.forEach(block => {
+    block.transactions.forEach(tx => {
+      // Check if transaction is related to the user
+      if (isUserTransaction(tx, userId, email)) {
+        const processedMetadata = processTransactionMetadata(tx, block);
+        if (processedMetadata) {
+          metadata.push({
+            ...processedMetadata,
+            blockIndex: block.index,
+            blockHash: block.hash,
+            timestamp: tx.timestamp,
+            transactionId: tx.id
+          });
+        }
+      }
+    });
+  });
+  
+  // Sort by timestamp (newest first)
+  return metadata.sort((a, b) => b.timestamp - a.timestamp);
+}
+
+// Check if a transaction belongs to the user
+function isUserTransaction(tx, userId, email) {
+  return (
+    (tx.metadata?.studentId === userId) ||
+    (tx.metadata?.studentData?.studentId === userId) ||
+    (tx.metadata?.studentData?.email === email) ||
+    (tx.fromAddress === userId) ||
+    (tx.fromAddress === email) ||
+    (tx.toAddress === userId)
+  );
+}
+
+// Process transaction metadata into a user-friendly format
+function processTransactionMetadata(tx, block) {
+  // Skip empty metadata
+  if (!tx.metadata || Object.keys(tx.metadata).length === 0) {
+    return null;
+  }
+  
+  // Determine the type of metadata
+  let type = 'UNKNOWN';
+  let title = 'Blockchain Transaction';
+  let details = {};
+  let icon = 'database';
+  
+  // Process different metadata types
+  if (tx.metadata.action === 'MINT_NFT' || tx.metadata.type === 'ID_CARD') {
+    type = 'ID_CREATION';
+    title = 'Digital ID Created';
+    icon = 'file-plus';
+    details = {
+      tokenId: tx.metadata.tokenId || 'Unknown',
+      studentId: tx.metadata.studentId || tx.metadata.studentData?.studentId || 'Unknown',
+      createdAt: new Date(tx.timestamp).toISOString(),
+      status: 'ACTIVE'
+    };
+  } 
+  else if (tx.metadata.action === 'UPDATE_NFT') {
+    type = 'ID_UPDATE';
+    title = 'Digital ID Updated';
+    icon = 'refresh-cw';
+    details = {
+      tokenId: tx.metadata.tokenId || 'Unknown',
+      version: tx.metadata.version || 'Unknown',
+      previousVersion: tx.metadata.previousVersionId || 'Unknown',
+      updatedAt: new Date(tx.timestamp).toISOString()
+    };
+  }
+  else if (tx.metadata.action === 'CREATE' && tx.metadata.studentData) {
+    type = 'PROFILE_CREATED';
+    title = 'Student Profile Created';
+    icon = 'user-plus';
+    details = {
+      studentId: tx.metadata.studentId || 'Unknown',
+      name: `${tx.metadata.studentData.firstName || ''} ${tx.metadata.studentData.lastName || ''}`.trim(),
+      email: tx.metadata.studentData.email || 'Unknown',
+      createdAt: new Date(tx.timestamp).toISOString()
+    };
+  }
+  else if (tx.metadata.action === 'UPDATE' && tx.metadata.studentData) {
+    type = 'PROFILE_UPDATED';
+    title = 'Student Profile Updated';
+    icon = 'user-check';
+    details = {
+      studentId: tx.metadata.studentId || 'Unknown',
+      name: `${tx.metadata.studentData.firstName || ''} ${tx.metadata.studentData.lastName || ''}`.trim(),
+      email: tx.metadata.studentData.email || 'Unknown',
+      updatedAt: new Date(tx.timestamp).toISOString()
+    };
+  }
+  else if (tx.metadata.type === 'INSTITUTION_NFT_MINT') {
+    type = 'INSTITUTION_VERIFIED';
+    title = 'Institution Verification';
+    icon = 'building';
+    details = {
+      institutionId: tx.metadata.institutionId || 'Unknown',
+      institutionName: tx.metadata.institutionName || 'Unknown',
+      nftTokenId: tx.metadata.nftTokenId || 'Unknown',
+      verifiedAt: new Date(tx.timestamp).toISOString()
+    };
+  }
+  
+  return {
+    type,
+    title,
+    icon,
+    details,
+    rawMetadata: tx.metadata
+  };
+}

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useNft } from "../hooks/useNft";
-import { Eye, Database, ChevronRight, Shield } from "lucide-react";
+import { User, Eye, Database, ChevronRight, Shield, FileText } from "lucide-react";
 import StudentInfo from "../components/StudentInfo";
 import LoadingState from "../components/home/LoadingState";
 import WelcomeHeader from "../components/home/WelcomeHeader";
@@ -111,18 +111,18 @@ const HomePage = () => {
       iconBgClass: "bg-indigo-600",
       arrowColorClass: "text-indigo-600"
     },
+    // {
+    //   icon: <Database size={20} className="text-white" />,
+    //   title: "Your Blockchain",
+    //   description: "Explore blockchain technology securing your digital identity",
+    //   path: '/blockchain',
+    //   bgColorClass: "bg-gradient-to-br from-purple-50 to-purple-100",
+    //   borderColorClass: "border border-purple-200",
+    //   iconBgClass: "bg-purple-600",
+    //   arrowColorClass: "text-purple-600"
+    // },
     {
-      icon: <Database size={20} className="text-white" />,
-      title: "Your Blockchain",
-      description: "Explore blockchain technology securing your digital identity",
-      path: '/blockchain',
-      bgColorClass: "bg-gradient-to-br from-purple-50 to-purple-100",
-      borderColorClass: "border border-purple-200",
-      iconBgClass: "bg-purple-600",
-      arrowColorClass: "text-purple-600"
-    },
-    {
-      title: "Blockchain Verified",
+      title: "Learn",
       icon: <Shield size={20} className="text-white" />,
       description: "Learn how blockchain technology secures your digital identity",
       path: '/learn/blockchain', 
@@ -130,6 +130,26 @@ const HomePage = () => {
       borderColorClass: "border border-green-200",
       iconBgClass: "bg-green-600",
       arrowColorClass: "text-green-600"
+    },
+    {
+      icon: <FileText size={20} className="text-white" />,
+      title: "Your Blockchain Data",
+      description: "View your complete digital identity history on the blockchain",
+      path: '/blockchain-data',
+      bgColorClass: "bg-gradient-to-br from-amber-50 to-amber-100",
+      borderColorClass: "border border-amber-200",
+      iconBgClass: "bg-amber-600",
+      arrowColorClass: "text-amber-600"
+    },
+    {
+      icon: <User size={20} className="text-white" />,
+      title: "Your Profile Data",
+      description: "View your blockchain-verified personal information",
+      path: '/profile-data',
+      bgColorClass: "bg-gradient-to-br from-cyan-50 to-cyan-100",
+      borderColorClass: "border border-cyan-200",
+      iconBgClass: "bg-cyan-600",
+      arrowColorClass: "text-cyan-600"
     }
   ];
 
