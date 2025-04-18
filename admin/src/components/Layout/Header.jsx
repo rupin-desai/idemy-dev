@@ -52,7 +52,7 @@ const Header = () => {
     <header className="bg-white shadow-md p-4 sticky top-0 z-10">
       <div className="flex justify-between items-center">
         <div className="flex items-center">
-          <img 
+          {/* <img 
             src="/logo_full_blue.png" 
             alt="IDEMY" 
             className="h-8 md:h-10 hidden md:block" 
@@ -61,8 +61,8 @@ const Header = () => {
             src="/logo_icon_blue.png" 
             alt="IDEMY" 
             className="h-8 md:hidden" 
-          />
-          <div className="h-6 w-px bg-gray-300 mx-4"></div>
+          /> */}
+          {/* <div className="h-6 w-px bg-gray-300 mx-4"></div> */}
           <h2 className="text-xl font-semibold text-gray-800 flex items-center">
             <Database size={iconSizes.md} className="mr-2 text-blue-600" />
             Blockchain Admin

@@ -57,7 +57,7 @@ const StudentsListPage = () => {
         <h1 className="text-3xl font-bold flex items-center">
           <Users size={iconSizes.lg} className="mr-3 text-blue-600" />
           Students Management
-          <img src="/logo_icon_blue.png" alt="IDEMY" className="h-8 ml-3" />
+          {/* <img src="/logo_icon_blue.png" alt="IDEMY" className="h-8 ml-3" /> */}
         </h1>
         <Link to="/students/create">
           <motion.button

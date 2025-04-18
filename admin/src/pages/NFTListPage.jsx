@@ -35,7 +35,7 @@ const NFTListPage = () => {
         <h1 className="text-3xl font-bold flex items-center">
           <Shield size={iconSizes.lg} className="mr-3 text-blue-600" />
           NFT Management
-          <img src="/logo_icon_blue.png" alt="IDEMY" className="h-8 ml-3" />
+          {/* <img src="/logo_icon_blue.png" alt="IDEMY" className="h-8 ml-3" /> */}
         </h1>
         <Button
           onClick={fetchAllNFTs}
