@@ -14,6 +14,7 @@ class NFTService {
     this.nftsFile = path.join(this.dataDir, "nfts.json");
     this.idcardsFile = path.join(this.dataDir, "idcards.json");
     this.cardsDir = path.join(this.dataDir, "cards");
+    this.institutionNftsDir = path.join(this.dataDir, "institution_nfts");
     
     // Ensure directories exist
     if (!fs.existsSync(this.dataDir)) {
@@ -22,6 +23,10 @@ class NFTService {
     
     if (!fs.existsSync(this.cardsDir)) {
       fs.mkdirSync(this.cardsDir, { recursive: true });
+    }
+    
+    if (!fs.existsSync(this.institutionNftsDir)) {
+      fs.mkdirSync(this.institutionNftsDir, { recursive: true });
     }
     
     // Initialize collections
@@ -796,6 +801,154 @@ class NFTService {
       return idCard.toMetadata(version);
     } catch (error) {
       logger.error(`Get NFT version metadata error: ${error.message}`);
+      throw error;
+    }
+  }
+
+  async createInstitutionNFTFiles(institution, nftTokenId) {
+    try {
+      // Create directory if it doesn't exist - use the class property instead
+      if (!fs.existsSync(this.institutionNftsDir)) {
+        fs.mkdirSync(this.institutionNftsDir, { recursive: true });
+      }
+      
+      // Generate metadata
+      const metadata = {
+        name: `${institution.name} - Official Institution NFT`,
+        description: `This NFT certifies that ${institution.name} is a verified institution on the IDEMY platform.`,
+        image: `/api/nft/institution/${institution.institutionId}/image`, // URL to image
+        attributes: [
+          {
+            trait_type: "Institution Type",
+            value: institution.institutionType || "Unknown",
+          },
+          {
+            trait_type: "Founded",
+            value: institution.foundingYear ? institution.foundingYear.toString() : "Unknown",
+          },
+          {
+            trait_type: "Location",
+            value: institution.location || "Unknown",
+          },
+          {
+            trait_type: "Verification Status",
+            value: "VERIFIED",
+          },
+          {
+            trait_type: "Verified At",
+            value: new Date().toISOString(),
+          }
+        ]
+      };
+      
+      // Save metadata file
+      const metadataFilename = `${institution.institutionId}_metadata.json`;
+      const metadataPath = path.join(this.institutionNftsDir, metadataFilename);
+      fs.writeFileSync(metadataPath, JSON.stringify(metadata, null, 2));
+      
+      // Generate image
+      const { createCanvas } = require('canvas');
+      const canvas = createCanvas(800, 600);
+      const ctx = canvas.getContext('2d');
+      
+      // Fill background
+      ctx.fillStyle = '#f0f0f0';
+      ctx.fillRect(0, 0, 800, 600);
+      
+      // Add border
+      ctx.strokeStyle = '#1a5fb4';
+      ctx.lineWidth = 15;
+      ctx.strokeRect(20, 20, 760, 560);
+      
+      // Add header
+      ctx.fillStyle = '#1a5fb4';
+      ctx.font = 'bold 40px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('INSTITUTION VERIFICATION', 400, 80);
+      
+      // Add institution name
+      ctx.fillStyle = '#2c3e50';
+      ctx.font = 'bold 50px Arial';
+      const nameLines = this.wrapText(ctx, institution.name, 700);
+      let yPos = 160;
+      nameLines.forEach(line => {
+        ctx.fillText(line, 400, yPos);
+        yPos += 50;
+      });
+      
+      // Add verified text
+      ctx.fillStyle = '#27ae60';
+      ctx.font = '36px Arial';
+      ctx.fillText('VERIFIED INSTITUTION', 400, yPos + 30);
+      
+      // Add NFT ID
+      ctx.fillStyle = '#7f8c8d';
+      ctx.font = '24px Arial';
+      ctx.fillText(`NFT ID: ${nftTokenId}`, 400, yPos + 80);
+      
+      // Add verification date
+      ctx.fillText(`Verified on: ${new Date().toLocaleDateString()}`, 400, yPos + 120);
+      
+      // Add IDEMY logo/text
+      ctx.fillStyle = '#1a5fb4';
+      ctx.font = 'bold 32px Arial';
+      ctx.fillText('IDEMY VERIFICATION', 400, 520);
+      
+      // Save the image
+      const imageFilename = `${institution.institutionId}_${Date.now()}.png`;
+      const imagePath = path.join(this.institutionNftsDir, imageFilename);
+      const buffer = canvas.toBuffer('image/png');
+      fs.writeFileSync(imagePath, buffer);
+      
+      logger.info(`Created NFT files for institution ${institution.institutionId}`);
+      
+      return {
+        metadataPath,
+        metadataUri: `/api/nft/institution/${institution.institutionId}/metadata`,
+        imagePath,
+        imageUri: `/api/nft/institution/${institution.institutionId}/image`
+      };
+    } catch (error) {
+      logger.error(`Create institution NFT files error: ${error.message}`);
+      throw error;
+    }
+  }
+
+  // Add a helper function for text wrapping
+  wrapText(context, text, maxWidth) {
+    const words = text.split(' ');
+    const lines = [];
+    let currentLine = words[0];
+
+    for (let i = 1; i < words.length; i++) {
+      const word = words[i];
+      const width = context.measureText(currentLine + ' ' + word).width;
+      
+      if (width < maxWidth) {
+        currentLine += ' ' + word;
+      } else {
+        lines.push(currentLine);
+        currentLine = word;
+      }
+    }
+    
+    lines.push(currentLine);
+    return lines;
+  }
+
+  // Add this method to NFT service
+  saveNFT(nft) {
+    try {
+      // Add this NFT to the collection
+      this.nfts.set(nft.tokenId, nft);
+      
+      // Save to file
+      this.saveNFTs();
+      
+      logger.info(`NFT ${nft.tokenId} saved successfully`);
+      return nft;
+    } catch (error) {
+      logger.error(`Save NFT error: ${error.message}`);
       throw error;
     }
   }

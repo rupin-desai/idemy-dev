@@ -14,6 +14,17 @@ const axiosWithAuth = () => {
   });
 };
 
+// Helper function to handle API errors
+const handleApiError = (error, action) => {
+  console.error(`Institution API error (${action}):`, error);
+  const errorMessage = error.response?.data?.message || error.message || 'Unknown error';
+  return {
+    message: errorMessage,
+    status: error.response?.status || 500,
+    action
+  };
+};
+
 const institutionApi = {
   // Get all institutions
   getAllInstitutions: async () => {
@@ -53,8 +64,15 @@ const institutionApi = {
 
   // Mint NFT for institution
   mintInstitutionNFT: async (institutionId) => {
-    const response = await axiosWithAuth().post(`${API_BASE_URL}/institutions/mint-nft`, { institutionId });
-    return response.data;
+    try {
+      const response = await axiosWithAuth().post(
+        `${API_BASE_URL}/institutions/${institutionId}/mint-nft`
+      );
+      return response.data;
+    } catch (error) {
+      const errorData = handleApiError(error, 'mint-nft');
+      throw errorData;
+    }
   }
 };
 

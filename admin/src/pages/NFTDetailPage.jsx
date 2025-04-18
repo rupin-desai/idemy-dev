@@ -116,12 +116,28 @@ const NFTDetailPage = () => {
             <p className="font-mono">{currentNFT.tokenId}</p>
           </div>
           
-          <div>
-            <p className="text-sm text-gray-500">Student ID</p>
-            <Link to={`/students/${currentNFT.studentId}`} className="text-blue-600 hover:text-blue-900">
-              {currentNFT.studentId}
-            </Link>
-          </div>
+          {currentNFT.studentId ? (
+            // Student NFT display (existing code)
+            <div>
+              <p className="text-sm text-gray-500">Student ID</p>
+              <Link to={`/students/${currentNFT.studentId}`} className="text-blue-600 hover:underline">
+                {currentNFT.studentId}
+              </Link>
+            </div>
+          ) : currentNFT.institutionId ? (
+            // Institution NFT display
+            <div>
+              <p className="text-sm text-gray-500">Institution ID</p>
+              <Link to={`/institutions/${currentNFT.institutionId}`} className="text-blue-600 hover:underline">
+                {currentNFT.institutionId}
+              </Link>
+            </div>
+          ) : (
+            <div>
+              <p className="text-sm text-gray-500">Owner</p>
+              <p>{currentNFT.ownerAddress}</p>
+            </div>
+          )}
           
           <div>
             <p className="text-sm text-gray-500">Owner Address</p>

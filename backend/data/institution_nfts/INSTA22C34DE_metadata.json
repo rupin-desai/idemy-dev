@@ -1,0 +1,27 @@
+{
+  "name": "Kj somaiya - Official Institution NFT",
+  "description": "This NFT certifies that Kj somaiya is a verified institution on the IDEMY platform.",
+  "image": "/api/nft/institution/INSTA22C34DE/image",
+  "attributes": [
+    {
+      "trait_type": "Institution Type",
+      "value": "University"
+    },
+    {
+      "trait_type": "Founded",
+      "value": "2025"
+    },
+    {
+      "trait_type": "Location",
+      "value": "Mumbai"
+    },
+    {
+      "trait_type": "Verification Status",
+      "value": "VERIFIED"
+    },
+    {
+      "trait_type": "Verified At",
+      "value": "2025-04-18T00:42:46.462Z"
+    }
+  ]
+}

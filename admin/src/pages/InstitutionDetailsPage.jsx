@@ -10,6 +10,8 @@ import {
   Shield,
   RefreshCw,
   ClipboardList,
+  User,
+  ExternalLink,
 } from "lucide-react";
 import { useInstitutions } from "../hooks/useInstitutions";
 import Button from "../components/UI/Button";
@@ -31,12 +33,28 @@ const InstitutionDetailsPage = () => {
   const [mintingNFT, setMintingNFT] = useState(false);
   const [mintError, setMintError] = useState(null);
   const [mintSuccess, setMintSuccess] = useState(null);
+  const [nftData, setNftData] = useState(null);
 
   useEffect(() => {
     const fetchInstitution = async () => {
       try {
         const data = await getInstitutionById(institutionId);
         setInstitution(data);
+
+        // If institution has NFT, fetch NFT metadata
+        if (data.nftTokenId) {
+          try {
+            const response = await fetch(
+              `http://localhost:3000/api/nft/institution/${institutionId}/metadata`
+            );
+            if (response.ok) {
+              const metadata = await response.json();
+              setNftData(metadata);
+            }
+          } catch (err) {
+            console.error("Failed to fetch NFT metadata:", err);
+          }
+        }
       } catch (err) {
         console.error("Failed to fetch institution:", err);
       }
@@ -72,9 +90,23 @@ const InstitutionDetailsPage = () => {
           8
         )}...`
       );
+
       // Update institution to show new NFT
       const updatedInstitution = await getInstitutionById(institutionId);
       setInstitution(updatedInstitution);
+
+      // Fetch NFT metadata
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/nft/institution/${institutionId}/metadata`
+        );
+        if (response.ok) {
+          const metadata = await response.json();
+          setNftData(metadata);
+        }
+      } catch (err) {
+        console.error("Failed to fetch NFT metadata after minting:", err);
+      }
     } catch (err) {
       console.error("Failed to mint NFT:", err);
       setMintError(err.message || "Failed to mint NFT");
@@ -310,13 +342,59 @@ const InstitutionDetailsPage = () => {
                   </div>
                 </div>
 
-                <p className="text-sm text-gray-500 mb-1">NFT Token ID</p>
-                <Link
-                  to={`/nfts/${institution.nftTokenId}`}
-                  className="text-blue-600 hover:underline font-mono text-sm"
-                >
-                  {institution.nftTokenId}
-                </Link>
+                {/* NFT Image Display */}
+                {institution.nftTokenId && (
+                  <div className="mb-4 text-center">
+                    <img
+                      src={`http://localhost:3000/api/nft/institution/${
+                        institution.institutionId
+                      }/image?t=${Date.now()}`}
+                      alt="Institution Verification NFT"
+                      className="mx-auto border rounded-lg shadow-sm max-w-full h-auto mb-4"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/placeholder-nft.png";
+                      }}
+                    />
+                    <div className="mt-2">
+                      <a
+                        href={`http://localhost:3000/api/nft/institution/${institution.institutionId}/image`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline text-sm flex items-center justify-center"
+                      >
+                        <ExternalLink size={iconSizes.sm} className="mr-1" />
+                        View Full Size
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                <div className="mt-4">
+                  <p className="text-sm text-gray-500 mb-1">NFT Token ID</p>
+                  <Link
+                    to={`/nfts/${institution.nftTokenId}`}
+                    className="text-blue-600 hover:underline font-mono text-sm"
+                  >
+                    {institution.nftTokenId}
+                  </Link>
+                </div>
+
+                {nftData && (
+                  <div className="mt-4 p-3 bg-gray-50 rounded-md border border-gray-100">
+                    <h3 className="font-medium text-sm mb-2">NFT Metadata</h3>
+                    <div className="text-xs text-gray-700">
+                      <p>
+                        <span className="font-medium">Name:</span>{" "}
+                        {nftData.name}
+                      </p>
+                      <p className="mt-1">
+                        <span className="font-medium">Description:</span>{" "}
+                        {nftData.description}
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 <div className="mt-4">
                   <Link

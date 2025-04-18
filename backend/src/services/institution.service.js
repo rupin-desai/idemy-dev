@@ -237,47 +237,35 @@ class InstitutionService {
         );
       }
 
-      // Generate NFT metadata
-      const metadata = {
-        name: `${institution.name} - Official Institution NFT`,
-        description: `This NFT certifies that ${institution.name} is a verified institution on the IDEMY platform.`,
-        attributes: [
-          {
-            trait_type: "Institution Type",
-            value: institution.institutionType,
-          },
-          {
-            trait_type: "Founded",
-            value: institution.foundingYear.toString(),
-          },
-          {
-            trait_type: "Location",
-            value: institution.location,
-          },
-          {
-            trait_type: "Verification Status",
-            value: "VERIFIED",
-          },
-        ],
-      };
-
-      // Create NFT
+      // Generate NFT ID
+      const nftTokenId = require("../utils/idGenerator.utils").generateNftId();
+      
+      // Create NFT files (metadata and image)
+      const nftFiles = nftService.createInstitutionNFTFiles(institution, nftTokenId);
+      
+      // Create NFT object
       const nft = {
-        tokenId: require("../utils/idGenerator.utils").generateNftId(),
+        tokenId: nftTokenId,
         institutionId: institution.institutionId,
         ownerAddress: `INSTITUTION_${institution.institutionId}`,
-        metadata,
+        metadata: nftFiles.metadataUri,
+        imageUri: nftFiles.imageUri,
+        mintedAt: Date.now(),
+        status: 'MINTED'
       };
 
       // Record NFT minting on blockchain
       const mintTransaction = this.recordInstitutionNFTMint(institution, nft);
 
+      // Save NFT to database
+      nftService.saveNFT(nft);
+
       // Link NFT to institution
-      institution.linkToNFT(nft.tokenId);
+      institution.nftTokenId = nft.tokenId;
 
       // Update status to ACTIVE if it was PENDING
       if (institution.status === "PENDING") {
-        institution.update({ status: "ACTIVE" });
+        institution.status = "ACTIVE";
       }
 
       // Save to file
@@ -608,8 +596,7 @@ class InstitutionService {
       return transaction;
     } catch (error) {
       logger.error(
-        `Failed to record application change in blockchain: ${error.message}`
-      );
+        `Failed to record application change in blockchain: ${error.message}`);
       return null;
     }
   }

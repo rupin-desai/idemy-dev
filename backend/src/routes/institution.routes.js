@@ -17,6 +17,9 @@ router.get('/:institutionId', institutionController.getInstitutionById);
 router.post('/', ...authMiddleware, institutionController.createInstitution);
 router.put('/:institutionId', ...authMiddleware, institutionController.updateInstitution);
 router.delete('/:institutionId', ...authMiddleware, institutionController.deleteInstitution);
-router.post('/mint-nft', ...authMiddleware, institutionController.mintInstitutionNFT);
+router.post('/:institutionId/mint-nft', ...authMiddleware, institutionController.mintInstitutionNFT);
+
+// Get institution applications
+router.get('/:institutionId/applications', institutionController.getInstitutionApplications);
 
 module.exports = router;

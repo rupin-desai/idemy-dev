@@ -149,7 +149,8 @@ class InstitutionController {
 
   async mintInstitutionNFT(req, res) {
     try {
-      const { institutionId } = req.body;
+      // Get institutionId from URL params
+      const { institutionId } = req.params;
 
       if (!institutionId) {
         return res.status(400).json({
@@ -170,6 +171,33 @@ class InstitutionController {
     } catch (error) {
       logger.error(`Mint institution NFT error: ${error.message}`);
       return res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
+  async getInstitutionApplications(req, res) {
+    try {
+      const { institutionId } = req.params;
+
+      if (!institutionId) {
+        return res.status(400).json({
+          success: false,
+          message: "Institution ID is required",
+        });
+      }
+
+      const applications = institutionService.getApplicationsByInstitutionId(institutionId);
+
+      return res.status(200).json({
+        success: true,
+        count: applications.length,
+        applications,
+      });
+    } catch (error) {
+      logger.error(`Get institution applications error: ${error.message}`);
+      return res.status(500).json({
         success: false,
         message: error.message,
       });
