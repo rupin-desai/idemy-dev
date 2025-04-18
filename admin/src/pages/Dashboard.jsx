@@ -44,7 +44,7 @@ const Dashboard = () => {
     >
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold flex items-center">
-          <img src="/logo_icon_blue.png" alt="IDEMY" className="h-8 mr-3" />
+          {/* <img src="/logo_icon_blue.png" alt="IDEMY" className="h-8 mr-3" /> */}
           Blockchain Dashboard
         </h1>
         <Button

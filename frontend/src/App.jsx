@@ -6,7 +6,6 @@ import {
 } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-// Add this import for the Loader component
 import { Loader } from "lucide-react";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
@@ -20,13 +19,15 @@ import CreateIdPage from "./pages/CreateIdPage";
 import StudentRegistrationPage from "./pages/StudentRegistrationPage";
 import { useAuth } from "./hooks/useAuth";
 import { useNft } from "./hooks/useNft";
-// Add the import for BlockchainPage
 import BlockchainPage from "./pages/BlockchainPage";
-// Add the import for LearnBlockchainPage
 import LearnBlockchainPage from "./pages/LearnBlockchainPage";
-// Add this to your imports
 import BlockchainMetadataPage from "./pages/BlockchainMetadataPage";
 import UserMetadataPage from "./pages/UserMetadataPage";
+// Add the import for InstitutionRegistrationPage
+import InstitutionRegistrationPage from "./pages/InstitutionRegistrationPage";
+import InstitutionDashboardPage from "./pages/InstitutionDashboardPage";
+// Add import for the new context provider
+import { InstitutionProvider } from "./context/InstitutionContext";
 
 // 1. Create a splash screen component
 const SplashScreen = () => (
@@ -154,6 +155,26 @@ const AppRoutes = () => {
       {/* Add this route inside your Routes component */}
       <Route path="/blockchain-data" element={<BlockchainMetadataPage />} />
       <Route path="/profile-data" element={<UserMetadataPage />} />
+      <Route
+        path="/create-institution"
+        element={
+          isAuthenticated ? (
+            <InstitutionRegistrationPage />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+      <Route
+        path="/institution/:institutionId"
+        element={
+          isAuthenticated ? (
+            <InstitutionDashboardPage />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
@@ -179,16 +200,19 @@ function App() {
   return (
     <AuthProvider>
       <NftProvider>
-        <Router>
-          <div className="min-h-screen bg-slate-50">
-            <Header />
-            <main>
-              <AnimatePresence mode="wait">
-                <AppRoutes />
-              </AnimatePresence>
-            </main>
-          </div>
-        </Router>
+        {/* Wrap with the new InstitutionProvider */}
+        <InstitutionProvider>
+          <Router>
+            <div className="min-h-screen bg-slate-50">
+              <Header />
+              <main>
+                <AnimatePresence mode="wait">
+                  <AppRoutes />
+                </AnimatePresence>
+              </main>
+            </div>
+          </Router>
+        </InstitutionProvider>
       </NftProvider>
     </AuthProvider>
   );

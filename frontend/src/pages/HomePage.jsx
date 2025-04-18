@@ -317,10 +317,10 @@ const HomePage = () => {
                       <motion.button
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        onClick={() => navigate("/create-student")}
+                        onClick={() => navigate("/create-institution")} // Change this to point to the correct route
                         className="bg-purple-700 text-white px-4 py-2 rounded-md hover:bg-purple-900 transition-colors flex items-center"
                       >
-                        Register a Institution
+                        Register an Institution
                         <ArrowRight size={16} className="ml-2" />
                       </motion.button>
                     </div>
