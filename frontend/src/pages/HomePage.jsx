@@ -16,6 +16,9 @@ import {
   Info,
   ArrowRight,
   School,
+  CheckCircle2,
+  Clock,
+  XCircle,
 } from "lucide-react";
 import StudentInfo from "../components/StudentInfo";
 import LoadingState from "../components/home/LoadingState";
@@ -23,6 +26,8 @@ import WelcomeHeader from "../components/home/WelcomeHeader";
 import ErrorDisplay from "../components/home/ErrorDisplay";
 import NftCard from "../components/home/NftCard";
 import FeatureMenu from "../components/UI/FeatureMenu";
+import axios from "axios";
+import * as applicationApi from "../api/application.api";
 
 // Animation variants
 const containerVariants = {
@@ -67,6 +72,8 @@ const HomePage = () => {
   const { currentInstitution, loading: institutionLoading } = useInstitution();
   const [verifying, setVerifying] = useState(null);
   const [verificationError, setVerificationError] = useState(null);
+  const [studentApplications, setStudentApplications] = useState([]);
+  const [loadingApplications, setLoadingApplications] = useState(false);
 
   // Force refresh NFTs when profile is loaded
   useEffect(() => {
@@ -151,7 +158,7 @@ const HomePage = () => {
       iconBgClass: "bg-indigo-600",
       arrowColorClass: "text-indigo-600",
     });
-    
+
     // New feature: Apply to Institution
     homeFeatures.push({
       icon: <School size={20} className="text-white" />,
@@ -216,6 +223,50 @@ const HomePage = () => {
       arrowColorClass: "text-cyan-600",
     }
   );
+
+  useEffect(() => {
+    const fetchStudentApplications = async () => {
+      if (
+        !isAuthenticated ||
+        !isRegisteredStudent ||
+        !currentUser?.student?.studentId
+      ) {
+        return;
+      }
+
+      try {
+        setLoadingApplications(true);
+        const studentId = currentUser.student.studentId;
+        const result = await applicationApi.getApplicationsByStudentId(
+          studentId
+        );
+
+        if (result.success) {
+          console.log("Student applications:", result.applications);
+          setStudentApplications(result.applications);
+        }
+      } catch (error) {
+        console.error("Error fetching student applications:", error);
+      } finally {
+        setLoadingApplications(false);
+      }
+    };
+
+    fetchStudentApplications();
+  }, [isAuthenticated, isRegisteredStudent, currentUser?.student?.studentId]);
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "APPROVED":
+        return <CheckCircle2 size={16} className="text-green-500" />;
+      case "PENDING":
+        return <Clock size={16} className="text-yellow-500" />;
+      case "REJECTED":
+        return <XCircle size={16} className="text-red-500" />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <motion.div
@@ -302,6 +353,157 @@ const HomePage = () => {
                       )}
                     </div>
                   )}
+
+                  {/* Student Applications Section */}
+                  {!error && !nftLoading && (
+                    <div className="border-t pt-4 mt-4">
+                      <div className="flex justify-between items-center mb-3">
+                        <h2 className="font-semibold text-lg flex items-center">
+                          <Building size={18} className="mr-2 text-gray-600" />
+                          Your Institution Applications
+                        </h2>
+                        <button
+                          onClick={() => navigate("/apply-to-institution")}
+                          className="flex items-center text-sm text-indigo-600 hover:text-indigo-800 transition-colors"
+                        >
+                          Apply to Institution{" "}
+                          <ChevronRight size={16} className="ml-1" />
+                        </button>
+                      </div>
+
+                      {loadingApplications ? (
+                        <div className="flex items-center justify-center p-4 bg-gray-50 rounded-md">
+                          <div className="w-5 h-5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin mr-2"></div>
+                          <p className="text-gray-600 text-sm">
+                            Loading your applications...
+                          </p>
+                        </div>
+                      ) : studentApplications.length > 0 ? (
+                        <div className="space-y-2">
+                          {studentApplications.map((app) => {
+                            // Get institution name from the application
+                            const institutionName =
+                              app.institutionName ||
+                              app.metadata?.institutionName ||
+                              `Institution ${app.institutionId.substring(
+                                0,
+                                8
+                              )}`;
+
+                            return (
+                              <div
+                                key={app.applicationId}
+                                className={`
+                                  p-3 rounded-md flex justify-between items-center
+                                  ${
+                                    app.status === "APPROVED"
+                                      ? "bg-green-50 border border-green-100"
+                                      : ""
+                                  }
+                                  ${
+                                    app.status === "PENDING"
+                                      ? "bg-yellow-50 border border-yellow-100"
+                                      : ""
+                                  }
+                                  ${
+                                    app.status === "REJECTED"
+                                      ? "bg-red-50 border border-red-100"
+                                      : ""
+                                  }
+                                  ${
+                                    !app.status
+                                      ? "bg-gray-50 border border-gray-100"
+                                      : ""
+                                  }
+                                `}
+                              >
+                                <div className="flex items-center">
+                                  <div className="mr-3">
+                                    {getStatusIcon(app.status)}
+                                  </div>
+                                  <div>
+                                    <h4 className="font-medium text-gray-800">
+                                      {institutionName}
+                                    </h4>
+                                    <div className="text-xs text-gray-500 flex items-center">
+                                      <span>
+                                        Program:{" "}
+                                        {app.programDetails?.program ||
+                                          "General"}
+                                      </span>
+                                      <span className="mx-2">•</span>
+                                      <span>
+                                        Year: {app.programDetails?.year}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="flex items-center">
+                                  <span
+                                    className={`
+                                      text-xs font-medium px-2 py-1 rounded-full
+                                      ${
+                                        app.status === "APPROVED"
+                                          ? "bg-green-100 text-green-800"
+                                          : ""
+                                      }
+                                      ${
+                                        app.status === "PENDING"
+                                          ? "bg-yellow-100 text-yellow-800"
+                                          : ""
+                                      }
+                                      ${
+                                        app.status === "REJECTED"
+                                          ? "bg-red-100 text-red-800"
+                                          : ""
+                                      }
+                                      ${
+                                        !app.status
+                                          ? "bg-gray-100 text-gray-800"
+                                          : ""
+                                      }
+                                    `}
+                                  >
+                                    {app.status || "UNKNOWN"}
+                                  </span>
+                                  {app.transactionId && (
+                                    <span className="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full flex items-center">
+                                      <Shield size={12} className="mr-1" />{" "}
+                                      Verified
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+
+                          {/* Show a view all link if there are many applications */}
+                          {studentApplications.length > 3 && (
+                            <button
+                              onClick={() => navigate("/my-applications")}
+                              className="text-center w-full py-2 text-indigo-600 hover:text-indigo-800 text-sm"
+                            >
+                              View All Applications
+                            </button>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="bg-gray-50 border border-gray-200 rounded-md p-4 text-center">
+                          <p className="text-gray-600 mb-3">
+                            You haven't applied to any institutions yet.
+                          </p>
+                          <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => navigate("/apply-to-institution")}
+                            className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors"
+                          >
+                            Apply to an Institution
+                          </motion.button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </>
               ) : isRegisteredInstitution ? (
                 // Institution-specific content
@@ -313,13 +515,13 @@ const HomePage = () => {
                         {currentInstitution?.name || "Institution Dashboard"}
                       </h1>
                       <p className="text-slate-600 mt-1">
-                        {currentInstitution?.status === "INACTIVE" 
+                        {currentInstitution?.status === "INACTIVE"
                           ? "Your institution record was deactivated or removed"
                           : "Manage your institution and credentials"}
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="mb-6">
                     <div className="bg-purple-50 p-5 rounded-lg border border-purple-200">
                       <h3 className="text-lg font-medium mb-2 text-purple-800">
@@ -327,18 +529,27 @@ const HomePage = () => {
                       </h3>
                       {currentInstitution?.status === "INACTIVE" ? (
                         <p className="text-red-600">
-                          Your institution record appears to have been deleted or deactivated.
-                          If this was not intentional, please contact support.
+                          Your institution record appears to have been deleted
+                          or deactivated. If this was not intentional, please
+                          contact support.
                         </p>
                       ) : (
                         <p className="text-slate-700">
-                          Your institution is {currentInstitution?.status || "pending verification"}.
+                          Your institution is{" "}
+                          {currentInstitution?.status || "pending verification"}
+                          .
                         </p>
                       )}
                       <motion.button
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        onClick={() => navigate(`/institution/${currentInstitution?.institutionId || "dashboard"}`)}
+                        onClick={() =>
+                          navigate(
+                            `/institution/${
+                              currentInstitution?.institutionId || "dashboard"
+                            }`
+                          )
+                        }
                         className="mt-4 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors flex items-center"
                       >
                         {currentInstitution?.status === "INACTIVE"
