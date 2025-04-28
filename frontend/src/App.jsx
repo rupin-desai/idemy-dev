@@ -30,6 +30,8 @@ import InstitutionDashboardPage from "./pages/InstitutionDashboardPage";
 import { InstitutionProvider } from "./context/InstitutionContext";
 // Add import at the top
 import ApplyToInstitutionPage from "./pages/ApplyToInstitutionPage";
+// Add the import at the top
+import ApplicationDetailsPage from "./pages/ApplicationDetailsPage";
 
 // 1. Create a splash screen component
 const SplashScreen = () => (
@@ -188,6 +190,16 @@ const AppRoutes = () => {
             )
           ) : (
             <Navigate to="/login" replace />
+          )
+        }
+      />
+      <Route
+        path="/application/:applicationId"
+        element={
+          isAuthenticated ? (
+            <ApplicationDetailsPage />
+          ) : (
+            <Navigate to="/login" state={{ from: window.location.pathname }} />
           )
         }
       />

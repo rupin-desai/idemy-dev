@@ -372,43 +372,23 @@ const InstitutionDashboardPage = () => {
                           <p className="text-sm text-gray-600">Application ID: {app.applicationId}</p>
                           <p className="text-sm text-gray-600">Program: {app.programDetails?.program || "General"}</p>
                         </div>
-                        <div>
+                        <div className="flex items-center">
                           <span className={`
-                            px-3 py-1 rounded-full text-xs
+                            mr-3 px-3 py-1 rounded-full text-xs
                             ${app.status === 'APPROVED' ? 'bg-green-100 text-green-800' : ''}
                             ${app.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' : ''}
                             ${app.status === 'REJECTED' ? 'bg-red-100 text-red-800' : ''}
                           `}>
                             {app.status}
                           </span>
-                        </div>
-                      </div>
-                      {app.status === 'PENDING' && (
-                        <div className="mt-3 flex space-x-2">
                           <button 
-                            onClick={() => handleApproveApplication(app.applicationId)}
-                            className="bg-green-600 text-white text-xs px-3 py-1 rounded hover:bg-green-700"
-                          >
-                            Approve
-                          </button>
-                          <button 
-                            onClick={() => handleRejectApplication(app.applicationId)}
-                            className="bg-red-600 text-white text-xs px-3 py-1 rounded hover:bg-red-700"
-                          >
-                            Reject
-                          </button>
-                        </div>
-                      )}
-                      {app.status === 'APPROVED' && !app.transactionId && (
-                        <div className="mt-3">
-                          <button 
-                            onClick={() => handleVerifyApplication(app.applicationId)}
+                            onClick={() => navigate(`/application/${app.applicationId}`)}
                             className="bg-indigo-600 text-white text-xs px-3 py-1 rounded hover:bg-indigo-700"
                           >
-                            Verify on Blockchain
+                            View
                           </button>
                         </div>
-                      )}
+                      </div>
                     </div>
                   ))}
                 </div>
