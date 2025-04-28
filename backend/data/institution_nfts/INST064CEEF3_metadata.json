@@ -1,0 +1,27 @@
+{
+  "name": "Youth  - Official Institution NFT",
+  "description": "This NFT certifies that Youth  is a verified institution on the IDEMY platform.",
+  "image": "/api/nft/institution/INST064CEEF3/image",
+  "attributes": [
+    {
+      "trait_type": "Institution Type",
+      "value": "University"
+    },
+    {
+      "trait_type": "Founded",
+      "value": "2025"
+    },
+    {
+      "trait_type": "Location",
+      "value": "Cambridge"
+    },
+    {
+      "trait_type": "Verification Status",
+      "value": "VERIFIED"
+    },
+    {
+      "trait_type": "Verified At",
+      "value": "2025-04-28T17:18:01.174Z"
+    }
+  ]
+}

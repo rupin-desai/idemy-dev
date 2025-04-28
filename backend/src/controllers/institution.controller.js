@@ -1,4 +1,5 @@
 const institutionService = require("../services/institution.service");
+const transactionService = require("../services/transaction.service"); // Add this import
 const logger = require("../utils/logger.utils");
 
 class InstitutionController {
@@ -73,7 +74,31 @@ class InstitutionController {
         });
       }
 
+      // Add role to institutionData
+      institutionData.role = "institution";
+
       const institution = institutionService.createInstitution(institutionData);
+
+      // Create blockchain record similar to student registration
+      const transaction = transactionService.createTransaction(
+        institutionData.email,
+        "SYSTEM_INSTITUTION_REGISTRY",
+        0,
+        {
+          type: "INSTITUTION_REGISTRATION",
+          role: "institution",
+          action: "CREATE",
+          institutionId: institution.institutionId,
+          institutionData: {
+            ...institutionData,
+            institutionId: institution.institutionId,
+            createdAt: new Date().toISOString(),
+            status: institution.status,
+          },
+        }
+      );
+
+      transactionService.addTransaction(transaction);
 
       return res.status(201).json({
         success: true,
@@ -188,7 +213,8 @@ class InstitutionController {
         });
       }
 
-      const applications = institutionService.getApplicationsByInstitutionId(institutionId);
+      const applications =
+        institutionService.getApplicationsByInstitutionId(institutionId);
 
       return res.status(200).json({
         success: true,
@@ -197,6 +223,72 @@ class InstitutionController {
       });
     } catch (error) {
       logger.error(`Get institution applications error: ${error.message}`);
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
+  async getInstitutionByUserEmail(req, res) {
+    try {
+      // Make sure the user is authenticated
+      if (!req.user || !req.user.email) {
+        return res.status(401).json({
+          success: false,
+          message: "Authentication required",
+        });
+      }
+
+      const userEmail = req.user.email;
+      logger.info(`Looking up institution for user email: ${userEmail}`);
+
+      // Get all institutions and find the one matching the email
+      const allInstitutions = institutionService.getAllInstitutions();
+      const institution = allInstitutions.find(
+        (inst) =>
+          inst.email && inst.email.toLowerCase() === userEmail.toLowerCase()
+      );
+
+      // Check transaction records for institution role if no direct institution found
+      const hasInstitutionRole = req.user.role === 'institution';
+      logger.info(`User role: ${req.user.role}, Has institution role: ${hasInstitutionRole}`);
+
+      // Log all institution emails for debugging
+      logger.debug(`Available institution emails: ${allInstitutions.map(i => i.email).join(', ')}`);
+
+      if (institution) {
+        logger.info(`Found institution for user with email: ${userEmail}`);
+        return res.status(200).json({
+          success: true,
+          institution: institution,
+        });
+      } else if (hasInstitutionRole) {
+        // If no institution record but user has institution role
+        logger.info(`No institution record but user has institution role: ${userEmail}`);
+        return res.status(200).json({
+          success: true,
+          institution: {
+            role: 'institution',
+            email: userEmail,
+            status: 'INACTIVE',
+            name: 'Your Institution',
+            institutionId: 'dashboard'
+          },
+          message: "Institution role found but no active institution record"
+        });
+      } else {
+        // Use blockchain records as a fallback to check for institution registration
+        logger.info(`Checking blockchain records for institution role for: ${userEmail}`);
+        
+        // Return not found if nothing matches
+        return res.status(404).json({
+          success: false,
+          message: "No institution found for this user",
+        });
+      }
+    } catch (error) {
+      logger.error(`Error getting institution by user email: ${error.message}`);
       return res.status(500).json({
         success: false,
         message: error.message,

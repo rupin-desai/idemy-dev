@@ -1,4 +1,5 @@
-import React, { createContext, useState, useCallback, useContext } from "react";
+import React, { createContext, useState, useCallback, useEffect } from "react";
+import { useAuth } from "../hooks/useAuth";
 import * as institutionApi from "../api/institution.api";
 
 export const InstitutionContext = createContext();
@@ -9,6 +10,36 @@ export function InstitutionProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const { isAuthenticated, currentUser } = useAuth();
+
+  // Check if the current user is associated with an institution
+  useEffect(() => {
+    const fetchUserInstitution = async () => {
+      if (!isAuthenticated || !currentUser) return;
+
+      setLoading(true);
+      try {
+        const result = await institutionApi.getCurrentUserInstitution();
+        if (result.success) {
+          setCurrentInstitution(result.institution);
+        } else {
+          // If not found, that's expected sometimes
+          if (!result.notFound) {
+            console.error("Error fetching user institution:", result.error);
+          }
+          setCurrentInstitution(null);
+        }
+      } catch (err) {
+        console.error("Failed to fetch user institution data", err);
+        setCurrentInstitution(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserInstitution();
+  }, [isAuthenticated, currentUser]);
+
   const getAllInstitutions = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -16,27 +47,15 @@ export function InstitutionProvider({ children }) {
       const result = await institutionApi.getAllInstitutions();
       if (result.success) {
         setInstitutions(result.institutions);
+      } else {
+        setError(result.error?.message || "Failed to fetch institutions");
       }
       return result;
     } catch (err) {
-      setError("Failed to fetch institutions");
+      const errorMsg = err.message || "Failed to fetch institutions";
+      setError(errorMsg);
       console.error(err);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  const getActiveInstitutions = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const result = await institutionApi.getActiveInstitutions();
-      return result;
-    } catch (err) {
-      setError("Failed to fetch active institutions");
-      console.error(err);
-      throw err;
+      return { success: false, error: { message: errorMsg } };
     } finally {
       setLoading(false);
     }
@@ -49,12 +68,19 @@ export function InstitutionProvider({ children }) {
       const result = await institutionApi.getInstitutionById(institutionId);
       if (result.success) {
         setCurrentInstitution(result.institution);
+      } else {
+        setError(
+          result.error?.message ||
+            `Failed to fetch institution with ID: ${institutionId}`
+        );
       }
       return result;
     } catch (err) {
-      setError(`Failed to fetch institution with ID: ${institutionId}`);
+      const errorMsg =
+        err.message || `Failed to fetch institution with ID: ${institutionId}`;
+      setError(errorMsg);
       console.error(err);
-      throw err;
+      return { success: false, error: { message: errorMsg } };
     } finally {
       setLoading(false);
     }
@@ -65,69 +91,21 @@ export function InstitutionProvider({ children }) {
     setError(null);
     try {
       const result = await institutionApi.createInstitution(institutionData);
+      if (result.success) {
+        setCurrentInstitution(result.institution);
+      } else {
+        setError(result.error?.message || "Failed to create institution");
+      }
       return result;
     } catch (err) {
-      setError("Failed to create institution");
+      const errorMsg = err.message || "Failed to create institution";
+      setError(errorMsg);
       console.error(err);
-      throw err;
+      return { success: false, error: { message: errorMsg } };
     } finally {
       setLoading(false);
     }
   }, []);
-
-  const updateInstitution = useCallback(
-    async (institutionId, updates) => {
-      setLoading(true);
-      setError(null);
-      try {
-        const result = await institutionApi.updateInstitution(
-          institutionId,
-          updates
-        );
-        if (
-          result.success &&
-          currentInstitution?.institutionId === institutionId
-        ) {
-          setCurrentInstitution(result.institution);
-        }
-        return result;
-      } catch (err) {
-        setError(`Failed to update institution with ID: ${institutionId}`);
-        console.error(err);
-        throw err;
-      } finally {
-        setLoading(false);
-      }
-    },
-    [currentInstitution]
-  );
-
-  const mintInstitutionNFT = useCallback(
-    async (institutionId) => {
-      setLoading(true);
-      setError(null);
-      try {
-        const result = await institutionApi.mintInstitutionNFT(institutionId);
-        if (
-          result.success &&
-          currentInstitution?.institutionId === institutionId
-        ) {
-          setCurrentInstitution((prev) => ({
-            ...prev,
-            nftTokenId: result.nft.tokenId,
-          }));
-        }
-        return result;
-      } catch (err) {
-        setError("Failed to mint NFT for institution");
-        console.error(err);
-        throw err;
-      } finally {
-        setLoading(false);
-      }
-    },
-    [currentInstitution]
-  );
 
   const value = {
     institutions,
@@ -135,11 +113,8 @@ export function InstitutionProvider({ children }) {
     loading,
     error,
     getAllInstitutions,
-    getActiveInstitutions,
     getInstitutionById,
     createInstitution,
-    updateInstitution,
-    mintInstitutionNFT,
   };
 
   return (

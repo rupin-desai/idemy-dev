@@ -142,6 +142,11 @@ class InstitutionService {
     return institution;
   }
 
+  getInstitutionByEmail(email) {
+    const institutions = Array.from(this.institutions.values());
+    return institutions.find(inst => inst.email.toLowerCase() === email.toLowerCase()) || null;
+  }
+
   getAllInstitutions() {
     return Array.from(this.institutions.values());
   }
@@ -284,6 +289,8 @@ class InstitutionService {
       // Create metadata for the transaction
       const metadata = {
         action,
+        type: 'INSTITUTION_REGISTRATION',  // Add this type field
+        role: 'institution',               // Add the role field
         institutionId: institution.institutionId,
         institutionData: institution.toJSON(),
         previousState,
@@ -293,7 +300,7 @@ class InstitutionService {
       // Create a special transaction to record institution data change
       const systemAddress = "SYSTEM_INSTITUTION_REGISTRY";
       const transaction = transactionService.createTransaction(
-        systemAddress,
+        institution.email || systemAddress,  // Use institution email if available
         systemAddress,
         0,
         metadata

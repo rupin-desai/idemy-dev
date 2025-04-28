@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useNft } from "../hooks/useNft";
+import { useInstitution } from "../hooks/useInstitution";
 import {
   User,
   Eye,
@@ -62,6 +63,7 @@ const HomePage = () => {
     fetchUserNfts,
     verifyUserNft,
   } = useNft();
+  const { currentInstitution, loading: institutionLoading } = useInstitution();
   const [verifying, setVerifying] = useState(null);
   const [verificationError, setVerificationError] = useState(null);
 
@@ -73,8 +75,17 @@ const HomePage = () => {
     }
   }, [isAuthenticated, currentUser, profileLoaded, fetchUserNfts]);
 
+  // Debug user role and institution status
+  useEffect(() => {
+    if (currentUser) {
+      console.log("Current user role:", currentUser.role);
+      console.log("Current institution:", currentInstitution);
+    }
+  }, [currentUser, currentInstitution]);
+
   // Combined loading state - consider profile loading too
-  const isLoading = authLoading || (isAuthenticated && !profileLoaded);
+  const isLoading =
+    authLoading || (isAuthenticated && !profileLoaded) || institutionLoading;
 
   const handleVerifyNft = async (tokenId) => {
     try {
@@ -116,9 +127,16 @@ const HomePage = () => {
   const isRegisteredStudent =
     currentUser?.student?.studentId || currentUser?.role === "student";
 
+  // Check if user is registered as an institution - check both the context and the user role
+  const isRegisteredInstitution =
+    !!currentInstitution || currentUser?.role === "institution";
+
   // Define features for the FeatureMenu component
-  const homeFeatures = [
-    {
+  const homeFeatures = [];
+
+  // Add student-specific features if registered as student
+  if (isRegisteredStudent) {
+    homeFeatures.push({
       icon: <Eye size={20} className="text-white" />,
       title: "View Your NFT ID",
       description:
@@ -131,7 +149,26 @@ const HomePage = () => {
       borderColorClass: "border border-indigo-200",
       iconBgClass: "bg-indigo-600",
       arrowColorClass: "text-indigo-600",
-    },
+    });
+  }
+
+  // Add institution-specific features if registered as institution
+  if (isRegisteredInstitution) {
+    const institutionId = currentInstitution?.institutionId || "dashboard";
+    homeFeatures.unshift({
+      icon: <Building size={20} className="text-white" />,
+      title: "Institution Dashboard",
+      description: "Manage your institution and issue credentials",
+      path: `/institution/${institutionId}`,
+      bgColorClass: "bg-gradient-to-br from-purple-50 to-purple-100",
+      borderColorClass: "border border-purple-200",
+      iconBgClass: "bg-purple-600",
+      arrowColorClass: "text-purple-600",
+    });
+  }
+
+  // Add common features that everyone gets
+  homeFeatures.push(
     {
       title: "Learn",
       icon: <Shield size={20} className="text-white" />,
@@ -163,8 +200,8 @@ const HomePage = () => {
       borderColorClass: "border border-cyan-200",
       iconBgClass: "bg-cyan-600",
       arrowColorClass: "text-cyan-600",
-    },
-  ];
+    }
+  );
 
   return (
     <motion.div
@@ -183,7 +220,7 @@ const HomePage = () => {
               className="bg-white shadow-md rounded-lg p-6 mb-6"
             >
               {isRegisteredStudent ? (
-                // Normal flow for registered students
+                // Student-specific content
                 <>
                   <WelcomeHeader
                     currentUser={currentUser}
@@ -252,8 +289,54 @@ const HomePage = () => {
                     </div>
                   )}
                 </>
+              ) : isRegisteredInstitution ? (
+                // Institution-specific content
+                <>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h1 className="text-2xl font-bold flex items-center">
+                        <Building className="mr-2" size={24} />
+                        {currentInstitution?.name || "Institution Dashboard"}
+                      </h1>
+                      <p className="text-slate-600 mt-1">
+                        {currentInstitution?.status === "INACTIVE" 
+                          ? "Your institution record was deactivated or removed"
+                          : "Manage your institution and credentials"}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <div className="bg-purple-50 p-5 rounded-lg border border-purple-200">
+                      <h3 className="text-lg font-medium mb-2 text-purple-800">
+                        Quick Overview
+                      </h3>
+                      {currentInstitution?.status === "INACTIVE" ? (
+                        <p className="text-red-600">
+                          Your institution record appears to have been deleted or deactivated.
+                          If this was not intentional, please contact support.
+                        </p>
+                      ) : (
+                        <p className="text-slate-700">
+                          Your institution is {currentInstitution?.status || "pending verification"}.
+                        </p>
+                      )}
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => navigate(`/institution/${currentInstitution?.institutionId || "dashboard"}`)}
+                        className="mt-4 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors flex items-center"
+                      >
+                        {currentInstitution?.status === "INACTIVE"
+                          ? "Register New Institution"
+                          : "Go to Dashboard"}
+                        <ArrowRight size={16} className="ml-2" />
+                      </motion.button>
+                    </div>
+                  </div>
+                </>
               ) : (
-                // New section for authenticated users who are not registered as students or institutions
+                // Content for users who are neither students nor institutions
                 <>
                   <div className="flex items-center justify-between mb-4">
                     <div>
@@ -317,7 +400,7 @@ const HomePage = () => {
                       <motion.button
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        onClick={() => navigate("/create-institution")} // Change this to point to the correct route
+                        onClick={() => navigate("/create-institution")}
                         className="bg-purple-700 text-white px-4 py-2 rounded-md hover:bg-purple-900 transition-colors flex items-center"
                       >
                         Register an Institution

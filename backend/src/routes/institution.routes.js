@@ -11,7 +11,15 @@ const authMiddleware = process.env.NODE_ENV === 'development'
 // Public routes
 router.get('/', institutionController.getAllInstitutions);
 router.get('/active', institutionController.getActiveInstitutions);
-router.get('/:institutionId', institutionController.getInstitutionById);
+
+// Update your existing route to use the correct middleware
+
+// Make sure this route is BEFORE any routes with :institutionId parameter
+// to prevent route conflicts
+router.get('/me', ...authMiddleware, institutionController.getInstitutionByUserEmail);
+
+// Other routes
+router.get('/:institutionId', ...authMiddleware, institutionController.getInstitutionById);
 
 // Protected routes
 router.post('/', ...authMiddleware, institutionController.createInstitution);
