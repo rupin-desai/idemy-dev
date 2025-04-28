@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Building, Shield, AlertCircle, Users, FileCheck, Award } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import * as institutionApi from "../api/institution.api"; // Import the institution API service
+import * as applicationApi from "../api/application.api";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -34,6 +35,8 @@ const InstitutionDashboardPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [mintingNft, setMintingNft] = useState(false);
+  const [applications, setApplications] = useState([]);
+  const [loadingApplications, setLoadingApplications] = useState(false);
 
   useEffect(() => {
     const fetchInstitutionData = async () => {
@@ -58,6 +61,28 @@ const InstitutionDashboardPage = () => {
     }
   }, [institutionId]);
 
+  useEffect(() => {
+    const fetchApplications = async () => {
+      if (!institutionId) return;
+      
+      try {
+        setLoadingApplications(true);
+        const result = await applicationApi.getApplicationsByInstitutionId(institutionId);
+        if (result.success) {
+          setApplications(result.applications);
+        }
+      } catch (err) {
+        console.error("Error fetching applications:", err);
+      } finally {
+        setLoadingApplications(false);
+      }
+    };
+
+    if (institution?.nftTokenId) {
+      fetchApplications();
+    }
+  }, [institutionId, institution]);
+
   const handleMintNFT = async () => {
     try {
       setMintingNft(true);
@@ -79,6 +104,76 @@ const InstitutionDashboardPage = () => {
       alert("Failed to mint Institution NFT. Please try again.");
     } finally {
       setMintingNft(false);
+    }
+  };
+
+  const handleApproveApplication = async (applicationId) => {
+    try {
+      // Create required verification data
+      const verificationData = {
+        verifierNotes: "Approved by institution administrator",
+        programConfirmed: true,
+        startDate: new Date().toISOString(),
+        endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 4)).toISOString(), // 4 years from now
+        additionalDetails: {
+          verifiedBy: currentUser?.email || "institution admin"
+        }
+      };
+      
+      const result = await applicationApi.updateApplicationStatus(
+        applicationId, 
+        "APPROVED",
+        verificationData
+      );
+      
+      if (result.success) {
+        // Update the application in the list
+        setApplications(apps => apps.map(app => 
+          app.applicationId === applicationId ? {...app, status: "APPROVED", verificationData} : app
+        ));
+        alert("Application approved successfully");
+      } else {
+        alert(result.error?.message || "Failed to approve application");
+      }
+    } catch (err) {
+      console.error("Error approving application:", err);
+      alert("Error approving application");
+    }
+  };
+  
+  const handleRejectApplication = async (applicationId) => {
+    try {
+      const result = await applicationApi.updateApplicationStatus(applicationId, "REJECTED");
+      if (result.success) {
+        // Update the application in the list
+        setApplications(apps => apps.map(app => 
+          app.applicationId === applicationId ? {...app, status: "REJECTED"} : app
+        ));
+        alert("Application rejected");
+      } else {
+        alert("Failed to reject application");
+      }
+    } catch (err) {
+      console.error("Error rejecting application:", err);
+      alert("Error rejecting application");
+    }
+  };
+  
+  const handleVerifyApplication = async (applicationId) => {
+    try {
+      const result = await applicationApi.verifyApplication(applicationId);
+      if (result.success) {
+        // Update the application in the list
+        setApplications(apps => apps.map(app => 
+          app.applicationId === applicationId ? {...app, transactionId: result.transaction.id} : app
+        ));
+        alert("Application verified on blockchain successfully!");
+      } else {
+        alert("Failed to verify application on blockchain");
+      }
+    } catch (err) {
+      console.error("Error verifying application:", err);
+      alert("Error verifying application");
     }
   };
 
@@ -255,12 +350,69 @@ const InstitutionDashboardPage = () => {
                 Student Applications
               </h3>
               
-              <div className="bg-blue-50 p-4 rounded-md border border-blue-100">
-                <p className="text-blue-700 text-sm">
-                  No student applications yet. Once students apply to your institution, 
-                  you'll be able to review and verify their applications here.
-                </p>
-              </div>
+              {loadingApplications ? (
+                <div className="bg-blue-50 p-4 rounded-md border border-blue-100 text-center">
+                  <div className="inline-block animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent mb-2"></div>
+                  <p className="text-blue-700 text-sm">Loading applications...</p>
+                </div>
+              ) : applications.length === 0 ? (
+                <div className="bg-blue-50 p-4 rounded-md border border-blue-100">
+                  <p className="text-blue-700 text-sm">
+                    No student applications yet. Once students apply to your institution, 
+                    you'll be able to review and verify their applications here.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {applications.map(app => (
+                    <div key={app.applicationId} className="bg-white p-4 shadow-sm rounded-md border border-gray-100">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <h4 className="font-medium">{app.studentId}</h4>
+                          <p className="text-sm text-gray-600">Application ID: {app.applicationId}</p>
+                          <p className="text-sm text-gray-600">Program: {app.programDetails?.program || "General"}</p>
+                        </div>
+                        <div>
+                          <span className={`
+                            px-3 py-1 rounded-full text-xs
+                            ${app.status === 'APPROVED' ? 'bg-green-100 text-green-800' : ''}
+                            ${app.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' : ''}
+                            ${app.status === 'REJECTED' ? 'bg-red-100 text-red-800' : ''}
+                          `}>
+                            {app.status}
+                          </span>
+                        </div>
+                      </div>
+                      {app.status === 'PENDING' && (
+                        <div className="mt-3 flex space-x-2">
+                          <button 
+                            onClick={() => handleApproveApplication(app.applicationId)}
+                            className="bg-green-600 text-white text-xs px-3 py-1 rounded hover:bg-green-700"
+                          >
+                            Approve
+                          </button>
+                          <button 
+                            onClick={() => handleRejectApplication(app.applicationId)}
+                            className="bg-red-600 text-white text-xs px-3 py-1 rounded hover:bg-red-700"
+                          >
+                            Reject
+                          </button>
+                        </div>
+                      )}
+                      {app.status === 'APPROVED' && !app.transactionId && (
+                        <div className="mt-3">
+                          <button 
+                            onClick={() => handleVerifyApplication(app.applicationId)}
+                            className="bg-indigo-600 text-white text-xs px-3 py-1 rounded hover:bg-indigo-700"
+                          >
+                            Verify on Blockchain
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Placeholder for credential issuance (future feature) */}

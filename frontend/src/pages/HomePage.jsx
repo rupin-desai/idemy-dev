@@ -15,6 +15,7 @@ import {
   Building,
   Info,
   ArrowRight,
+  School,
 } from "lucide-react";
 import StudentInfo from "../components/StudentInfo";
 import LoadingState from "../components/home/LoadingState";
@@ -149,6 +150,19 @@ const HomePage = () => {
       borderColorClass: "border border-indigo-200",
       iconBgClass: "bg-indigo-600",
       arrowColorClass: "text-indigo-600",
+    });
+    
+    // New feature: Apply to Institution
+    homeFeatures.push({
+      icon: <School size={20} className="text-white" />,
+      title: "Apply to Institution",
+      description:
+        "Apply to verified institutions with your blockchain credentials",
+      path: "/apply-to-institution",
+      bgColorClass: "bg-gradient-to-br from-emerald-50 to-emerald-100",
+      borderColorClass: "border border-emerald-200",
+      iconBgClass: "bg-emerald-600",
+      arrowColorClass: "text-emerald-600",
     });
   }
 

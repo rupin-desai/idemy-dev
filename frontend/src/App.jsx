@@ -28,6 +28,8 @@ import InstitutionRegistrationPage from "./pages/InstitutionRegistrationPage";
 import InstitutionDashboardPage from "./pages/InstitutionDashboardPage";
 // Add import for the new context provider
 import { InstitutionProvider } from "./context/InstitutionContext";
+// Add import at the top
+import ApplyToInstitutionPage from "./pages/ApplyToInstitutionPage";
 
 // 1. Create a splash screen component
 const SplashScreen = () => (
@@ -170,6 +172,20 @@ const AppRoutes = () => {
         element={
           isAuthenticated ? (
             <InstitutionDashboardPage />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+      <Route
+        path="/apply-to-institution"
+        element={
+          isAuthenticated ? (
+            userIsStudent ? (
+              <ApplyToInstitutionPage />
+            ) : (
+              <Navigate to="/create-student" replace />
+            )
           ) : (
             <Navigate to="/login" replace />
           )
