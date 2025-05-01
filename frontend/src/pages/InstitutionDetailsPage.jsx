@@ -66,6 +66,21 @@ const InstitutionDetailsPage = () => {
         );
         if (instResponse.success) {
           setInstitution(instResponse.institution);
+          
+          // Fetch institution NFT data if available
+          if (instResponse.institution.nftTokenId) {
+            try {
+              const nftResponse = await fetch(
+                `http://localhost:3000/api/nft/institution/${institutionId}/metadata`
+              );
+              if (nftResponse.ok) {
+                const metadata = await nftResponse.json();
+                setNftData(metadata);
+              }
+            } catch (nftErr) {
+              console.error("Failed to fetch institution NFT metadata:", nftErr);
+            }
+          }
         } else {
           throw new Error("Failed to load institution details");
         }
@@ -511,6 +526,102 @@ const getStatusDisplay = (status) => {
             )}
           </div>
         </motion.div>
+
+        {/* Institution NFT Information */}
+        {institution.nftTokenId && (
+          <motion.div
+            variants={itemVariants}
+            className="bg-white shadow-md rounded-lg mb-6 overflow-hidden"
+          >
+            <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-6 text-white">
+              <h2 className="text-xl font-bold flex items-center">
+                <Shield className="mr-2" size={20} />
+                Blockchain Verification
+              </h2>
+            </div>
+
+            <div className="p-6">
+              <div className="flex flex-col lg:flex-row lg:items-start lg:space-x-4">
+                {/* NFT Image */}
+                <div className="mb-4 lg:mb-0 w-full lg:w-1/3 flex justify-center">
+                  <img
+                    src={`http://localhost:3000/api/nft/institution/${institutionId}/image?t=${Date.now()}`}
+                    alt="Institution Verification NFT"
+                    className="border rounded-lg shadow-sm max-w-full h-auto"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/placeholder-nft.png";
+                      console.error("Failed to load NFT image");
+                    }}
+                  />
+                </div>
+
+                {/* NFT Details */}
+                <div className="w-full lg:w-2/3">
+                  <div className="flex items-start">
+                    <Shield className="text-green-600 h-5 w-5 mt-0.5 mr-3" />
+                    <div>
+                      <p className="font-medium text-green-800">
+                        Verified Institution
+                      </p>
+                      <p className="text-sm text-green-700 mt-1">
+                        This institution has been verified on the blockchain with NFT:
+                        <span className="font-mono ml-1">
+                          {institution.nftTokenId}
+                        </span>
+                      </p>
+
+                      {nftData && (
+                        <div className="mt-4 p-3 bg-gray-50 rounded-md border border-gray-100">
+                          <h4 className="font-medium text-sm mb-2">
+                            NFT Information
+                          </h4>
+                          <div className="text-xs text-gray-700">
+                            <p>
+                              <span className="font-medium">Name:</span>{" "}
+                              {nftData.name}
+                            </p>
+                            {nftData.attributes?.map((attr, idx) => (
+                              <p key={idx} className="mt-1">
+                                <span className="font-medium">
+                                  {attr.trait_type}:
+                                </span>{" "}
+                                {attr.value}
+                              </p>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="mt-3 flex space-x-2">
+                        <button
+                          onClick={() =>
+                            window.open(
+                              `http://localhost:3000/api/nft/institution/${institutionId}/image`
+                            )
+                          }
+                          className="text-sm bg-blue-50 text-blue-700 px-3 py-1.5 rounded hover:bg-blue-100"
+                        >
+                          View Full Image
+                        </button>
+                        <button
+                          onClick={() =>
+                            window.open(
+                              `http://localhost:3000/api/nft/institution/${institutionId}/metadata`
+                            )
+                          }
+                          className="text-sm bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded hover:bg-indigo-100"
+                        >
+                          View Metadata
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Application Details */}
         {applications.length > 0 && (

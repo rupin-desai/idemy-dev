@@ -211,8 +211,12 @@ const HomePage = () => {
       borderColorClass: "border border-amber-200",
       iconBgClass: "bg-amber-600",
       arrowColorClass: "text-amber-600",
-    },
-    {
+    }
+  );
+  
+  // Add "Your Profile Data" only for non-institution users
+  if (!isRegisteredInstitution) {
+    homeFeatures.push({
       icon: <User size={20} className="text-white" />,
       title: "Your Profile Data",
       description: "View your blockchain-verified personal information",
@@ -221,8 +225,8 @@ const HomePage = () => {
       borderColorClass: "border border-cyan-200",
       iconBgClass: "bg-cyan-600",
       arrowColorClass: "text-cyan-600",
-    }
-  );
+    });
+  }
 
   useEffect(() => {
     const fetchStudentApplications = async () => {

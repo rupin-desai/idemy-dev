@@ -26,26 +26,6 @@
     {
       "trait_type": "Version",
       "value": "2"
-    },
-    {
-      "trait_type": "Verification Status",
-      "value": "VERIFIED"
-    },
-    {
-      "trait_type": "Verified Institution",
-      "value": "vaibhav clg"
-    },
-    {
-      "trait_type": "Institution ID",
-      "value": "INST416BA822"
-    },
-    {
-      "trait_type": "Program",
-      "value": "General Program"
-    },
-    {
-      "trait_type": "Verification Date",
-      "value": "2025-05-01T17:47:19.572Z"
     }
   ],
   "version": 2
