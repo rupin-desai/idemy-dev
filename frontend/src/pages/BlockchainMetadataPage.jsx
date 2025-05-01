@@ -19,7 +19,8 @@ import {
   Building,
   Clock,
   ArrowRight,
-  ExternalLink
+  ExternalLink,
+  Shield
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import * as blockchainApi from '../api/blockchain.api';
@@ -217,6 +218,9 @@ const BlockchainMetadataPage = () => {
                       case 'PROFILE_CREATED': return 'bg-purple-50 border-purple-100';
                       case 'PROFILE_UPDATED': return 'bg-indigo-50 border-indigo-100';
                       case 'INSTITUTION_VERIFIED': return 'bg-amber-50 border-amber-100';
+                      case 'STUDENT_APPLICATION': return 'bg-teal-50 border-teal-100';
+                      case 'APPLICATION_APPROVED': return 'bg-green-50 border-green-100';
+                      case 'APPLICATION_BLOCKCHAIN_VERIFIED': return 'bg-purple-50 border-purple-100';
                       default: return 'bg-gray-50 border-gray-100';
                     }
                   };
@@ -229,6 +233,9 @@ const BlockchainMetadataPage = () => {
                       case 'PROFILE_CREATED': return 'text-purple-600 bg-purple-100';
                       case 'PROFILE_UPDATED': return 'text-indigo-600 bg-indigo-100';
                       case 'INSTITUTION_VERIFIED': return 'text-amber-600 bg-amber-100';
+                      case 'STUDENT_APPLICATION': return 'text-teal-600 bg-teal-100';
+                      case 'APPLICATION_APPROVED': return 'text-green-600 bg-green-100';
+                      case 'APPLICATION_BLOCKCHAIN_VERIFIED': return 'text-purple-600 bg-purple-100';
                       default: return 'text-gray-600 bg-gray-100';
                     }
                   };
@@ -279,6 +286,35 @@ const BlockchainMetadataPage = () => {
                                 {item.type === 'INSTITUTION_VERIFIED' && (
                                   <div className="text-sm">
                                     <p>Institution verified: {item.details.institutionName}</p>
+                                  </div>
+                                )}
+                                
+                                {item.type === 'STUDENT_APPLICATION' && (
+                                  <div className="text-sm">
+                                    <p>Application to: {item.details.institutionName}</p>
+                                    <p>Program: {item.details.program}</p>
+                                    <p>Status: <span className="font-medium">{item.details.status}</span></p>
+                                  </div>
+                                )}
+                                
+                                {item.type === 'APPLICATION_APPROVED' && (
+                                  <div className="text-sm">
+                                    <p>Application to: {item.details.institutionName}</p>
+                                    <p>Program: {item.details.program}</p>
+                                    <p>Status: <span className="font-medium text-green-600">APPROVED</span></p>
+                                    <p>Verified by: {item.details.verifier}</p>
+                                  </div>
+                                )}
+
+                                {item.type === 'APPLICATION_BLOCKCHAIN_VERIFIED' && (
+                                  <div className="text-sm">
+                                    <p>Application to: {item.details.institutionName}</p>
+                                    <p>Program: {item.details.program}</p>
+                                    <p>Status: <span className="font-medium text-purple-600">BLOCKCHAIN VERIFIED</span></p>
+                                    <p>Verified by: {item.details.verifier}</p>
+                                    <p className="mt-1 text-xs text-purple-500 flex items-center">
+                                      <Shield size={12} className="mr-1" /> Secured on blockchain
+                                    </p>
                                   </div>
                                 )}
                               </div>
@@ -384,6 +420,16 @@ const BlockchainMetadataPage = () => {
                                 >
                                   <User size={14} className="mr-1" />
                                   View Profile
+                                </Link>
+                              )}
+                              
+                              {item.type === 'STUDENT_APPLICATION' && (
+                                <Link 
+                                  to={`/institution-details/${item.details.institutionId}`}
+                                  className="inline-flex items-center px-3 py-1 rounded-md bg-teal-100 text-teal-700 text-xs hover:bg-teal-200 transition-colors"
+                                >
+                                  <Building size={14} className="mr-1" />
+                                  View Institution
                                 </Link>
                               )}
                             </div>

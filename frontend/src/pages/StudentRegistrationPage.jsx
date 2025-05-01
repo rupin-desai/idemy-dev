@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { CheckCircle, AlertCircle, BookOpen, School, BookOpenCheck } from "lucide-react";
+import { CheckCircle, AlertCircle, BookOpen, UserCircle, Briefcase, Calendar, BookOpenCheck, GraduationCap } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import axios from "axios";
 
@@ -36,12 +36,13 @@ const StudentRegistrationPage = () => {
   const { currentUser, updateProfile } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    institution: "",
-    department: "",
-    enrollmentYear: new Date().getFullYear(),
-    graduationYear: new Date().getFullYear() + 4
+    firstName: currentUser?.displayName?.split(' ')[0] || '',
+    lastName: currentUser?.displayName?.split(' ')[1] || '',
+    dateOfBirth: "",
+    educationLevel: "undergraduate",
+    bio: "",
+    skills: ""
   });
-  // Removed studentId from formData as it will be auto-generated
   
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,14 +54,12 @@ const StudentRegistrationPage = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Update the handleSubmit function to ensure proper blockchain integration
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Basic validation
-    if (!formData.institution) {
-      setError("Institution is required");
+    if (!formData.firstName || !formData.lastName) {
+      setError("First and last name are required");
       return;
     }
     
@@ -68,16 +67,19 @@ const StudentRegistrationPage = () => {
     setError("");
     
     try {
-      // Call API to register student with proper data structure
+      // Call API to register student with personal information
       const response = await axios.post('http://localhost:3000/api/students/register', {
         uid: currentUser?.uid,
         email: currentUser?.email,
-        firstName: currentUser?.displayName?.split(' ')[0] || '',
-        lastName: currentUser?.displayName?.split(' ')[1] || '',
-        institution: formData.institution,
-        department: formData.department,
-        enrollmentYear: formData.enrollmentYear,
-        graduationYear: formData.graduationYear,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        dateOfBirth: formData.dateOfBirth,
+        educationLevel: formData.educationLevel,
+        bio: formData.bio,
+        skills: formData.skills,
+        // Add these required fields to satisfy API validation
+        institution: "Pending", // Default value since institutions are handled via applications now
+        department: "Pending", // Default value
         // Add explicit metadata for blockchain transaction
         metadata: {
           role: 'student',
@@ -94,10 +96,10 @@ const StudentRegistrationPage = () => {
           ...currentUser,
           student: {
             studentId: response.data.student.studentId,
-            firstName: response.data.student.firstName || currentUser?.displayName?.split(' ')[0] || '',
-            lastName: response.data.student.lastName || currentUser?.displayName?.split(' ')[1] || '',
-            institution: formData.institution,
-            department: formData.department
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            dateOfBirth: formData.dateOfBirth,
+            educationLevel: formData.educationLevel
           },
           role: 'student'
         });
@@ -131,11 +133,11 @@ const StudentRegistrationPage = () => {
           className="text-center mb-8"
         >
           <div className="inline-block p-3 bg-indigo-100 rounded-full mb-4">
-            <BookOpen size={32} className="text-indigo-600" />
+            <GraduationCap size={32} className="text-indigo-600" />
           </div>
           <h1 className="text-3xl font-bold text-gray-800">Student Registration</h1>
           <p className="text-gray-600 mt-2">
-            Register as a student to create and manage your digital ID cards
+            Register as a student to create your digital ID and apply to institutions
           </p>
         </motion.div>
 
@@ -171,76 +173,116 @@ const StudentRegistrationPage = () => {
           )}
 
           <form onSubmit={handleSubmit}>
-            <div className="mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div>
-                <label htmlFor="institution" className="block text-sm font-medium text-slate-700 mb-1">
-                  Institution <span className="text-red-500">*</span>
+                <label htmlFor="firstName" className="block text-sm font-medium text-slate-700 mb-1">
+                  First Name <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <School size={18} className="text-gray-400" />
+                    <UserCircle size={18} className="text-gray-400" />
                   </div>
                   <input
                     type="text"
-                    id="institution"
-                    name="institution"
-                    value={formData.institution}
+                    id="firstName"
+                    name="firstName"
+                    value={formData.firstName}
                     onChange={handleChange}
                     className="pl-10 block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                    placeholder="e.g., University of Example"
+                    placeholder="Your first name"
                     required
                   />
                 </div>
               </div>
-            </div>
-
-            <div className="mb-4">
-              <label htmlFor="department" className="block text-sm font-medium text-slate-700 mb-1">
-                Department/Major
-              </label>
-              <input
-                type="text"
-                id="department"
-                name="department"
-                value={formData.department}
-                onChange={handleChange}
-                className="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                placeholder="e.g., Computer Science"
-              />
+              
+              <div>
+                <label htmlFor="lastName" className="block text-sm font-medium text-slate-700 mb-1">
+                  Last Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  placeholder="Your last name"
+                  required
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div>
-                <label htmlFor="enrollmentYear" className="block text-sm font-medium text-slate-700 mb-1">
-                  Enrollment Year
+                <label htmlFor="dateOfBirth" className="block text-sm font-medium text-slate-700 mb-1">
+                  Date of Birth
                 </label>
-                <input
-                  type="number"
-                  id="enrollmentYear"
-                  name="enrollmentYear"
-                  value={formData.enrollmentYear}
-                  onChange={handleChange}
-                  min="1900"
-                  max="2099"
-                  step="1"
-                  className="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Calendar size={18} className="text-gray-400" />
+                  </div>
+                  <input
+                    type="date"
+                    id="dateOfBirth"
+                    name="dateOfBirth"
+                    value={formData.dateOfBirth}
+                    onChange={handleChange}
+                    className="pl-10 block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  />
+                </div>
               </div>
               
               <div>
-                <label htmlFor="graduationYear" className="block text-sm font-medium text-slate-700 mb-1">
-                  Expected Graduation Year
+                <label htmlFor="educationLevel" className="block text-sm font-medium text-slate-700 mb-1">
+                  Education Level
                 </label>
-                <input
-                  type="number"
-                  id="graduationYear"
-                  name="graduationYear"
-                  value={formData.graduationYear}
+                <select
+                  id="educationLevel"
+                  name="educationLevel"
+                  value={formData.educationLevel}
                   onChange={handleChange}
-                  min="1900"
-                  max="2099"
-                  step="1"
                   className="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+                  <option value="high_school">High School</option>
+                  <option value="undergraduate">Undergraduate</option>
+                  <option value="graduate">Graduate</option>
+                  <option value="phd">PhD</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+            
+            <div className="mb-6">
+              <label htmlFor="bio" className="block text-sm font-medium text-slate-700 mb-1">
+                About Me
+              </label>
+              <textarea
+                id="bio"
+                name="bio"
+                value={formData.bio}
+                onChange={handleChange}
+                rows="3"
+                className="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                placeholder="Brief introduction about yourself"
+              ></textarea>
+            </div>
+
+            <div className="mb-6">
+              <label htmlFor="skills" className="block text-sm font-medium text-slate-700 mb-1">
+                Skills & Interests
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Briefcase size={18} className="text-gray-400" />
+                </div>
+                <input
+                  type="text"
+                  id="skills"
+                  name="skills"
+                  value={formData.skills}
+                  onChange={handleChange}
+                  className="pl-10 block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  placeholder="Programming, design, research, etc. (comma separated)"
                 />
               </div>
             </div>

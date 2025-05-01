@@ -486,7 +486,7 @@ const UserMetadataPage = () => {
                   </button>
                   
                   <button
-                    onClick={() => navigate('/blockchain')}
+                    onClick={() => navigate('/blockchain-data')}
                     className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors flex items-center"
                   >
                     <Database size={16} className="mr-2" />

@@ -268,19 +268,61 @@ function isUserTransaction(tx, userId, email) {
 
 // Process transaction metadata into a user-friendly format
 function processTransactionMetadata(tx, block) {
-  // Skip empty metadata
-  if (!tx.metadata || Object.keys(tx.metadata).length === 0) {
-    return null;
-  }
-  
-  // Determine the type of metadata
   let type = 'UNKNOWN';
-  let title = 'Blockchain Transaction';
+  let title = 'Unknown Transaction';
+  let icon = 'alert-circle';
   let details = {};
-  let icon = 'database';
-  
-  // Process different metadata types
-  if (tx.metadata.action === 'MINT_NFT' || tx.metadata.type === 'ID_CARD') {
+
+  // First check for student verification type - with the new label
+  if (tx.metadata.type === 'STUDENT_VERIFICATION') {
+    type = 'APPLICATION_BLOCKCHAIN_VERIFIED';
+    title = 'Application Verified on Blockchain';
+    icon = 'shield-check'; // Using a shield icon to indicate blockchain verification
+    details = {
+      applicationId: tx.metadata.applicationId || 'Unknown',
+      studentId: tx.metadata.studentId || 'Unknown',
+      institutionId: tx.metadata.institutionId || 'Unknown',
+      institutionName: tx.metadata.institutionName || 'Unknown',
+      program: tx.metadata.programDetails?.program || 'Unknown Program',
+      status: 'VERIFIED',
+      verifiedAt: new Date(tx.metadata.verificationData?.verifiedAt || tx.timestamp).toISOString(),
+      verifier: tx.metadata.verificationData?.additionalDetails?.verifiedBy || 'Unknown'
+    };
+  }
+  // Then check for status update transactions - keep as APPLICATION_APPROVED
+  else if (tx.metadata.action === 'UPDATE_STATUS' && 
+           tx.metadata.applicationData?.status === 'APPROVED') {
+    type = 'APPLICATION_APPROVED';
+    title = 'Application Approved';
+    icon = 'check-circle';
+    details = {
+      applicationId: tx.metadata.applicationId || 'Unknown',
+      studentId: tx.metadata.studentId || 'Unknown',
+      institutionId: tx.metadata.institutionId || 'Unknown',
+      institutionName: tx.metadata.applicationData?.institutionName || 'Unknown',
+      program: tx.metadata.applicationData?.programDetails?.program || 'Unknown Program',
+      status: 'APPROVED',
+      verifiedAt: new Date(tx.metadata.applicationData?.verificationData?.verifiedAt || tx.timestamp).toISOString(),
+      verifier: tx.metadata.applicationData?.verificationData?.additionalDetails?.verifiedBy || 'Unknown'
+    };
+  }
+  // Add your existing application creation case
+  else if (tx.metadata.action === 'CREATE' && tx.metadata.applicationData) {
+    type = 'STUDENT_APPLICATION';
+    title = 'Application Submitted';
+    icon = 'file-text';
+    details = {
+      applicationId: tx.metadata.applicationId || tx.metadata.applicationData?.applicationId || 'Unknown',
+      studentId: tx.metadata.studentId || tx.metadata.applicationData?.studentId || 'Unknown',
+      institutionId: tx.metadata.institutionId || tx.metadata.applicationData?.institutionId || 'Unknown',
+      institutionName: tx.metadata.institutionName || tx.metadata.applicationData?.institutionName || 'Unknown',
+      program: tx.metadata.applicationData?.programDetails?.program || 'General',
+      status: tx.metadata.applicationData?.status || 'PENDING',
+      submittedAt: new Date(tx.timestamp).toISOString()
+    };
+  }
+  // Rest of your existing code here...
+  else if (tx.metadata.action === 'MINT_NFT' || tx.metadata.type === 'ID_CARD') {
     type = 'ID_CREATION';
     title = 'Digital ID Created';
     icon = 'file-plus';
@@ -335,7 +377,22 @@ function processTransactionMetadata(tx, block) {
       verifiedAt: new Date(tx.timestamp).toISOString()
     };
   }
-  
+  // Add this new case for application transactions
+  else if (tx.metadata.applicationId || (tx.metadata.action === 'CREATE' && tx.metadata.applicationData)) {
+    type = 'STUDENT_APPLICATION';
+    title = 'Application Submitted';
+    icon = 'file-text';
+    details = {
+      applicationId: tx.metadata.applicationId || tx.metadata.applicationData?.applicationId || 'Unknown',
+      studentId: tx.metadata.studentId || tx.metadata.applicationData?.studentId || 'Unknown',
+      institutionId: tx.metadata.institutionId || tx.metadata.applicationData?.institutionId || 'Unknown',
+      institutionName: tx.metadata.institutionName || tx.metadata.applicationData?.institutionName || 'Unknown',
+      program: tx.metadata.applicationData?.programDetails?.program || 'General',
+      status: tx.metadata.applicationData?.status || 'PENDING',
+      submittedAt: new Date(tx.timestamp).toISOString()
+    };
+  }
+
   return {
     type,
     title,

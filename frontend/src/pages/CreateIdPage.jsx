@@ -7,6 +7,27 @@ import { useAuth } from "../hooks/useAuth";
 import { useNft } from "../hooks/useNft";
 import axios from "axios";
 
+// Add this utility function at the top of your file (after imports, before component)
+const formatDateForInput = (dateString) => {
+  if (!dateString) return '';
+  
+  // If it's already in YYYY-MM-DD format, return as is
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    return dateString;
+  }
+  
+  // Otherwise, try to convert to proper format
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return ''; // Invalid date
+    
+    return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD
+  } catch (err) {
+    console.error("Error formatting date:", err);
+    return '';
+  }
+};
+
 const CreateIdPage = () => {
   const navigate = useNavigate();
   const { currentUser, isAuthenticated } = useAuth();
@@ -35,6 +56,14 @@ const CreateIdPage = () => {
         
         if (response.data.success) {
           setBlockchainInfo(response.data.studentInfo);
+          
+          // Update form data with formatted date of birth
+          if (currentUser?.student?.dateOfBirth) {
+            setFormData(prev => ({
+              ...prev,
+              dateOfBirth: formatDateForInput(currentUser.student.dateOfBirth)
+            }));
+          }
         }
       } catch (err) {
         console.error('Error fetching blockchain student info:', err);
@@ -47,7 +76,7 @@ const CreateIdPage = () => {
     if (isAuthenticated && currentUser?.email) {
       fetchBlockchainStudentInfo();
     }
-  }, [currentUser?.email, isAuthenticated]);
+  }, [currentUser, isAuthenticated]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -183,20 +212,26 @@ const CreateIdPage = () => {
                   />
                 </div>
                 
-                {/* Only date of birth is editable */}
+                {/* Date of birth is now read-only */}
                 <div className="mb-6">
                   <label htmlFor="dateOfBirth" className="block text-sm font-medium text-slate-700 mb-1">
-                    Date of Birth <span className="text-red-500">*</span>
+                    Date of Birth
                   </label>
                   <input
                     type="date"
                     id="dateOfBirth"
                     name="dateOfBirth"
                     value={formData.dateOfBirth}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                    required
+                    className="w-full px-3 py-2 border rounded-md bg-gray-50 text-gray-700"
+                    disabled
+                    readOnly
                   />
+                  {formData.dateOfBirth && (
+                    <p className="text-sm text-gray-500 mt-1">
+                      {new Date(formData.dateOfBirth).toLocaleDateString()}
+                    </p>
+                  )}
+                  <p className="text-xs text-slate-500 mt-1">This information is retrieved from your student registration</p>
                 </div>
                 
                 {/* Hidden field for ID type */}
