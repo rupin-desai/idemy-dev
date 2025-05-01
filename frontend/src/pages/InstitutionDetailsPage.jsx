@@ -138,31 +138,60 @@ const InstitutionDetailsPage = () => {
     return sortedApps[0].status;
   };
 
-  const getStatusDisplay = (status) => {
-    switch (status) {
-      case "APPROVED":
-        return {
-          icon: <CheckCircle2 size={20} className="text-green-500 mr-2" />,
-          bgColor: "bg-green-100",
-          textColor: "text-green-800",
-          text: "Approved",
-        };
-      case "REJECTED":
-        return {
-          icon: <XCircle size={20} className="text-red-500 mr-2" />,
-          bgColor: "bg-red-100",
-          textColor: "text-red-800",
-          text: "Rejected",
-        };
-      default:
-        return {
-          icon: <Clock size={20} className="text-yellow-500 mr-2" />,
-          bgColor: "bg-yellow-100",
-          textColor: "text-yellow-800",
-          text: "Pending Review",
-        };
-    }
-  };
+  // Update the getStatusDisplay function to handle all status types
+const getStatusDisplay = (status) => {
+  switch (status) {
+    case "APPROVED":
+      return {
+        icon: <CheckCircle2 size={20} className="text-green-500 mr-2" />,
+        bgColor: "bg-green-100",
+        textColor: "text-green-800",
+        text: "Approved",
+      };
+    case "REJECTED":
+      return {
+        icon: <XCircle size={20} className="text-red-500 mr-2" />,
+        bgColor: "bg-red-100",
+        textColor: "text-red-800",
+        text: "Rejected",
+      };
+    case "WITHDRAWN":
+      return {
+        icon: <XCircle size={20} className="text-gray-500 mr-2" />,
+        bgColor: "bg-gray-100",
+        textColor: "text-gray-700",
+        text: "Withdrawn",
+      };
+    case "CONFIRMED":
+      return {
+        icon: <School size={20} className="text-blue-500 mr-2" />,
+        bgColor: "bg-blue-100",
+        textColor: "text-blue-800",
+        text: "Confirmed",
+      };
+    case "COMPLETED":
+      return {
+        icon: <CheckCircle2 size={20} className="text-purple-500 mr-2" />,
+        bgColor: "bg-purple-100",
+        textColor: "text-purple-800",
+        text: "Completed",
+      };
+    case "PENDING":
+      return {
+        icon: <Clock size={20} className="text-yellow-500 mr-2" />,
+        bgColor: "bg-yellow-100",
+        textColor: "text-yellow-800",
+        text: "Pending Review",
+      };
+    default:
+      return {
+        icon: <Clock size={20} className="text-yellow-500 mr-2" />,
+        bgColor: "bg-yellow-100",
+        textColor: "text-yellow-800",
+        text: "Pending Review",
+      };
+  }
+};
 
   const handleUpdateNft = async () => {
     if (!nftData || !institution) return;
