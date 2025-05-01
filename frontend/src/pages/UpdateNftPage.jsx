@@ -8,7 +8,8 @@ import {
   AlertCircle,
   CalendarIcon,
   User,
-  School
+  School,
+  Shield,
 } from "lucide-react";
 import { useNft } from "../hooks/useNft";
 import { useAuth } from "../hooks/useAuth";
@@ -27,26 +28,25 @@ const UpdateNftPage = () => {
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
-    cardType: "STUDENT",
-    expiryDate: "",
-    status: "ACTIVE"
+    dateOfBirth: "",
+    status: "ACTIVE",
   });
   const [imageBase64, setImageBase64] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
   const formatDate = (dateString) => {
     if (!dateString) return "";
-    
+
     try {
       // Try to create a valid date
       const date = new Date(dateString);
-      
+
       // Check if date is valid
       if (isNaN(date.getTime())) {
         console.warn("Invalid date encountered:", dateString);
         return "";
       }
-      
+
       // Format the date as YYYY-MM-DD for the date input
       return date.toISOString().split("T")[0];
     } catch (err) {
@@ -68,35 +68,40 @@ const UpdateNftPage = () => {
 
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:3000/api/nft/${tokenId}`);
-        
+        const response = await axios.get(
+          `http://localhost:3000/api/nft/${tokenId}`
+        );
+
         if (response.data.success) {
           setNft(response.data.nft);
-          
+
           // Also get the ID card data
           const idCardResponse = await axios.get(
             `http://localhost:3000/api/nft/idcards/${response.data.nft.studentId}`
           );
-          
-          if (idCardResponse.data) {
-            setIdCard(idCardResponse.data);
-            setFormData({
-              cardType: idCardResponse.data.cardType || "STUDENT",
-              expiryDate: formatDate(idCardResponse.data.expiryDate),
-              status: idCardResponse.data.status || "ACTIVE"
-            });
+
+          if (idCardResponse.data.success) {
+            setIdCard(idCardResponse.data.idCard);
+
+            // Also get student data to get dateOfBirth
+            const studentResponse = await axios.get(
+              `http://localhost:3000/api/students/${response.data.nft.studentId}`
+            );
+
+            if (studentResponse.data.success) {
+              setStudentData(studentResponse.data.student);
+
+              // Set form data with the student's date of birth and card status
+              setFormData({
+                dateOfBirth: formatDate(
+                  studentResponse.data.student.dateOfBirth || ""
+                ),
+                status: idCardResponse.data.idCard.status || "ACTIVE",
+              });
+            }
           }
-          
-          // Get student data
-          const studentResponse = await axios.get(
-            `http://localhost:3000/api/students/${response.data.nft.studentId}`
-          );
-          
-          if (studentResponse.data.success) {
-            setStudentData(studentResponse.data.student);
-          }
-          
-          // Get current image and metadata for preview
+
+          // Get current image for preview
           const imageUrl = `http://localhost:3000/api/nft/idcards/${response.data.nft.studentId}/image?v=${response.data.nft.version}`;
           setImagePreview(imageUrl);
         } else {
@@ -117,7 +122,7 @@ const UpdateNftPage = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -135,19 +140,48 @@ const UpdateNftPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!nft) return;
-    
+
     try {
       setUpdating(true);
       setError(null);
-      
+
+      // Create update data that preserves institution verification if present
+      const updateData = {
+        ...formData,
+        // Preserve card type from existing card
+        cardType: idCard?.cardType || "STUDENT",
+      };
+
+      // If the card is institution-verified, preserve that data
+      if (idCard?.verificationStatus === "VERIFIED") {
+        console.log("Preserving institution verification data:", idCard);
+        
+        updateData.institution = idCard.verifiedInstitution;
+        updateData.institutionId = idCard.verifiedInstitutionId;
+        updateData.verificationDetails = idCard.verificationData;
+        
+        // Also explicitly set fields used by the ID card generator
+        if (idCard.verificationData) {
+          updateData.program = idCard.verificationData.program;
+          if (idCard.verificationData.admissionDate) {
+            updateData.enrollmentYear = new Date(idCard.verificationData.admissionDate).getFullYear();
+          }
+        }
+      }
+
+      // Always preserve cardType to avoid it getting overwritten
+      updateData.cardType = idCard?.cardType || "STUDENT";
+
+      console.log("Update data being sent:", updateData);
+
       const result = await updateNftAndCreateVersion(
         tokenId,
-        formData,
+        updateData,
         imageBase64
       );
-      
+
       if (result.success) {
         navigate(`/nft/${result.newVersion.tokenId}`);
       } else {
@@ -233,39 +267,40 @@ const UpdateNftPage = () => {
                 <span className="text-sm">{studentData?.institution}</span>
               </div>
             </div>
+
+            {/* Display institution verification info if present */}
+            {idCard?.verificationStatus === "VERIFIED" && (
+              <div className="mt-4 pt-3 border-t border-gray-200">
+                <div className="flex items-center">
+                  <Shield className="h-4 w-4 text-green-600 mr-2" />
+                  <span className="text-sm font-medium text-green-700">
+                    Verified by {idCard.verifiedInstitution}
+                  </span>
+                </div>
+                {idCard.verificationData?.program && (
+                  <div className="mt-1 text-sm text-gray-600 pl-6">
+                    Program: {idCard.verificationData.program}
+                  </div>
+                )}
+                <p className="mt-2 text-xs text-gray-500">
+                  Institution verification will be preserved in the new version
+                </p>
+              </div>
+            )}
           </div>
 
           <form onSubmit={handleSubmit}>
             <div className="space-y-4">
-              {/* ID Card Type */}
+              {/* Date of Birth */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  ID Card Type
-                </label>
-                <select
-                  name="cardType"
-                  value={formData.cardType}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  required
-                >
-                  <option value="STUDENT">Student</option>
-                  <option value="FACULTY">Faculty</option>
-                  <option value="STAFF">Staff</option>
-                  <option value="GUEST">Guest</option>
-                </select>
-              </div>
-
-              {/* Expiry Date */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Expiry Date
+                  Date of Birth
                 </label>
                 <div className="relative">
                   <input
                     type="date"
-                    name="expiryDate"
-                    value={formData.expiryDate}
+                    name="dateOfBirth"
+                    value={formData.dateOfBirth}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 pl-10"
                     required

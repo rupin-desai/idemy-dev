@@ -590,7 +590,7 @@ class NFTService {
       
       // Find all versions of this student's NFTs to determine the correct next version number
       const studentNfts = this.getAllNFTVersionsByStudentId(studentId);
-      const highestVersion = studentNfts.reduce((max, nft) => Math.max(max, nft.version), 0);
+      const highestVersion = studentNfts.reduce((max, nft) => Math.max(max, nft.version || 0), 0);
       
       // Mark the current version as not latest
       currentNft.isLatestVersion = false;
@@ -600,18 +600,17 @@ class NFTService {
       
       logger.info(`Creating new NFT version ${newVersion} for student ${studentId} (previous highest: ${highestVersion})`);
       
-      // Rest of the function remains the same...
-      // Update the ID card with new data
+      // Update the ID card with new data, preserving institution verification
       if (updateData.expiryDate) idCard.expiryDate = updateData.expiryDate;
       if (updateData.cardType) idCard.cardType = updateData.cardType;
       if (updateData.status) idCard.status = updateData.status;
       
-      // Handle institution verification
+      // Handle institution verification - only update if provided
       if (updateData.institution && updateData.institutionId) {
         idCard.setVerification(
           updateData.institutionId,
           updateData.institution,
-          {
+          updateData.verificationDetails || {
             program: updateData.program || "General Program",
             admissionDate: updateData.enrollmentYear ? `${updateData.enrollmentYear}-01-01` : new Date().toISOString(),
             institutionType: updateData.verificationDetails?.institutionType || "University",
@@ -622,6 +621,8 @@ class NFTService {
         
         logger.info(`Updated ID card with institution verification: ${updateData.institution}`);
       }
+      
+      // Important: Don't remove institution verification if not provided in update
       
       idCard.updatedAt = Date.now();
       
@@ -643,12 +644,21 @@ class NFTService {
           status: updateData.status || idCard.status,
           version: newVersion,  // Use the correct new version
           
-          // Institution verification data for the ID card image
-          institution: updateData.institution,
-          program: updateData.program,
-          enrollmentYear: updateData.enrollmentYear,
-          verificationDetails: updateData.verificationDetails || {}
+          // Institution verification data for the ID card image with proper fallbacks
+          institution: updateData.institution || idCard.verifiedInstitution,
+          program: updateData.program || idCard.verificationData?.program || "General Program",
+          enrollmentYear: updateData.enrollmentYear || 
+                         (idCard.verificationData?.admissionDate ? new Date(idCard.verificationData.admissionDate).getFullYear() : null),
+          verificationDetails: updateData.verificationDetails || idCard.verificationData || {}
         };
+        
+        // Add debug info
+        logger.info(`ID Card Data for image generation: 
+          - Institution: ${idCardData.institution}
+          - Program: ${idCardData.program}
+          - Version: ${idCardData.version}
+          - Card Type: ${idCardData.cardType}
+        `);
         
         // Generate a new image with updated data
         const imageBuffer = await idCardGenerator.generateIDCard(student, idCardData);
@@ -687,8 +697,19 @@ class NFTService {
       // Add NFT to collection
       this.nfts.set(newNft.tokenId, newNft);
       
+      // MODIFICATION HERE: Make sure to properly update nftVersions
+      if (!idCard.nftVersions) {
+        idCard.nftVersions = [];
+      }
+      if (!idCard.nftVersions.includes(currentNft.tokenId)) {
+        idCard.nftVersions.push(currentNft.tokenId); 
+      }
+      
       // Link NFT to ID card
       idCard.linkToNFT(newNft.tokenId);
+      
+      // Explicitly mark the new version as latest
+      newNft.isLatestVersion = true;
       
       // Save both collections
       this.saveNFTs();

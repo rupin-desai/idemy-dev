@@ -1,7 +1,7 @@
 {
   "name": "STUDENT ID Card - STU9F6V66Q",
   "description": "Official STUDENT ID Card for student STU9F6V66Q",
-  "image": "/api/nft/idcards/STU9F6V66Q/image?v=2",
+  "image": "/api/nft/idcards/STU9F6V66Q/image?v=3",
   "attributes": [
     {
       "trait_type": "Card Type",
@@ -25,7 +25,7 @@
     },
     {
       "trait_type": "Version",
-      "value": "2"
+      "value": "3"
     },
     {
       "trait_type": "Verification Status",
@@ -45,8 +45,8 @@
     },
     {
       "trait_type": "Verification Date",
-      "value": "2025-05-01T16:41:36.895Z"
+      "value": "2025-05-01T16:41:55.678Z"
     }
   ],
-  "version": 2
+  "version": 3
 }
