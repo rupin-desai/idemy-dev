@@ -38,7 +38,8 @@ const UserMetadataPage = () => {
         setError(null);
         
         // Get student ID if available
-        let studentId = currentUser.studentId || null;
+        let studentId = currentUser?.student?.studentId || null;
+        let applications = [];
         
         try {
           if (!studentId) {
@@ -47,16 +48,24 @@ const UserMetadataPage = () => {
               studentId = studentResponse.studentInfo.studentId;
             }
           }
+
+          // If we have a student ID, fetch applications
+          if (studentId) {
+            const appsResponse = await blockchainApi.getUserApplications(studentId);
+            if (appsResponse.success) {
+              applications = appsResponse.applications;
+            }
+          }
         } catch (studentError) {
-          console.warn('Could not fetch student ID:', studentError);
+          console.warn('Could not fetch student data or applications:', studentError);
         }
         
         // Get user metadata
         const metadataResponse = await blockchainApi.getUserMetadata(studentId, currentUser.email);
         
         if (metadataResponse.success) {
-          // Extract latest values from the metadata
-          const latestData = extractLatestMetadata(metadataResponse.metadata);
+          // Extract latest values from the metadata AND applications
+          const latestData = extractLatestMetadata(metadataResponse.metadata, applications);
           setUserData(latestData);
           
           // Extract verification info
@@ -85,7 +94,7 @@ const UserMetadataPage = () => {
   }, [isAuthenticated, currentUser]);
 
   // Extract latest metadata values from transaction history
-  const extractLatestMetadata = (metadata) => {
+  const extractLatestMetadata = (metadata, applications = []) => {
     if (!metadata || metadata.length === 0) return null;
     
     const profileData = {
@@ -93,13 +102,13 @@ const UserMetadataPage = () => {
       lastName: '',
       fullName: '',
       email: '',
-      institution: '',
-      dateOfBirth: '',
+      institution: 'Not Available',
+      dateOfBirth: 'Not Available',
       studentId: '',
-      department: '',
-      enrollmentYear: '',
-      graduationYear: '',
-      degree: '',
+      department: 'Not Available',
+      enrollmentYear: 'Not Available',
+      graduationYear: 'Not Available',
+      degree: 'Not Available',
       major: '',
       minor: '',
       gpa: '',
@@ -110,7 +119,61 @@ const UserMetadataPage = () => {
       cardType: ''
     };
     
-    // First look for profile data
+    // Find latest application with useful data (prefer APPROVED, CONFIRMED or COMPLETED status)
+    let latestApplication = null;
+    if (applications.length > 0) {
+      // First look for approved/confirmed/completed applications
+      latestApplication = applications.find(app => 
+        ['APPROVED', 'CONFIRMED', 'COMPLETED'].includes(app.status)
+      );
+      
+      // If none found, just use the latest one
+      if (!latestApplication) {
+        latestApplication = applications[0]; // Already sorted newest first
+      }
+      
+      // Extract academic information from the application
+      if (latestApplication) {
+        // Institution info
+        profileData.institution = latestApplication.institutionName || 'Not Available';
+        
+        // Program details
+        if (latestApplication.programDetails) {
+          if (latestApplication.programDetails.program) {
+            profileData.degree = latestApplication.programDetails.program;
+          }
+          
+          if (latestApplication.programDetails.department) {
+            profileData.department = latestApplication.programDetails.department;
+          }
+          
+          if (latestApplication.programDetails.year) {
+            profileData.enrollmentYear = latestApplication.programDetails.year;
+          }
+        }
+        
+        // Verification data might contain start/end dates
+        if (latestApplication.verificationData) {
+          // Start date as enrollment year if not already set
+          if (latestApplication.verificationData.startDate && !profileData.enrollmentYear) {
+            const startYear = new Date(latestApplication.verificationData.startDate).getFullYear();
+            if (!isNaN(startYear)) {
+              profileData.enrollmentYear = startYear;
+            }
+          }
+          
+          // End date as expected graduation
+          if (latestApplication.verificationData.endDate) {
+            const endYear = new Date(latestApplication.verificationData.endDate).getFullYear();
+            if (!isNaN(endYear)) {
+              profileData.graduationYear = endYear;
+            }
+          }
+        }
+      }
+    }
+    
+    // Then process blockchain metadata as before
     for (const item of metadata) {
       // Student profile data
       if (item.type === 'PROFILE_CREATED' || item.type === 'PROFILE_UPDATED') {
@@ -130,45 +193,53 @@ const UserMetadataPage = () => {
         }
         
         if (item.rawMetadata?.studentData) {
-          if (item.rawMetadata.studentData.institution && !profileData.institution) {
+          // Only use these fields if we couldn't get from applications
+          if (!latestApplication && item.rawMetadata.studentData.institution) {
             profileData.institution = item.rawMetadata.studentData.institution;
           }
           
-          if (item.rawMetadata.studentData.dateOfBirth && !profileData.dateOfBirth) {
-            profileData.dateOfBirth = new Date(item.rawMetadata.studentData.dateOfBirth).toLocaleDateString();
+          if (item.rawMetadata.studentData.dateOfBirth) {
+            try {
+              const dob = new Date(item.rawMetadata.studentData.dateOfBirth);
+              if (!isNaN(dob.getTime())) {
+                profileData.dateOfBirth = dob.toLocaleDateString();
+              }
+            } catch (e) {
+              console.error("Error parsing date:", e);
+            }
           }
           
-          if (item.rawMetadata.studentData.department && !profileData.department) {
+          if (!latestApplication && item.rawMetadata.studentData.department) {
             profileData.department = item.rawMetadata.studentData.department;
           }
           
-          if (item.rawMetadata.studentData.enrollmentYear && !profileData.enrollmentYear) {
+          if (!latestApplication && item.rawMetadata.studentData.enrollmentYear) {
             profileData.enrollmentYear = item.rawMetadata.studentData.enrollmentYear;
           }
           
-          if (item.rawMetadata.studentData.graduationYear && !profileData.graduationYear) {
+          if (!latestApplication && item.rawMetadata.studentData.graduationYear) {
             profileData.graduationYear = item.rawMetadata.studentData.graduationYear;
           }
           
-          if (item.rawMetadata.studentData.degree && !profileData.degree) {
+          if (!latestApplication && item.rawMetadata.studentData.degree) {
             profileData.degree = item.rawMetadata.studentData.degree;
           }
           
-          if (item.rawMetadata.studentData.major && !profileData.major) {
+          if (item.rawMetadata.studentData.major) {
             profileData.major = item.rawMetadata.studentData.major;
           }
           
-          if (item.rawMetadata.studentData.minor && !profileData.minor) {
+          if (item.rawMetadata.studentData.minor) {
             profileData.minor = item.rawMetadata.studentData.minor;
           }
           
-          if (item.rawMetadata.studentData.gpa && !profileData.gpa) {
+          if (item.rawMetadata.studentData.gpa) {
             profileData.gpa = item.rawMetadata.studentData.gpa;
           }
         }
       }
       
-      // ID Card data
+      // ID Card data processing (unchanged)
       if (item.type === 'ID_CREATION' || item.type === 'ID_UPDATE') {
         profileData.hasValidIdCard = true;
         
@@ -186,7 +257,17 @@ const UserMetadataPage = () => {
           }
           
           if (item.rawMetadata.cardData.expiryDate && !profileData.idCardExpiryDate) {
-            profileData.idCardExpiryDate = new Date(item.rawMetadata.cardData.expiryDate).toLocaleDateString();
+            try {
+              const expDate = new Date(item.rawMetadata.cardData.expiryDate);
+              if (!isNaN(expDate.getTime())) {
+                profileData.idCardExpiryDate = expDate.toLocaleDateString();
+              } else {
+                profileData.idCardExpiryDate = 'Not Available';
+              }
+            } catch (e) {
+              console.error("Error parsing expiry date:", e);
+              profileData.idCardExpiryDate = 'Not Available';
+            }
           }
         }
       }
@@ -301,7 +382,7 @@ const UserMetadataPage = () => {
                           <Calendar size={14} className="mr-2" />
                           Date of Birth
                         </div>
-                        <p className="font-medium">{userData.dateOfBirth || 'N/A'}</p>
+                        <p className="font-medium">{userData.dateOfBirth}</p>
                       </div>
                       
                       <div>
@@ -323,7 +404,7 @@ const UserMetadataPage = () => {
                           <School size={14} className="mr-2" />
                           Institution
                         </div>
-                        <p className="font-medium">{userData.institution || 'N/A'}</p>
+                        <p className="font-medium">{userData.institution}</p>
                       </div>
                       
                       <div>
@@ -331,7 +412,7 @@ const UserMetadataPage = () => {
                           <School size={14} className="mr-2" />
                           Department
                         </div>
-                        <p className="font-medium">{userData.department || 'N/A'}</p>
+                        <p className="font-medium">{userData.department}</p>
                       </div>
                       
                       <div className="grid grid-cols-2 gap-4">
@@ -340,7 +421,7 @@ const UserMetadataPage = () => {
                             <Calendar size={14} className="mr-2" />
                             Enrollment Year
                           </div>
-                          <p className="font-medium">{userData.enrollmentYear || 'N/A'}</p>
+                          <p className="font-medium">{userData.enrollmentYear}</p>
                         </div>
                         
                         <div>
@@ -348,7 +429,7 @@ const UserMetadataPage = () => {
                             <Calendar size={14} className="mr-2" />
                             Graduation Year
                           </div>
-                          <p className="font-medium">{userData.graduationYear || 'N/A'}</p>
+                          <p className="font-medium">{userData.graduationYear}</p>
                         </div>
                       </div>
                       

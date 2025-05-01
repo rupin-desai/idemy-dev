@@ -419,3 +419,28 @@ function processTransactionMetadata(tx, block) {
     rawMetadata: tx.metadata
   };
 }
+
+// Add this function to your blockchain.api.js file
+
+// Get user applications from latest to oldest
+export const getUserApplications = async (studentId) => {
+  try {
+    const token = localStorage.getItem('authToken');
+    const response = await axios.get(
+      `http://localhost:3000/api/applications/student/${studentId}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    
+    if (response.data.success) {
+      // Sort by submittedAt in descending order (newest first)
+      const sortedApps = response.data.applications.sort(
+        (a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)
+      );
+      return { success: true, applications: sortedApps };
+    }
+    return { success: false, applications: [] };
+  } catch (error) {
+    const errorData = handleApiError(error, 'get-user-applications');
+    return { success: false, error: errorData, applications: [] };
+  }
+};
