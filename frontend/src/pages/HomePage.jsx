@@ -362,13 +362,6 @@ const HomePage = () => {
                           <Building size={18} className="mr-2 text-gray-600" />
                           Your Institution Applications
                         </h2>
-                        <button
-                          onClick={() => navigate("/apply-to-institution")}
-                          className="flex items-center text-sm text-indigo-600 hover:text-indigo-800 transition-colors"
-                        >
-                          Apply to Institution{" "}
-                          <ChevronRight size={16} className="ml-1" />
-                        </button>
                       </div>
 
                       {loadingApplications ? (
@@ -466,12 +459,16 @@ const HomePage = () => {
                                   >
                                     {app.status || "UNKNOWN"}
                                   </span>
-                                  {app.transactionId && (
-                                    <span className="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full flex items-center">
-                                      <Shield size={12} className="mr-1" />{" "}
-                                      Verified
-                                    </span>
-                                  )}
+                                  <button
+                                    onClick={() =>
+                                      navigate(
+                                        `/institution-details/${app.institutionId}`
+                                      )
+                                    }
+                                    className="ml-2 px-3 py-1 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700"
+                                  >
+                                    View
+                                  </button>
                                 </div>
                               </div>
                             );

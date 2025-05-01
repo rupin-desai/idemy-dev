@@ -33,6 +33,8 @@ import ApplyToInstitutionPage from "./pages/ApplyToInstitutionPage";
 // Add the import at the top
 import ApplicationDetailsPage from "./pages/ApplicationDetailsPage";
 
+import InstitutionDetailsPage from "./pages/InstitutionDetailsPage";
+
 // 1. Create a splash screen component
 const SplashScreen = () => (
   <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-600 to-violet-600">
@@ -198,6 +200,16 @@ const AppRoutes = () => {
         element={
           isAuthenticated ? (
             <ApplicationDetailsPage />
+          ) : (
+            <Navigate to="/login" state={{ from: window.location.pathname }} />
+          )
+        }
+      />
+      <Route
+        path="/institution-details/:institutionId"
+        element={
+          isAuthenticated ? (
+            <InstitutionDetailsPage />
           ) : (
             <Navigate to="/login" state={{ from: window.location.pathname }} />
           )

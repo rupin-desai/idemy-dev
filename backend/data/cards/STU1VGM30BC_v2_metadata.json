@@ -1,0 +1,32 @@
+{
+  "name": "STUDENT ID Card - STU1VGM30BC",
+  "description": "Official STUDENT ID Card for student STU1VGM30BC",
+  "image": "/api/nft/idcards/STU1VGM30BC/image?v=2",
+  "attributes": [
+    {
+      "trait_type": "Card Type",
+      "value": "VERIFIED_STUDENT"
+    },
+    {
+      "trait_type": "Card Number",
+      "value": "CARD-871275-STU1VGM30BC"
+    },
+    {
+      "trait_type": "Issue Date",
+      "value": "2025-04-17T04:07:51.825Z"
+    },
+    {
+      "trait_type": "Expiry Date",
+      "value": "2025-04-26T00:00:00.000Z"
+    },
+    {
+      "trait_type": "Status",
+      "value": "ACTIVE"
+    },
+    {
+      "trait_type": "Version",
+      "value": "2"
+    }
+  ],
+  "version": 2
+}
