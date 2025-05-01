@@ -437,6 +437,68 @@ class BlockchainController {
             });
         }
     }
+
+    // Add this function to your blockchain controller
+    // If you have a class-based controller, add it as a method to the class
+
+    /**
+     * Get blockchain metadata for users or institutions
+     */
+    async getUserMetadata(req, res) {
+        try {
+            const { userId, email, institutionId } = req.query;
+            
+            if (!userId && !email && !institutionId) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'At least one of userId, email, or institutionId must be provided'
+                });
+            }
+            
+            logger.info(`Getting blockchain metadata for user: ${email || userId || institutionId}`);
+            
+            let metadata = [];
+            
+            // Safely check if this is an institution user by handling undefined req.user
+            const isInstitution = req.user && (req.user.role === 'institution' || req.user.institutionId);
+            const instId = institutionId || (isInstitution && req.user ? req.user.institutionId : null);
+            const instEmail = email || (isInstitution && req.user ? req.user.email : null);
+            
+            // Handle institution case (if institutionId provided or user is an institution)
+            if (instId || instEmail) {
+                metadata = await blockchainService.getInstitutionMetadata(instId, instEmail);
+                logger.info(`Found ${metadata.length} institution transactions`);
+            } 
+            // Handle student case
+            else {
+                const userEmail = email || (req.user ? req.user.email : null);
+                const userStudentId = userId || (req.user ? req.user.studentId : null);
+                
+                if (!userEmail && !userStudentId) {
+                    return res.status(400).json({
+                        success: false,
+                        message: 'Either email or userId is required for student metadata'
+                    });
+                }
+                
+                metadata = await blockchainService.getUserMetadata(userStudentId, userEmail);
+                logger.info(`Found ${metadata.length} student transactions`);
+            }
+            
+            return res.json({
+                success: true,
+                count: metadata.length,
+                metadata
+            });
+        } catch (error) {
+            logger.error(`Error retrieving blockchain metadata: ${error.message}`);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to retrieve blockchain metadata',
+                error: { message: error.message }
+            });
+        }
+    }
 }
 
 module.exports = new BlockchainController();

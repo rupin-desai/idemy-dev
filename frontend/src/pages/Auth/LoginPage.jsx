@@ -135,9 +135,9 @@ const LoginPage = () => {
                 <label htmlFor="password" className="block text-gray-700 text-sm font-medium">
                   Password
                 </label>
-                <Link to="/forgot-password" className="text-xs text-indigo-600 hover:text-indigo-800">
+                {/* <Link to="/forgot-password" className="text-xs text-indigo-600 hover:text-indigo-800">
                   Forgot password?
-                </Link>
+                </Link> */}
               </div>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
