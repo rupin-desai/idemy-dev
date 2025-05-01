@@ -63,17 +63,26 @@ const StudentRegistrationPage = () => {
       return;
     }
     
+    // Add validation for date of birth
+    if (!formData.dateOfBirth) {
+      setError("Date of birth is required");
+      return;
+    }
+    
     setIsSubmitting(true);
     setError("");
     
     try {
+      // Format date to ensure consistency
+      const formattedDate = formData.dateOfBirth;
+      
       // Call API to register student with personal information
       const response = await axios.post('http://localhost:3000/api/students/register', {
         uid: currentUser?.uid,
         email: currentUser?.email,
         firstName: formData.firstName,
         lastName: formData.lastName,
-        dateOfBirth: formData.dateOfBirth,
+        dateOfBirth: formattedDate,
         educationLevel: formData.educationLevel,
         bio: formData.bio,
         skills: formData.skills,
@@ -83,7 +92,8 @@ const StudentRegistrationPage = () => {
         // Add explicit metadata for blockchain transaction
         metadata: {
           role: 'student',
-          transactionType: 'STUDENT_REGISTRATION'
+          transactionType: 'STUDENT_REGISTRATION',
+          dateOfBirth: formattedDate // Add dateOfBirth explicitly in metadata
         }
       });
       
@@ -215,7 +225,7 @@ const StudentRegistrationPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div>
                 <label htmlFor="dateOfBirth" className="block text-sm font-medium text-slate-700 mb-1">
-                  Date of Birth
+                  Date of Birth <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -228,6 +238,7 @@ const StudentRegistrationPage = () => {
                     value={formData.dateOfBirth}
                     onChange={handleChange}
                     className="pl-10 block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    required
                   />
                 </div>
               </div>

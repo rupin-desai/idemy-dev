@@ -1,0 +1,27 @@
+{
+  "name": "STUDENT ID Card - STUX59X3KT",
+  "description": "Official STUDENT ID Card for student STUX59X3KT",
+  "image": "/api/nft/idcards/STUX59X3KT/image",
+  "attributes": [
+    {
+      "trait_type": "Card Type",
+      "value": "STUDENT"
+    },
+    {
+      "trait_type": "Card Number",
+      "value": "CARD-386245-STUX59X3KT"
+    },
+    {
+      "trait_type": "Issue Date",
+      "value": "2025-05-01T14:39:46.982Z"
+    },
+    {
+      "trait_type": "Expiry Date",
+      "value": "2029-04-30T14:39:46.982Z"
+    },
+    {
+      "trait_type": "Status",
+      "value": "ACTIVE"
+    }
+  ]
+}

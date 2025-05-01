@@ -139,13 +139,17 @@ class StudentController {
   async registerStudent(req, res) {
     try {
       const {
-        email,
-        institution,
-        department,
-        enrollmentYear,
-        graduationYear,
         uid,
-        metadata,
+        email,
+        firstName,
+        lastName,
+        dateOfBirth,
+        educationLevel,
+        bio,
+        skills,
+        institution = "Pending",  // Default value since institutions are handled via applications
+        department = "Pending",   // Default value
+        metadata
       } = req.body;
 
       if (!email || !institution) {
@@ -155,36 +159,36 @@ class StudentController {
         });
       }
 
-      // Generate student ID
-      const studentId = `STU${Math.random()
-        .toString(36)
-        .substring(2, 9)
-        .toUpperCase()}`;
+      // Generate or use provided student ID
+      const studentId = req.body.studentId || `STU${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
 
-      // Create student data object
+      // Create student data object with all form fields
       const studentData = {
         studentId,
+        firstName,
+        lastName,
         email,
-        firstName: req.body.firstName || "",
-        lastName: req.body.lastName || "",
+        dateOfBirth, // Add dateOfBirth as a direct property
         institution,
-        department: department || "",
-        enrollmentYear: enrollmentYear || new Date().getFullYear(),
-        graduationYear: graduationYear || new Date().getFullYear() + 4,
-        createdAt: new Date().toISOString(),
-        status: "ACTIVE",
+        department,
         firebaseUid: uid || null,
         role: "student",
+        additionalInfo: {
+          // Remove dateOfBirth from here
+          educationLevel,
+          bio,
+          skills
+        }
       };
 
       // Create student using service
       const student = await studentService.createStudent(studentData);
 
-      // Create a blockchain transaction using transactionService instead of blockchainService
+      // Create a blockchain transaction with comprehensive metadata
       const transaction = transactionService.createTransaction(
-        email, // Use email as sender
+        email,
         'SYSTEM_STUDENT_REGISTRY',
-        0, // Zero amount for student registration
+        0,
         {
           type: 'STUDENT_REGISTRATION',
           role: 'student',
@@ -192,7 +196,13 @@ class StudentController {
           studentId: studentId,
           studentData: {
             ...studentData,
-            firebaseUid: undefined // Exclude sensitive data
+            firebaseUid: undefined, // Exclude sensitive data
+            additionalInfo: {
+              dateOfBirth,
+              educationLevel,
+              bio,
+              skills
+            }
           },
           ...(metadata || {})
         }
@@ -201,18 +211,15 @@ class StudentController {
       // Add transaction to blockchain
       transactionService.addTransaction(transaction);
 
-      logger.info(
-        `Student registered and recorded in blockchain: ${studentId}`
-      );
+      logger.info(`Student registered and recorded in blockchain: ${studentId}`);
 
       return res.status(201).json({
         success: true,
         student,
-        blockchainTransaction: transaction.id,
         message: "Student registered successfully",
       });
     } catch (error) {
-      logger.error(`Student registration error: ${error.message}`);
+      logger.error(`Register student error: ${error.message}`);
       return res.status(500).json({
         success: false,
         message: error.message,
