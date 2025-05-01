@@ -193,6 +193,83 @@ class ApplicationController {
       });
     }
   }
+
+  async confirmApplication(req, res) {
+    try {
+      const { applicationId } = req.params;
+      const { studentId } = req.body;
+
+      if (!applicationId) {
+        return res.status(400).json({
+          success: false,
+          message: "Application ID is required",
+        });
+      }
+
+      if (!studentId) {
+        return res.status(400).json({
+          success: false,
+          message: "Student ID is required",
+        });
+      }
+
+      const result = institutionService.confirmApplicationAndWithdrawOthers(
+        applicationId,
+        studentId
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Application confirmed successfully",
+        confirmedApplication: result.confirmedApplication,
+        withdrawnApplications: result.withdrawnApplications,
+      });
+    } catch (error) {
+      logger.error(`Confirm application error: ${error.message}`);
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
+  async completeStudies(req, res) {
+    try {
+      const { applicationId } = req.params;
+      const { studentId } = req.body;
+
+      if (!applicationId) {
+        return res.status(400).json({
+          success: false,
+          message: "Application ID is required",
+        });
+      }
+
+      if (!studentId) {
+        return res.status(400).json({
+          success: false,
+          message: "Student ID is required",
+        });
+      }
+
+      const application = institutionService.completeStudies(
+        applicationId,
+        studentId
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Studies marked as completed",
+        application,
+      });
+    } catch (error) {
+      logger.error(`Complete studies error: ${error.message}`);
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = new ApplicationController();

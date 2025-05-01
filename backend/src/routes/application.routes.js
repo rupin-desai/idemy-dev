@@ -20,4 +20,10 @@ router.post('/', applicationController.createApplication);
 router.put('/:applicationId/status', applicationController.updateApplicationStatus);
 router.post('/:applicationId/verify', applicationController.verifyApplication);
 
+// Route to confirm an application
+router.post('/:applicationId/confirm', applicationController.confirmApplication);
+
+// Route to mark studies as completed
+router.post('/:applicationId/complete', applicationController.completeStudies);
+
 module.exports = router;

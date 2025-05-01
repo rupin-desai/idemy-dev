@@ -13,6 +13,8 @@ class Student {
     this.email = email;
     this.dateOfBirth = dateOfBirth || null;
     this.additionalInfo = additionalInfo;
+    this.institutionHistory = [];  // New field
+    this.currentInstitution = null;  // New field
     this.createdAt = Date.now();
     this.updatedAt = Date.now();
   }
@@ -29,6 +31,9 @@ class Student {
         ...updates.additionalInfo,
       };
     }
+    // Add these new lines
+    if (updates.institutionHistory) this.institutionHistory = updates.institutionHistory;
+    if (updates.currentInstitution !== undefined) this.currentInstitution = updates.currentInstitution;
 
     this.updatedAt = Date.now();
     return this;
@@ -45,6 +50,8 @@ class Student {
       institution: this.additionalInfo?.institution || null,
       department: this.additionalInfo?.department || null,
       additionalInfo: this.additionalInfo || {},
+      institutionHistory: this.institutionHistory || [],
+      currentInstitution: this.currentInstitution || null,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };

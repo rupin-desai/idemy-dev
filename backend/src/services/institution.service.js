@@ -607,6 +607,174 @@ class InstitutionService {
       return null;
     }
   }
+
+  confirmApplicationAndWithdrawOthers(applicationId, studentId) {
+    try {
+      // Get the application to confirm
+      const application = this.getApplicationById(applicationId);
+      
+      // Check if it belongs to the student
+      if (application.studentId !== studentId) {
+        throw new Error("Application does not belong to this student");
+      }
+      
+      // Check if it's in APPROVED status
+      if (application.status !== "APPROVED") {
+        throw new Error("Only approved applications can be confirmed");
+      }
+      
+      // Store previous state for blockchain record
+      const previousState = { ...application.toJSON() };
+      
+      // Confirm this application
+      application.confirmAdmission();
+      
+      // Get all other pending or approved applications for this student
+      const otherApplications = this.getApplicationsByStudentId(studentId).filter(
+        app => app.applicationId !== applicationId && 
+               (app.status === "PENDING" || app.status === "APPROVED")
+      );
+      
+      // Withdraw all other applications
+      const withdrawnApplications = [];
+      for (const app of otherApplications) {
+        const appPreviousState = { ...app.toJSON() };
+        app.withdraw();
+        withdrawnApplications.push(app);
+        
+        // Record the withdrawal in blockchain
+        this.recordApplicationChange(
+          app,
+          "WITHDRAW",
+          appPreviousState
+        );
+      }
+      
+      // Save changes
+      this.saveApplications();
+      
+      // Record confirmation in blockchain
+      this.recordApplicationChange(
+        application,
+        "CONFIRM",
+        previousState
+      );
+      
+      // Update student record with institution history
+      try {
+        const student = studentService.getStudentById(studentId);
+        
+        if (!student.institutionHistory) {
+          student.institutionHistory = [];
+        }
+        
+        // Add this institution to history
+        student.institutionHistory.push({
+          institutionId: application.institutionId,
+          institutionName: application.institutionName,
+          program: application.programDetails.program,
+          department: application.programDetails.department,
+          startDate: application.verificationData?.startDate || new Date().toISOString(),
+          status: "CURRENT",
+          confirmedAt: application.confirmedAt
+        });
+        
+        // Set this as the current institution
+        student.currentInstitution = {
+          institutionId: application.institutionId,
+          institutionName: application.institutionName,
+          applicationId: application.applicationId
+        };
+        
+        // Save student changes
+        studentService.updateStudent(studentId, {
+          institutionHistory: student.institutionHistory,
+          currentInstitution: student.currentInstitution
+        });
+        
+      } catch (studentError) {
+        logger.error(`Failed to update student history: ${studentError.message}`);
+        // Continue - we don't want to fail the confirmation if student history update fails
+      }
+      
+      return {
+        confirmedApplication: application,
+        withdrawnApplications
+      };
+    } catch (error) {
+      logger.error(`Confirm application error: ${error.message}`);
+      throw error;
+    }
+  }
+
+  completeStudies(applicationId, studentId) {
+    try {
+      // Get the application
+      const application = this.getApplicationById(applicationId);
+      
+      // Check if it belongs to the student
+      if (application.studentId !== studentId) {
+        throw new Error("Application does not belong to this student");
+      }
+      
+      // Check if it's in CONFIRMED status
+      if (application.status !== "CONFIRMED") {
+        throw new Error("Only confirmed applications can be completed");
+      }
+      
+      // Store previous state for blockchain record
+      const previousState = { ...application.toJSON() };
+      
+      // Mark studies as completed
+      application.completeStudies();
+      
+      // Save changes
+      this.saveApplications();
+      
+      // Record completion in blockchain
+      this.recordApplicationChange(
+        application,
+        "COMPLETE",
+        previousState
+      );
+      
+      // Update student record
+      try {
+        const student = studentService.getStudentById(studentId);
+        
+        // Update institution history status
+        if (student.institutionHistory) {
+          const currentInstitution = student.institutionHistory.find(
+            inst => inst.institutionId === application.institutionId &&
+                   inst.status === "CURRENT"
+          );
+          
+          if (currentInstitution) {
+            currentInstitution.status = "COMPLETED";
+            currentInstitution.completedAt = application.completedAt;
+          }
+        }
+        
+        // Clear current institution
+        student.currentInstitution = null;
+        
+        // Save student changes
+        studentService.updateStudent(studentId, {
+          institutionHistory: student.institutionHistory,
+          currentInstitution: null
+        });
+        
+      } catch (studentError) {
+        logger.error(`Failed to update student history: ${studentError.message}`);
+        // Continue execution
+      }
+      
+      return application;
+    } catch (error) {
+      logger.error(`Complete studies error: ${error.message}`);
+      throw error;
+    }
+  }
 }
 
 module.exports = new InstitutionService();

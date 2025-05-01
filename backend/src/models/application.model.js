@@ -38,6 +38,20 @@ class Application {
     this.transactionId = txId;
   }
 
+  confirmAdmission() {
+    this.status = "CONFIRMED";
+    this.confirmedAt = Date.now();
+  }
+
+  completeStudies() {
+    this.status = "COMPLETED";
+    this.completedAt = Date.now();
+  }
+
+  withdraw() {
+    this.status = "WITHDRAWN";
+  }
+
   toJSON() {
     return {
       applicationId: this.applicationId,
@@ -51,6 +65,8 @@ class Application {
       additionalInfo: this.additionalInfo,
       verificationData: this.verificationData,
       transactionId: this.transactionId,
+      confirmedAt: this.confirmedAt,
+      completedAt: this.completedAt
     };
   }
 }

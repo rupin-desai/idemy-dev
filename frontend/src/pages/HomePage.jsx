@@ -255,6 +255,7 @@ const HomePage = () => {
     fetchStudentApplications();
   }, [isAuthenticated, isRegisteredStudent, currentUser?.student?.studentId]);
 
+  // Update the getStatusIcon function to include new statuses
   const getStatusIcon = (status) => {
     switch (status) {
       case "APPROVED":
@@ -263,6 +264,12 @@ const HomePage = () => {
         return <Clock size={16} className="text-yellow-500" />;
       case "REJECTED":
         return <XCircle size={16} className="text-red-500" />;
+      case "WITHDRAWN":
+        return <XCircle size={16} className="text-gray-500" />;
+      case "CONFIRMED":
+        return <Shield size={16} className="text-blue-500" />;
+      case "COMPLETED":
+        return <CheckCircle2 size={16} className="text-purple-500" />;
       default:
         return null;
     }
@@ -404,6 +411,21 @@ const HomePage = () => {
                                       : ""
                                   }
                                   ${
+                                    app.status === "WITHDRAWN"
+                                      ? "bg-gray-50 border border-gray-200"
+                                      : ""
+                                  }
+                                  ${
+                                    app.status === "CONFIRMED"
+                                      ? "bg-blue-50 border border-blue-100"
+                                      : ""
+                                  }
+                                  ${
+                                    app.status === "COMPLETED"
+                                      ? "bg-purple-50 border border-purple-100"
+                                      : ""
+                                  }
+                                  ${
                                     !app.status
                                       ? "bg-gray-50 border border-gray-100"
                                       : ""
@@ -448,6 +470,21 @@ const HomePage = () => {
                                       ${
                                         app.status === "REJECTED"
                                           ? "bg-red-100 text-red-800"
+                                          : ""
+                                      }
+                                      ${
+                                        app.status === "WITHDRAWN"
+                                          ? "bg-gray-100 text-gray-700"
+                                          : ""
+                                      }
+                                      ${
+                                        app.status === "CONFIRMED"
+                                          ? "bg-blue-100 text-blue-800"
+                                          : ""
+                                      }
+                                      ${
+                                        app.status === "COMPLETED"
+                                          ? "bg-purple-100 text-purple-800"
                                           : ""
                                       }
                                       ${

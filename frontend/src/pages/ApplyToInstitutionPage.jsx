@@ -66,6 +66,12 @@ const ApplyToInstitutionPage = () => {
       return;
     }
 
+    // Check if student has a current institution
+    if (currentUser?.student?.currentInstitution) {
+      navigate(`/institution-details/${currentUser.student.currentInstitution.institutionId}`);
+      return;
+    }
+
     // Fetch active institutions
     const fetchInstitutions = async () => {
       try {
