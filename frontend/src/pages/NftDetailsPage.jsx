@@ -136,10 +136,67 @@ const NftDetailsPage = () => {
         try {
           const response = await axios.get(`http://localhost:3000/api/nft/student/${nft.studentId}/versions`);
           if (response.data.success) {
-            setNftVersions(response.data.versions);
+            const versions = response.data.versions;
+            
+            // Process versions to ensure correct version numbers
+            const processedVersions = versions.map(v => {
+              // Extract version from several possible sources
+              let version = v.version;
+              
+              // If version is missing or equals 1, try to extract from metadataUri
+              if (!version || version === 1) {
+                if (v.metadataUri && v.metadataUri.includes('?v=')) {
+                  const match = v.metadataUri.match(/\?v=(\d+)/);
+                  if (match && match[1]) {
+                    version = parseInt(match[1]);
+                  }
+                }
+                
+                // If we have a previousVersionId, this is at least version 2
+                if (v.previousVersionId && version === 1) {
+                  version = 2;
+                }
+              }
+              
+              return {
+                ...v,
+                version: version || 1
+              };
+            });
+            
+            // Add the current NFT to process it as well, in case its version needs correction
+            const currentNft = {...nft};
+            if (currentNft.version === 1 && currentNft.metadataUri && currentNft.metadataUri.includes('?v=')) {
+              const match = currentNft.metadataUri.match(/\?v=(\d+)/);
+              if (match && match[1]) {
+                currentNft.version = parseInt(match[1]);
+                setNft(currentNft); // Update the current NFT with correct version
+              }
+            }
+            
+            // Sort by version number (newest first)
+            const sortedVersions = [...processedVersions].sort((a, b) => b.version - a.version);
+            
+            // Log to help with debugging
+            console.log("NFT versions processed:", sortedVersions);
+            
+            // Store in localStorage to persist across sessions
+            localStorage.setItem(`nft_versions_${nft.studentId}`, JSON.stringify(sortedVersions));
+            
+            setNftVersions(sortedVersions);
           }
         } catch (err) {
           console.error("Failed to load NFT versions:", err);
+          
+          // Try to load from localStorage if API fails
+          const cachedVersions = localStorage.getItem(`nft_versions_${nft.studentId}`);
+          if (cachedVersions) {
+            try {
+              setNftVersions(JSON.parse(cachedVersions));
+            } catch (e) {
+              console.error("Failed to parse cached versions", e);
+            }
+          }
         }
       }
     };
