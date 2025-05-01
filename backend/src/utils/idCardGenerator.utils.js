@@ -99,28 +99,65 @@ class IDCardGenerator {
     ctx.fillText(`Student ID: ${student.studentId}`, 270, 160);
     ctx.fillText(`Card Number: ${idCardData.cardNumber}`, 270, 190);
 
-    if (student.additionalInfo && student.additionalInfo.program) {
-      ctx.fillText(`Program: ${student.additionalInfo.program}`, 270, 220);
-    }
-
-    if (student.additionalInfo && student.additionalInfo.department) {
-      ctx.fillText(
-        `Department: ${student.additionalInfo.department}`,
-        270,
-        250
-      );
+    // Add institution verification if available
+    if (idCardData.institution) {
+      ctx.fillStyle = "#3B82F6";  // Blue color for institution info
+      ctx.font = "bold 16px OpenSans Bold";
+      ctx.fillText(`Institution: ${idCardData.institution}`, 270, 220);
+      
+      if (idCardData.program) {
+        ctx.fillText(`Program: ${idCardData.program}`, 270, 250);
+      }
+      
+      if (idCardData.enrollmentYear) {
+        ctx.fillText(`Enrollment Year: ${idCardData.enrollmentYear}`, 270, 280);
+      }
+      
+      // Add verification seal
+      ctx.fillStyle = "#10B981";  // Green color for verification
+      ctx.font = "bold 14px OpenSans";
+      ctx.fillText("INSTITUTION VERIFIED", 270, 320);
+      
+      // Draw a verification badge
+      ctx.beginPath();
+      ctx.arc(250, 320, 10, 0, 2 * Math.PI);
+      ctx.fillStyle = "#10B981";
+      ctx.fill();
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(245, 320);
+      ctx.lineTo(250, 325);
+      ctx.lineTo(255, 315);
+      ctx.strokeStyle = "#fff";
+      ctx.stroke();
+    } else {
+      // Existing code for non-verified cards
+      if (student.additionalInfo && student.additionalInfo.program) {
+        ctx.fillText(`Program: ${student.additionalInfo.program}`, 270, 220);
+      }
+      
+      if (student.additionalInfo && student.additionalInfo.department) {
+        ctx.fillText(
+          `Department: ${student.additionalInfo.department}`,
+          270,
+          250
+        );
+      }
     }
 
     // Add validity period
+    ctx.fillStyle = "#333";
     ctx.fillText(
       `Valid From: ${new Date(idCardData.issueDate).toLocaleDateString()}`,
       270,
-      290
+      360
     );
     ctx.fillText(
       `Valid Until: ${new Date(idCardData.expiryDate).toLocaleDateString()}`,
       270,
-      320
+      390
     );
 
     // Add QR code placeholder

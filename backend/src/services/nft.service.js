@@ -588,30 +588,48 @@ class NFTService {
       
       const idCard = this.idCards.get(studentId);
       
+      // Find all versions of this student's NFTs to determine the correct next version number
+      const studentNfts = this.getAllNFTVersionsByStudentId(studentId);
+      const highestVersion = studentNfts.reduce((max, nft) => Math.max(max, nft.version), 0);
+      
       // Mark the current version as not latest
       currentNft.isLatestVersion = false;
       
-      // Calculate the new version number
-      const newVersion = currentNft.version + 1;
+      // Calculate the new version number using the highest existing version
+      const newVersion = highestVersion + 1;
       
+      logger.info(`Creating new NFT version ${newVersion} for student ${studentId} (previous highest: ${highestVersion})`);
+      
+      // Rest of the function remains the same...
       // Update the ID card with new data
       if (updateData.expiryDate) idCard.expiryDate = updateData.expiryDate;
       if (updateData.cardType) idCard.cardType = updateData.cardType;
       if (updateData.status) idCard.status = updateData.status;
+      
+      // Handle institution verification
+      if (updateData.institution && updateData.institutionId) {
+        idCard.setVerification(
+          updateData.institutionId,
+          updateData.institution,
+          {
+            program: updateData.program || "General Program",
+            admissionDate: updateData.enrollmentYear ? `${updateData.enrollmentYear}-01-01` : new Date().toISOString(),
+            institutionType: updateData.verificationDetails?.institutionType || "University",
+            verifiedAt: updateData.verificationDetails?.verifiedAt || new Date().toISOString(),
+            verifiedBy: updateData.verificationDetails?.verifiedBy || updateData.institution
+          }
+        );
+        
+        logger.info(`Updated ID card with institution verification: ${updateData.institution}`);
+      }
+      
       idCard.updatedAt = Date.now();
       
       // Save new image if provided
       let imageUri = null;
       if (imageBase64) {
         // User provided an image - save it with version marker
-        const imageBuffer = Buffer.from(imageBase64.split(',')[1], 'base64');
-        const filename = `${studentId}_v${newVersion}_${Date.now()}.png`;
-        const imagePath = path.join(this.cardsDir, filename);
-        
-        fs.writeFileSync(imagePath, imageBuffer);
-        imageUri = `/api/nft/idcards/${studentId}/image?v=${newVersion}`;
-        
-        logger.info(`Saved updated ID card image for student ${studentId} (version ${newVersion})`);
+        // ...existing code...
       } else {
         // No image provided - generate one with the updated data
         const student = studentService.getStudentById(studentId);
@@ -623,7 +641,13 @@ class NFTService {
           expiryDate: updateData.expiryDate || idCard.expiryDate,
           cardType: updateData.cardType || idCard.cardType,
           status: updateData.status || idCard.status,
-          version: newVersion
+          version: newVersion,  // Use the correct new version
+          
+          // Institution verification data for the ID card image
+          institution: updateData.institution,
+          program: updateData.program,
+          enrollmentYear: updateData.enrollmentYear,
+          verificationDetails: updateData.verificationDetails || {}
         };
         
         // Generate a new image with updated data
@@ -634,7 +658,7 @@ class NFTService {
         fs.writeFileSync(imagePath, imageBuffer);
         imageUri = `/api/nft/idcards/${studentId}/image?v=${newVersion}`;
         
-        logger.info(`Generated updated ID card image for student ${studentId} (version ${newVersion})`);
+        logger.info(`Generated updated ID card image with institution verification for student ${studentId} (version ${newVersion})`);
       }
       
       // Create metadata JSON for the new NFT version

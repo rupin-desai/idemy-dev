@@ -82,9 +82,9 @@ class IDCard {
     }
 
     // Add verification information if available
-    if (verificationData || this.verificationStatus === "VERIFIED") {
+    if (this.verificationStatus === "VERIFIED" || verificationData) {
       const data = verificationData || this.verificationData;
-
+      
       metadata.attributes.push({
         trait_type: "Verification Status",
         value: "VERIFIED",
@@ -92,37 +92,33 @@ class IDCard {
 
       metadata.attributes.push({
         trait_type: "Verified Institution",
-        value:
-          verificationData?.verifiedInstitution || this.verifiedInstitution,
+        value: this.verifiedInstitution,
+      });
+
+      // Add institution ID for blockchain verification
+      metadata.attributes.push({
+        trait_type: "Institution ID",
+        value: this.verifiedInstitutionId,
       });
 
       metadata.attributes.push({
         trait_type: "Program",
-        value: data?.program || data?.programConfirmed || "Not Specified",
+        value: data?.program || "General Program",
       });
 
-      metadata.attributes.push({
-        trait_type: "Admission Date",
-        value:
-          data?.admissionDate ||
-          new Date(data?.startDate).toISOString() ||
-          "Not Specified",
-      });
-
-      metadata.attributes.push({
-        trait_type: "Expected Graduation",
-        value:
-          data?.expectedGraduation ||
-          new Date(data?.endDate).toISOString() ||
-          "Not Specified",
-      });
-
-      metadata.attributes.push({
-        trait_type: "Verified At",
-        value: new Date(
-          verificationData?.verifiedAt || this.verifiedAt
-        ).toISOString(),
-      });
+      if (data?.admissionDate) {
+        metadata.attributes.push({
+          trait_type: "Admission Date",
+          value: data.admissionDate,
+        });
+      }
+      
+      if (this.verifiedAt) {
+        metadata.attributes.push({
+          trait_type: "Verification Date",
+          value: new Date(this.verifiedAt).toISOString(),
+        });
+      }
     }
 
     return metadata;
