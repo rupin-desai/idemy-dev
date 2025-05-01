@@ -1,0 +1,56 @@
+{
+  "name": "STUDENT ID Card - STU9F6V66Q",
+  "description": "Official STUDENT ID Card for student STU9F6V66Q",
+  "image": "/api/nft/idcards/STU9F6V66Q/image?v=2",
+  "attributes": [
+    {
+      "trait_type": "Card Type",
+      "value": "VERIFIED_STUDENT"
+    },
+    {
+      "trait_type": "Card Number",
+      "value": "CARD-556275-STU9F6V66Q"
+    },
+    {
+      "trait_type": "Issue Date",
+      "value": "2025-05-01T15:15:56.298Z"
+    },
+    {
+      "trait_type": "Expiry Date",
+      "value": "2029-04-30T15:15:56.298Z"
+    },
+    {
+      "trait_type": "Status",
+      "value": "ACTIVE"
+    },
+    {
+      "trait_type": "Version",
+      "value": "2"
+    },
+    {
+      "trait_type": "Verification Status",
+      "value": "VERIFIED"
+    },
+    {
+      "trait_type": "Verified Institution",
+      "value": "Phil College"
+    },
+    {
+      "trait_type": "Institution ID",
+      "value": "INST68D962FE"
+    },
+    {
+      "trait_type": "Program",
+      "value": "Computer Science"
+    },
+    {
+      "trait_type": "Admission Date",
+      "value": "2025-01-01"
+    },
+    {
+      "trait_type": "Verification Date",
+      "value": "2025-05-01T15:19:07.989Z"
+    }
+  ],
+  "version": 2
+}

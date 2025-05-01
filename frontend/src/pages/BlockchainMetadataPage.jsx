@@ -221,6 +221,7 @@ const BlockchainMetadataPage = () => {
                       case 'STUDENT_APPLICATION': return 'bg-teal-50 border-teal-100';
                       case 'APPLICATION_APPROVED': return 'bg-green-50 border-green-100';
                       case 'APPLICATION_BLOCKCHAIN_VERIFIED': return 'bg-purple-50 border-purple-100';
+                      case 'ID_INSTITUTION_VERIFIED': return 'bg-indigo-50 border-indigo-200';
                       default: return 'bg-gray-50 border-gray-100';
                     }
                   };
@@ -236,6 +237,7 @@ const BlockchainMetadataPage = () => {
                       case 'STUDENT_APPLICATION': return 'text-teal-600 bg-teal-100';
                       case 'APPLICATION_APPROVED': return 'text-green-600 bg-green-100';
                       case 'APPLICATION_BLOCKCHAIN_VERIFIED': return 'text-purple-600 bg-purple-100';
+                      case 'ID_INSTITUTION_VERIFIED': return 'text-indigo-600 bg-indigo-100';
                       default: return 'text-gray-600 bg-gray-100';
                     }
                   };
@@ -314,6 +316,16 @@ const BlockchainMetadataPage = () => {
                                     <p>Verified by: {item.details.verifier}</p>
                                     <p className="mt-1 text-xs text-purple-500 flex items-center">
                                       <Shield size={12} className="mr-1" /> Secured on blockchain
+                                    </p>
+                                  </div>
+                                )}
+
+                                {item.type === 'ID_INSTITUTION_VERIFIED' && (
+                                  <div className="text-sm">
+                                    <p>ID Card verified by institution: {item.details.institution}</p>
+                                    <p>Updated to version: {item.details.version}</p>
+                                    <p className="flex items-center mt-1 text-xs text-indigo-600">
+                                      <Shield size={12} className="mr-1" /> Institution Verified
                                     </p>
                                   </div>
                                 )}
@@ -430,6 +442,16 @@ const BlockchainMetadataPage = () => {
                                 >
                                   <Building size={14} className="mr-1" />
                                   View Institution
+                                </Link>
+                              )}
+
+                              {item.type === 'ID_INSTITUTION_VERIFIED' && (
+                                <Link 
+                                  to={`/nft/${item.details.tokenId}`}
+                                  className="inline-flex items-center px-3 py-1 rounded-md bg-indigo-100 text-indigo-700 text-xs hover:bg-indigo-200 transition-colors"
+                                >
+                                  <Shield size={14} className="mr-1" />
+                                  View Verified ID
                                 </Link>
                               )}
                             </div>

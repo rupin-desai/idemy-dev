@@ -321,7 +321,36 @@ function processTransactionMetadata(tx, block) {
       submittedAt: new Date(tx.timestamp).toISOString()
     };
   }
-  // Rest of your existing code here...
+  // First check for UPDATE_NFT action
+  else if (tx.metadata.action === 'UPDATE_NFT') {
+    // Check if this is an institution verification update
+    if (tx.metadata.institution || tx.metadata.cardData?.institution || 
+        tx.metadata.verificationDetails || tx.metadata.cardData?.verificationDetails) {
+      // This is an institution verification update
+      type = 'ID_INSTITUTION_VERIFIED';
+      title = 'ID Verified by Institution';
+      icon = 'shield-check';
+      details = {
+        tokenId: tx.metadata.tokenId || 'Unknown',
+        version: tx.metadata.version || 'Unknown',
+        previousVersion: tx.metadata.previousVersionId || 'Unknown',
+        institution: tx.metadata.institution || tx.metadata.cardData?.institution || 'Verified Institution',
+        updatedAt: new Date(tx.timestamp).toISOString()
+      };
+    } else {
+      // Regular ID update
+      type = 'ID_UPDATE';
+      title = 'Digital ID Updated';
+      icon = 'refresh-cw';
+      details = {
+        tokenId: tx.metadata.tokenId || 'Unknown',
+        version: tx.metadata.version || 'Unknown',
+        previousVersion: tx.metadata.previousVersionId || 'Unknown',
+        updatedAt: new Date(tx.timestamp).toISOString()
+      };
+    }
+  }
+  // Then check for MINT_NFT action or ID_CARD type
   else if (tx.metadata.action === 'MINT_NFT' || tx.metadata.type === 'ID_CARD') {
     type = 'ID_CREATION';
     title = 'Digital ID Created';
@@ -333,17 +362,6 @@ function processTransactionMetadata(tx, block) {
       status: 'ACTIVE'
     };
   } 
-  else if (tx.metadata.action === 'UPDATE_NFT') {
-    type = 'ID_UPDATE';
-    title = 'Digital ID Updated';
-    icon = 'refresh-cw';
-    details = {
-      tokenId: tx.metadata.tokenId || 'Unknown',
-      version: tx.metadata.version || 'Unknown',
-      previousVersion: tx.metadata.previousVersionId || 'Unknown',
-      updatedAt: new Date(tx.timestamp).toISOString()
-    };
-  }
   else if (tx.metadata.action === 'CREATE' && tx.metadata.studentData) {
     type = 'PROFILE_CREATED';
     title = 'Student Profile Created';
