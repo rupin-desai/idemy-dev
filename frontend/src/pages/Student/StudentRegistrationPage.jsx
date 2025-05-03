@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { CheckCircle, AlertCircle, BookOpen, UserCircle, Briefcase, Calendar, BookOpenCheck, GraduationCap } from "lucide-react";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import axios from "axios";
 
 const containerVariants = {

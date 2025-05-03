@@ -10,33 +10,32 @@ import { Loader } from "lucide-react";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
-import UpdateNftPage from "./pages/UpdateNftPage";
+import UpdateNftPage from "./pages/NFTs/UpdateNftPage";
 import Header from "./components/Layout/Header";
 import { AuthProvider } from "./context/AuthContext";
 import { NftProvider } from "./context/NftContext";
-import NftDetailsPage from "./pages/NftDetailsPage";
-import CreateIdPage from "./pages/CreateIdPage";
-import StudentRegistrationPage from "./pages/StudentRegistrationPage";
+import NftDetailsPage from "./pages/NFTs/NftDetailsPage";
+import CreateIdPage from "./pages/NFTs/CreateIdPage";
+import StudentRegistrationPage from "./pages/Student/StudentRegistrationPage";
 import { useAuth } from "./hooks/useAuth";
 import { useNft } from "./hooks/useNft";
-import BlockchainPage from "./pages/BlockchainPage";
-import LearnBlockchainPage from "./pages/LearnBlockchainPage";
-import BlockchainMetadataPage from "./pages/BlockchainMetadataPage";
+import LearnBlockchainPage from "./pages/Blockchain/LearnBlockchainPage";
+import BlockchainMetadataPage from "./pages/Blockchain/BlockchainMetadataPage";
 import UserMetadataPage from "./pages/UserMetadataPage";
 // Add the import for InstitutionRegistrationPage
-import InstitutionRegistrationPage from "./pages/InstitutionRegistrationPage";
-import InstitutionDashboardPage from "./pages/InstitutionDashboardPage";
+import InstitutionRegistrationPage from "./pages/Institution/InstitutionRegistrationPage";
+import InstitutionDashboardPage from "./pages/Institution/InstitutionDashboardPage";
 // Add import for the new context provider
 import { InstitutionProvider } from "./context/InstitutionContext";
 // Add import at the top
-import ApplyToInstitutionPage from "./pages/ApplyToInstitutionPage";
+import ApplyToInstitutionPage from "./pages/Applications/ApplyToInstitutionPage";
 // Add the import at the top
-import ApplicationDetailsPage from "./pages/ApplicationDetailsPage";
+import ApplicationDetailsPage from "./pages/Applications/ApplicationDetailsPage";
 
-import InstitutionDetailsPage from "./pages/InstitutionDetailsPage";
+import InstitutionDetailsPage from "./pages/Institution/InstitutionDetailsPage";
 
 // In App.js or your root component
-import { ApplicationProvider } from './context/ApplicationContext';
+import { ApplicationProvider } from "./context/ApplicationContext";
 
 // 1. Create a splash screen component
 const SplashScreen = () => (
@@ -58,25 +57,25 @@ const SplashScreen = () => (
 
 // 2. Create a separate component for the routes that uses useAuth
 const AppRoutes = () => {
-  const { 
-    isAuthenticated, 
-    currentUser, 
-    isStudent, 
-    loading: authLoading, 
-    profileLoaded 
+  const {
+    isAuthenticated,
+    currentUser,
+    isStudent,
+    loading: authLoading,
+    profileLoaded,
   } = useAuth();
   const { fetchUserNfts } = useNft();
-  
+
   // Wait for auth to be fully checked and profile loaded
   const isLoading = authLoading || (isAuthenticated && !profileLoaded);
-  
+
   // Force refresh data when auth state is ready
   useEffect(() => {
     if (isAuthenticated && profileLoaded && currentUser) {
       fetchUserNfts(true); // Always force fetch on route change
     }
   }, [isAuthenticated, profileLoaded, currentUser, fetchUserNfts]);
-  
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -145,17 +144,6 @@ const AppRoutes = () => {
             )
           ) : (
             <Navigate to="/login" replace />
-          )
-        }
-      />
-
-      <Route
-        path="/blockchain"
-        element={
-          isAuthenticated ? (
-            <BlockchainPage />
-          ) : (
-            <Navigate to="/login" state={{ from: "/blockchain" }} />
           )
         }
       />

@@ -10,10 +10,10 @@ import {
   Download,
   Pencil,
 } from "lucide-react";
-import { useNft } from "../hooks/useNft";
-import { useAuth } from "../hooks/useAuth";
+import { useNft } from "../../hooks/useNft";
+import { useAuth } from "../../hooks/useAuth";
 import axios from "axios";
-import NftVersionsList from '../components/NftVersionsList';
+import NftVersionsList from '../../components/NftVersionsList';
 
 const NftDetailsPage = () => {
   const { tokenId } = useParams();

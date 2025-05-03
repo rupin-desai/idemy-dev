@@ -11,8 +11,8 @@ import {
   School,
   Shield,
 } from "lucide-react";
-import { useNft } from "../hooks/useNft";
-import { useAuth } from "../hooks/useAuth";
+import { useNft } from "../../hooks/useNft";
+import { useAuth } from "../../hooks/useAuth";
 import axios from "axios";
 
 const UpdateNftPage = () => {

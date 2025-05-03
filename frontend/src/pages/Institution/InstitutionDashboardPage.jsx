@@ -11,9 +11,9 @@ import {
   CheckCircle2,
   School,
 } from "lucide-react";
-import { useAuth } from "../hooks/useAuth";
-import * as institutionApi from "../api/institution.api"; // Import the institution API service
-import * as applicationApi from "../api/application.api";
+import { useAuth } from "../../hooks/useAuth";
+import * as institutionApi from "../../api/institution.api"; // Import the institution API service
+import * as applicationApi from "../../api/application.api";
 
 const containerVariants = {
   hidden: { opacity: 0 },

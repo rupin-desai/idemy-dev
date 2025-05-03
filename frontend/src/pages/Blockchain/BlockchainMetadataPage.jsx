@@ -22,8 +22,8 @@ import {
   ExternalLink,
   Shield
 } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
-import * as blockchainApi from '../api/blockchain.api';
+import { useAuth } from '../../hooks/useAuth';
+import * as blockchainApi from '../../api/blockchain.api';
 
 const BlockchainMetadataPage = () => {
   const navigate = useNavigate();

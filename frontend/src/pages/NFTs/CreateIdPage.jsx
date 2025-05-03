@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, IdCard, Check, Loader } from "lucide-react";
-import { useAuth } from "../hooks/useAuth";
-import { useNft } from "../hooks/useNft";
+import { useAuth } from "../../hooks/useAuth";
+import { useNft } from "../../hooks/useNft";
 import axios from "axios";
 
 // Add this utility function at the top of your file (after imports, before component)

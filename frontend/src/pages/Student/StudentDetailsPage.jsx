@@ -1,7 +1,7 @@
 // OR filepath: /c:/Users/rupin/Desktop/Dev_Files/Git_Repos/Development/idemy-dev/admin/src/pages/StudentDetailsPage.jsx
 
 // IMPORT the InstitutionHistory component at the top of the file
-import InstitutionHistory from "../components/InstitutionHistory";
+import InstitutionHistory from "../../components/InstitutionHistory";
 
 // ADD this section to display institution history, typically after the student's personal information
 {currentStudent?.institutionHistory && currentStudent.institutionHistory.length > 0 && (

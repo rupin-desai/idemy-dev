@@ -14,8 +14,8 @@ import {
   FileText,
   Shield,
 } from "lucide-react";
-import { useAuth } from "../hooks/useAuth";
-import * as institutionApi from "../api/institution.api"; // Import the institution API service
+import { useAuth } from "../../hooks/useAuth";
+import * as institutionApi from "../../api/institution.api"; // Import the institution API service
 
 const containerVariants = {
   hidden: { opacity: 0 },
