@@ -9,7 +9,7 @@ import {
   BlockchainBenefitsSection,
   FaqSection,
   GetStartedSection
-} from "../components/Blockchain/LearnBlockchain";
+} from "../../components/Blockchain/LearnBlockchain";
 
 const LearnBlockchainPage = () => {
   const containerVariants = {
