@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { CheckCircle2, X, Clock, AlertCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { useNft } from "../../hooks/useNft";
 import { useApplication } from "../../hooks/useApplication";
+import {
+  containerVariants,
+  itemVariants,
+  getApplicationStatusDisplay,
+  getApplicationActionMessage,
+  createApprovalVerificationData,
+  getApplicationPermissions,
+  formatApplicationDates,
+  getProgramDetailsDisplay,
+} from "../../utils/applications.utils";
 
 import {
   ApplicationDetailsHeader,
@@ -16,27 +26,6 @@ import {
   ApplicationDetailsActions,
   ApplicationDetailsBlockchainVerification,
 } from "../../components/Applications/ApplicationDetails";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      when: "beforeChildren",
-      staggerChildren: 0.1,
-      duration: 0.3,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 },
-  },
-};
 
 const ApplicationDetailsPage = () => {
   const { applicationId } = useParams();
@@ -59,6 +48,13 @@ const ApplicationDetailsPage = () => {
   const [idCard, setIdCard] = useState(null);
   const [error, setError] = useState(null);
   const [actionMessage, setActionMessage] = useState(null);
+  const [permissions, setPermissions] = useState({
+    canApprove: false,
+    canReject: false,
+    canVerifyOnBlockchain: false,
+    isInstitutionAdmin: false,
+    isStudentOwner: false,
+  });
 
   useEffect(() => {
     const fetchApplicationDetails = async () => {
@@ -86,6 +82,13 @@ const ApplicationDetailsPage = () => {
     }
   }, [applicationId, getApplicationDetailsWithRelations]);
 
+  // Update permissions when application or user changes
+  useEffect(() => {
+    if (application && currentUser) {
+      setPermissions(getApplicationPermissions(currentUser, application));
+    }
+  }, [application, currentUser]);
+
   // Use API error if available
   useEffect(() => {
     if (apiError) {
@@ -94,21 +97,8 @@ const ApplicationDetailsPage = () => {
   }, [apiError]);
 
   const handleApprove = async () => {
-    // Create verification data
-    const verificationData = {
-      verifierNotes: `Approved by ${
-        currentUser?.email || "institution administrator"
-      }`,
-      programConfirmed: true,
-      startDate: new Date().toISOString(),
-      endDate: new Date(
-        new Date().setFullYear(new Date().getFullYear() + 4)
-      ).toISOString(), // 4 years from now
-      additionalDetails: {
-        verifiedBy: currentUser?.email || "institution admin",
-      },
-    };
-
+    // Create verification data using utility
+    const verificationData = createApprovalVerificationData(currentUser);
     const result = await approveApplication(applicationId, verificationData);
 
     if (result.success) {
@@ -117,10 +107,7 @@ const ApplicationDetailsPage = () => {
         status: "APPROVED",
         verificationData,
       });
-      setActionMessage({
-        type: "success",
-        text: "Application approved successfully!",
-      });
+      setActionMessage(getApplicationActionMessage("APPROVED"));
     } else {
       setActionMessage({
         type: "error",
@@ -134,7 +121,7 @@ const ApplicationDetailsPage = () => {
 
     if (result.success) {
       setApplication({ ...application, status: "REJECTED" });
-      setActionMessage({ type: "success", text: "Application rejected." });
+      setActionMessage(getApplicationActionMessage("REJECTED"));
     } else {
       setActionMessage({
         type: "error",
@@ -149,43 +136,15 @@ const ApplicationDetailsPage = () => {
     if (result.success) {
       setApplication({
         ...application,
+        status: "VERIFIED",
         transactionId: result.transaction.id,
       });
-      setActionMessage({
-        type: "success",
-        text: "Application verified on blockchain successfully!",
-      });
+      setActionMessage(getApplicationActionMessage("VERIFIED"));
     } else {
       setActionMessage({
         type: "error",
         text: result.error?.message || "Failed to verify on blockchain",
       });
-    }
-  };
-
-  const getStatusDisplay = () => {
-    switch (application?.status) {
-      case "APPROVED":
-        return {
-          icon: <CheckCircle2 size={20} className="text-green-500 mr-2" />,
-          bgColor: "bg-green-100",
-          textColor: "text-green-800",
-          text: "Approved",
-        };
-      case "REJECTED":
-        return {
-          icon: <X size={20} className="text-red-500 mr-2" />,
-          bgColor: "bg-red-100",
-          textColor: "text-red-800",
-          text: "Rejected",
-        };
-      default:
-        return {
-          icon: <Clock size={20} className="text-yellow-500 mr-2" />,
-          bgColor: "bg-yellow-100",
-          textColor: "text-yellow-800",
-          text: "Pending Review",
-        };
     }
   };
 
@@ -219,7 +178,14 @@ const ApplicationDetailsPage = () => {
     );
   }
 
-  const status = getStatusDisplay();
+  // Get status display from utilities
+  const status = getApplicationStatusDisplay(application.status);
+
+  // Format dates for display
+  const formattedDates = formatApplicationDates(application);
+
+  // Format program details
+  const programDetails = getProgramDetailsDisplay(application);
 
   return (
     <motion.div
@@ -251,6 +217,8 @@ const ApplicationDetailsPage = () => {
         {/* Application details section */}
         <ApplicationDetailsInfo
           application={application}
+          formattedDates={formattedDates}
+          programDetails={programDetails}
           itemVariants={itemVariants}
         />
 
@@ -270,7 +238,7 @@ const ApplicationDetailsPage = () => {
         />
 
         {/* Action buttons for pending applications */}
-        {application.status === "PENDING" && (
+        {permissions.canApprove && (
           <ApplicationDetailsActions
             handleApprove={handleApprove}
             handleReject={handleReject}
@@ -280,12 +248,14 @@ const ApplicationDetailsPage = () => {
         )}
 
         {/* Blockchain verification section */}
-        <ApplicationDetailsBlockchainVerification
-          application={application}
-          handleVerifyOnBlockchain={handleVerifyOnBlockchain}
-          processingAction={processingAction}
-          itemVariants={itemVariants}
-        />
+        {permissions.canVerifyOnBlockchain && (
+          <ApplicationDetailsBlockchainVerification
+            application={application}
+            handleVerifyOnBlockchain={handleVerifyOnBlockchain}
+            processingAction={processingAction}
+            itemVariants={itemVariants}
+          />
+        )}
       </div>
     </motion.div>
   );

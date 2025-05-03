@@ -5,6 +5,12 @@ import { useAuth } from "../../hooks/useAuth";
 import { useNft } from "../../hooks/useNft";
 import * as institutionApi from "../../api/institution.api";
 import * as applicationApi from "../../api/application.api";
+import {
+  containerVariants,
+  itemVariants,
+  initialApplicationFormData,
+  validateApplicationForm,
+} from "../../utils/applications.utils";
 
 // Import components
 import {
@@ -15,27 +21,6 @@ import {
   ApplyToInstitutionList,
   ApplyToInstitutionForm,
 } from "../../components/Applications/ApplyToInstitution";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      when: "beforeChildren",
-      staggerChildren: 0.1,
-      duration: 0.3,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 },
-  },
-};
 
 const ApplyToInstitutionPage = () => {
   const navigate = useNavigate();
@@ -48,12 +33,10 @@ const ApplyToInstitutionPage = () => {
   const [applyingTo, setApplyingTo] = useState(null);
   const [showApplicationForm, setShowApplicationForm] = useState(false);
   const [selectedInstitution, setSelectedInstitution] = useState(null);
-  const [applicationFormData, setApplicationFormData] = useState({
-    program: "",
-    department: "",
-    year: new Date().getFullYear(),
-    additionalNotes: "",
-  });
+  const [applicationFormData, setApplicationFormData] = useState(
+    initialApplicationFormData
+  );
+  const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
     // Check if user is a student
@@ -111,17 +94,14 @@ const ApplyToInstitutionPage = () => {
   const handleOpenApplicationForm = (institution) => {
     setSelectedInstitution(institution);
     setShowApplicationForm(true);
+    setFormErrors({});
   };
 
   const handleCloseApplicationForm = () => {
     setShowApplicationForm(false);
     setSelectedInstitution(null);
-    setApplicationFormData({
-      program: "",
-      department: "",
-      year: new Date().getFullYear(),
-      additionalNotes: "",
-    });
+    setApplicationFormData(initialApplicationFormData);
+    setFormErrors({});
   };
 
   const handleFormInputChange = (e) => {
@@ -130,11 +110,26 @@ const ApplyToInstitutionPage = () => {
       ...prev,
       [name]: value,
     }));
+
+    // Clear error for this field when user types
+    if (formErrors[name]) {
+      setFormErrors((prev) => ({
+        ...prev,
+        [name]: undefined,
+      }));
+    }
   };
 
   const handleSubmitApplication = async (e) => {
     e.preventDefault();
     if (!selectedInstitution) return;
+
+    // Validate form data
+    const validation = validateApplicationForm(applicationFormData);
+    if (!validation.isValid) {
+      setFormErrors(validation.errors);
+      return;
+    }
 
     // Check if student has an NFT
     if (!userNfts || userNfts.length === 0) {
@@ -232,6 +227,7 @@ const ApplyToInstitutionPage = () => {
           handleSubmitApplication={handleSubmitApplication}
           handleCloseApplicationForm={handleCloseApplicationForm}
           applyingTo={applyingTo}
+          formErrors={formErrors}
         />
       )}
     </motion.div>
