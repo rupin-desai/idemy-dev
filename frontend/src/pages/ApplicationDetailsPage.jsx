@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  ArrowLeft, User, Calendar, Building, BookOpen, Check, X, Clock, 
-  AlertCircle, CheckCircle2, Shield, FileText, Info, Eye, Download, Loader
-} from "lucide-react";
+import { CheckCircle2, X, Clock, AlertCircle } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useNft } from "../hooks/useNft";
 import { useApplication } from "../hooks/useApplication";
+
+// Import application details components
+import ApplicationDetailsHeader from "../components/Applications/ApplicationDetails/ApplicationDetailsHeader";
+import ApplicationDetailsActionMessage from "../components/Applications/ApplicationDetails/ApplicationDetailsActionMessage";
+import ApplicationDetailsStudentInfo from "../components/Applications/ApplicationDetails/ApplicationDetailsStudentInfo";
+import ApplicationDetailsInfo from "../components/Applications/ApplicationDetails/ApplicationDetailsInfo";
+import ApplicationDetailsNftInfo from "../components/Applications/ApplicationDetails/ApplicationDetailsNftInfo";
+import ApplicationDetailsIdCard from "../components/Applications/ApplicationDetails/ApplicationDetailsIdCard";
+import ApplicationDetailsActions from "../components/Applications/ApplicationDetails/ApplicationDetailsActions";
+import ApplicationDetailsBlockchainVerification from "../components/Applications/ApplicationDetails/ApplicationDetailsBlockchainVerification";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -35,14 +42,14 @@ const ApplicationDetailsPage = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const { getNftDetails } = useNft();
-  const { 
-    loading, 
-    error: apiError, 
+  const {
+    loading,
+    error: apiError,
     processingAction,
     getApplicationDetailsWithRelations,
     approveApplication,
     rejectApplication,
-    verifyApplicationOnBlockchain
+    verifyApplicationOnBlockchain,
   } = useApplication();
 
   const [application, setApplication] = useState(null);
@@ -51,21 +58,21 @@ const ApplicationDetailsPage = () => {
   const [idCard, setIdCard] = useState(null);
   const [error, setError] = useState(null);
   const [actionMessage, setActionMessage] = useState(null);
-  const [imageLoading, setImageLoading] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     const fetchApplicationDetails = async () => {
       try {
         const result = await getApplicationDetailsWithRelations(applicationId);
-        
+
         if (result.success) {
           setApplication(result.application);
           setStudentData(result.studentData);
           setIdCard(result.idCard);
           setNftData(result.nftData);
         } else {
-          setError(result.error?.message || "Failed to load application details");
+          setError(
+            result.error?.message || "Failed to load application details"
+          );
         }
       } catch (err) {
         console.error("Error fetching application details:", err);
@@ -88,10 +95,14 @@ const ApplicationDetailsPage = () => {
   const handleApprove = async () => {
     // Create verification data
     const verificationData = {
-      verifierNotes: `Approved by ${currentUser?.email || "institution administrator"}`,
+      verifierNotes: `Approved by ${
+        currentUser?.email || "institution administrator"
+      }`,
       programConfirmed: true,
       startDate: new Date().toISOString(),
-      endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 4)).toISOString(), // 4 years from now
+      endDate: new Date(
+        new Date().setFullYear(new Date().getFullYear() + 4)
+      ).toISOString(), // 4 years from now
       additionalDetails: {
         verifiedBy: currentUser?.email || "institution admin",
       },
@@ -217,475 +228,63 @@ const ApplicationDetailsPage = () => {
       className="container mx-auto px-4 py-12"
     >
       <div className="max-w-4xl mx-auto">
-        {/* Back button and header */}
-        <motion.div variants={itemVariants} className="mb-6">
-          <button
-            onClick={() => navigate(-1)}
-            className="text-indigo-600 hover:text-indigo-800 mb-4 flex items-center"
-          >
-            <ArrowLeft className="mr-2" size={18} />
-            Back
-          </button>
+        {/* Header with back button and title */}
+        <ApplicationDetailsHeader
+          navigate={navigate}
+          status={status}
+          itemVariants={itemVariants}
+        />
 
-          <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold flex items-center">
-              <FileText className="mr-3" size={28} />
-              Application Details
-            </h1>
+        {/* Action message for success/error notifications */}
+        <ApplicationDetailsActionMessage
+          actionMessage={actionMessage}
+          itemVariants={itemVariants}
+        />
 
-            <div
-              className={`px-4 py-2 rounded-md ${status.bgColor} ${status.textColor} flex items-center`}
-            >
-              {status.icon}
-              <span>{status.text}</span>
-            </div>
-          </div>
-        </motion.div>
+        {/* Student information section */}
+        <ApplicationDetailsStudentInfo
+          studentData={studentData}
+          itemVariants={itemVariants}
+        />
 
-        {/* Action message */}
-        {actionMessage && (
-          <motion.div
-            variants={itemVariants}
-            className={`mb-6 p-4 rounded-md ${
-              actionMessage.type === "success"
-                ? "bg-green-50 text-green-800"
-                : "bg-red-50 text-red-800"
-            }`}
-          >
-            <div className="flex items-center">
-              {actionMessage.type === "success" ? (
-                <Check size={20} className="mr-2" />
-              ) : (
-                <AlertCircle size={20} className="mr-2" />
-              )}
-              <p>{actionMessage.text}</p>
-            </div>
-          </motion.div>
-        )}
+        {/* Application details section */}
+        <ApplicationDetailsInfo
+          application={application}
+          itemVariants={itemVariants}
+        />
 
-        {/* Student Information */}
-        <motion.div
-          variants={itemVariants}
-          className="bg-white shadow-md rounded-lg mb-6 overflow-hidden"
-        >
-          <div className="border-b px-6 py-4 bg-gray-50">
-            <h2 className="text-xl font-semibold flex items-center">
-              <User className="mr-2" size={20} />
-              Student Information
-            </h2>
-          </div>
+        {/* NFT information section if available */}
+        <ApplicationDetailsNftInfo
+          nftData={nftData}
+          itemVariants={itemVariants}
+        />
 
-          <div className="p-6">
-            {studentData ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <p className="text-sm text-gray-500">Student ID</p>
-                  <p className="font-medium">{studentData.studentId}</p>
-                </div>
+        {/* ID Card preview section */}
+        <ApplicationDetailsIdCard
+          studentData={studentData}
+          application={application}
+          idCard={idCard}
+          nftData={nftData}
+          itemVariants={itemVariants}
+        />
 
-                <div>
-                  <p className="text-sm text-gray-500">Full Name</p>
-                  <p className="font-medium">
-                    {studentData.firstName} {studentData.lastName}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-sm text-gray-500">Email</p>
-                  <p className="font-medium">{studentData.email}</p>
-                </div>
-
-                <div>
-                  <p className="text-sm text-gray-500">Institution</p>
-                  <p className="font-medium">
-                    {studentData.institution || "Not specified"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-sm text-gray-500">Department</p>
-                  <p className="font-medium">
-                    {studentData.department || "Not specified"}
-                  </p>
-                </div>
-
-                {studentData.enrollmentYear && (
-                  <div>
-                    <p className="text-sm text-gray-500">Enrollment Year</p>
-                    <p className="font-medium">{studentData.enrollmentYear}</p>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <p className="text-gray-600">Student data not available.</p>
-            )}
-          </div>
-        </motion.div>
-
-        {/* Application Details */}
-        <motion.div
-          variants={itemVariants}
-          className="bg-white shadow-md rounded-lg mb-6 overflow-hidden"
-        >
-          {/* Application details content (same as original) */}
-          <div className="border-b px-6 py-4 bg-gray-50">
-            <h2 className="text-xl font-semibold flex items-center">
-              <BookOpen className="mr-2" size={20} />
-              Application Details
-            </h2>
-          </div>
-
-          <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <p className="text-sm text-gray-500">Application ID</p>
-                <p className="font-medium">{application.applicationId}</p>
-              </div>
-
-              <div>
-                <p className="text-sm text-gray-500">Submitted Date</p>
-                <p className="font-medium">
-                  {new Date(application.submittedAt).toLocaleDateString()}
-                </p>
-              </div>
-
-              <div className="md:col-span-2">
-                <p className="text-sm text-gray-500 mb-1">Program Details</p>
-                <div className="bg-gray-50 p-4 rounded-md">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-gray-500">Program</p>
-                      <p className="font-medium">
-                        {application.programDetails?.program ||
-                          "General Application"}
-                      </p>
-                    </div>
-
-                    {application.programDetails?.department && (
-                      <div>
-                        <p className="text-sm text-gray-500">Department</p>
-                        <p className="font-medium">
-                          {application.programDetails.department}
-                        </p>
-                      </div>
-                    )}
-
-                    <div>
-                      <p className="text-sm text-gray-500">Year</p>
-                      <p className="font-medium">
-                        {application.programDetails?.year ||
-                          new Date().getFullYear()}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {application.additionalInfo?.notes && (
-                <div className="md:col-span-2">
-                  <p className="text-sm text-gray-500 mb-1">Additional Notes</p>
-                  <div className="bg-gray-50 p-4 rounded-md">
-                    <p>{application.additionalInfo.notes}</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* NFT Information */}
-        {nftData && (
-          <motion.div
-            variants={itemVariants}
-            className="bg-white shadow-md rounded-lg mb-6 overflow-hidden"
-          >
-            <div className="border-b px-6 py-4 bg-gray-50">
-              <h2 className="text-xl font-semibold flex items-center">
-                <Shield className="mr-2" size={20} />
-                Digital ID (NFT) Information
-              </h2>
-            </div>
-
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <p className="text-sm text-gray-500">NFT Token ID</p>
-                  <p className="font-medium font-mono text-sm">
-                    {nftData.tokenId}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-sm text-gray-500">Minted Date</p>
-                  <p className="font-medium">
-                    {new Date(nftData.mintedAt).toLocaleDateString()}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-sm text-gray-500">Status</p>
-                  <p className="font-medium">{nftData.status}</p>
-                </div>
-
-                <div>
-                  <p className="text-sm text-gray-500">Version</p>
-                  <p className="font-medium">{nftData.version || 1}</p>
-                </div>
-              </div>
-
-              <button
-                onClick={() => navigate(`/nft/${nftData.tokenId}`)}
-                className="mt-4 px-4 py-2 bg-indigo-100 text-indigo-700 hover:bg-indigo-200 rounded-md flex items-center w-max"
-              >
-                <Eye className="mr-2" size={16} />
-                View Digital ID
-              </button>
-            </div>
-          </motion.div>
-        )}
-
-        {/* NFT ID Card Preview */}
-        {studentData && (
-          <motion.div
-            variants={itemVariants}
-            className="bg-white shadow-md rounded-lg mb-6 overflow-hidden"
-          >
-            <div className="border-b px-6 py-4 bg-gray-50">
-              <h2 className="text-xl font-semibold flex items-center">
-                <Shield className="mr-2" size={20} />
-                Student Digital ID Card
-              </h2>
-            </div>
-
-            <div className="p-6">
-              <div className="w-full max-w-md mx-auto">
-                {/* NFT ID Card Image */}
-                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-lg mb-4">
-                  <div className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white p-4">
-                    <h3 className="font-bold text-lg flex items-center">
-                      <Shield size={20} className="mr-2" /> Student Digital ID
-                    </h3>
-                    <p className="text-xs opacity-80">Student ID: {studentData.studentId}</p>
-                  </div>
-
-                  {/* Actual NFT Image from API - direct URL */}
-                  <div className="relative bg-gray-50 p-4">
-                    {imageLoading ? (
-                      <div className="w-full h-64 flex items-center justify-center">
-                        <Loader className="animate-spin h-8 w-8 text-indigo-600" />
-                      </div>
-                    ) : (
-                      <>
-                        <img
-                          src={`http://localhost:3000/api/nft/idcards/${studentData.studentId}/image?t=${Date.now()}`}
-                          alt="Student ID Card"
-                          className="w-full max-h-96 object-contain mx-auto"
-                          onLoad={() => setImageLoading(false)}
-                          onError={(e) => {
-                            console.error("Failed to load image:", e.target.src);
-                            setImageLoading(false);
-                          }}
-                        />
-                      </>
-                    )}
-                  </div>
-
-                  {/* Student info at the bottom */}
-                  <div className="p-4 border-t border-gray-200">
-                    <div className="text-center">
-                      <h3 className="font-bold text-lg">
-                        {studentData.firstName} {studentData.lastName}
-                      </h3>
-                      <p className="text-gray-500 text-sm">
-                        {studentData.studentId}
-                      </p>
-                      <div className="mt-2 grid grid-cols-2 gap-x-4 text-sm">
-                        <div>
-                          <span className="text-gray-600">Program:</span>
-                          <span className="font-medium ml-1">
-                            {application.programDetails?.program || "General"}
-                          </span>
-                        </div>
-                        <div>
-                          <span className="text-gray-600">Year:</span>
-                          <span className="font-medium ml-1">
-                            {application.programDetails?.year ||
-                              new Date().getFullYear()}
-                          </span>
-                        </div>
-                      </div>
-                      
-                      {idCard && idCard.verificationStatus === "VERIFIED" && (
-                        <div className="mt-2 pt-2 border-t border-gray-200 flex items-center justify-center text-green-600">
-                          <CheckCircle2 size={16} className="mr-1" />
-                          <span className="text-sm font-medium">Verified by {idCard.verifiedInstitution}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Action buttons */}
-                <div className="flex justify-center space-x-3">
-                  <button
-                    onClick={() => {
-                      fetch(`http://localhost:3000/api/nft/idcards/${studentData.studentId}/image?t=${Date.now()}`)
-                        .then((res) => res.blob())
-                        .then((blob) => {
-                          const url = window.URL.createObjectURL(blob);
-                          const a = document.createElement("a");
-                          a.href = url;
-                          a.download = `ID_Card_${studentData.studentId}.png`;
-                          document.body.appendChild(a);
-                          a.click();
-                          window.URL.revokeObjectURL(url);
-                          a.remove();
-                        })
-                        .catch((err) => console.error("Download failed:", err));
-                    }}
-                    className="px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-md flex items-center transition-colors"
-                  >
-                    <Download size={16} className="mr-2" />
-                    Download ID Card
-                  </button>
-                  {nftData && (
-                    <button
-                      onClick={() => navigate(`/nft/${nftData.tokenId}`)}
-                      className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center transition-colors"
-                    >
-                      <Eye className="mr-2" size={16} />
-                      View NFT Details
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Action Buttons */}
+        {/* Action buttons for pending applications */}
         {application.status === "PENDING" && (
-          <motion.div
-            variants={itemVariants}
-            className="bg-white shadow-md rounded-lg overflow-hidden"
-          >
-            <div className="border-b px-6 py-4 bg-gray-50">
-              <h2 className="text-xl font-semibold">Actions</h2>
-            </div>
-
-            <div className="p-6">
-              <div className="flex flex-col space-y-4">
-                <button
-                  onClick={handleApprove}
-                  disabled={processingAction}
-                  className="px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 flex items-center justify-center disabled:opacity-70"
-                >
-                  {processingAction ? (
-                    <>
-                      <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      <Check className="mr-2" size={18} />
-                      Approve Application
-                    </>
-                  )}
-                </button>
-
-                <button
-                  onClick={handleReject}
-                  disabled={processingAction}
-                  className="px-4 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center justify-center disabled:opacity-70"
-                >
-                  {processingAction ? (
-                    <>
-                      <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      <X className="mr-2" size={18} />
-                      Reject Application
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          </motion.div>
+          <ApplicationDetailsActions
+            handleApprove={handleApprove}
+            handleReject={handleReject}
+            processingAction={processingAction}
+            itemVariants={itemVariants}
+          />
         )}
 
         {/* Blockchain verification section */}
-        {application.status === "APPROVED" && !application.transactionId && (
-          <motion.div
-            variants={itemVariants}
-            className="bg-white shadow-md rounded-lg overflow-hidden"
-          >
-            <div className="border-b px-6 py-4 bg-gray-50">
-              <h2 className="text-xl font-semibold">Blockchain Verification</h2>
-            </div>
-
-            <div className="p-6">
-              <div className="bg-yellow-50 p-4 rounded-md mb-4">
-                <div className="flex items-center">
-                  <Info className="text-yellow-600 mr-2" size={18} />
-                  <p className="text-yellow-700">
-                    The application has been approved but not yet verified on
-                    the blockchain.
-                  </p>
-                </div>
-              </div>
-
-              <button
-                onClick={handleVerifyOnBlockchain}
-                disabled={processingAction}
-                className="px-4 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center justify-center w-full disabled:opacity-70"
-              >
-                {processingAction ? (
-                  <>
-                    <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                    Processing...
-                  </>
-                ) : (
-                  <>
-                    <Shield className="mr-2" size={18} />
-                    Verify on Blockchain
-                  </>
-                )}
-              </button>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Blockchain verified confirmation */}
-        {application.status === "APPROVED" && application.transactionId && (
-          <motion.div
-            variants={itemVariants}
-            className="bg-white shadow-md rounded-lg overflow-hidden"
-          >
-            <div className="border-b px-6 py-4 bg-gray-50">
-              <h2 className="text-xl font-semibold">Blockchain Verification</h2>
-            </div>
-
-            <div className="p-6">
-              <div className="bg-green-50 p-4 rounded-md">
-                <div className="flex items-center">
-                  <Shield className="text-green-600 mr-2" size={18} />
-                  <p className="text-green-700">
-                    This application has been verified on the blockchain.
-                  </p>
-                </div>
-
-                <div className="mt-3">
-                  <p className="text-sm text-gray-500 mb-1">Transaction ID</p>
-                  <p className="bg-white p-2 rounded border border-green-100 font-mono text-xs break-all">
-                    {application.transactionId}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
+        <ApplicationDetailsBlockchainVerification
+          application={application}
+          handleVerifyOnBlockchain={handleVerifyOnBlockchain}
+          processingAction={processingAction}
+          itemVariants={itemVariants}
+        />
       </div>
     </motion.div>
   );
