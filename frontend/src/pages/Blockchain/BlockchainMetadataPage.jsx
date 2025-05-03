@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useAuth } from '../../hooks/useAuth';
-import * as blockchainApi from '../../api/blockchain.api';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useAuth } from "../../hooks/useAuth";
+import * as blockchainApi from "../../api/blockchain.api";
+import { formatDate } from "../../utils/date.utils";
 
 // Import components
 import {
@@ -11,8 +12,8 @@ import {
   BlockchainMetadataLoading,
   BlockchainMetadataError,
   BlockchainMetadataEmpty,
-  BlockchainMetadataInfo
-} from '../../components/Blockchain/BlockchainMetadata';
+  BlockchainMetadataInfo,
+} from "../../components/Blockchain/BlockchainMetadata";
 
 const BlockchainMetadataPage = () => {
   const { isAuthenticated, currentUser } = useAuth();
@@ -20,8 +21,8 @@ const BlockchainMetadataPage = () => {
   const [error, setError] = useState(null);
   const [metadata, setMetadata] = useState([]);
   const [expandedItems, setExpandedItems] = useState({});
-  const [filterType, setFilterType] = useState('ALL');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState("ALL");
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Toggle metadata details visibility
   const toggleDetails = (id) => {
@@ -31,31 +32,38 @@ const BlockchainMetadataPage = () => {
     }));
   };
 
-  // Format date/time nicely
+  // Format date/time using the utility function
   const formatDateTime = (timestamp) => {
-    if (!timestamp) return 'Unknown';
-    const date = new Date(timestamp);
-    return date.toLocaleString();
+    if (!timestamp) return "Unknown";
+    return formatDate(timestamp, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
   };
 
   // Filter metadata by type
   const getFilteredMetadata = () => {
-    return metadata.filter(item => {
+    return metadata.filter((item) => {
       // Apply type filter
-      const typeMatch = filterType === 'ALL' || item.type === filterType;
-      
+      const typeMatch = filterType === "ALL" || item.type === filterType;
+
       // Apply search filter
-      const searchMatch = searchTerm.trim() === '' || 
+      const searchMatch =
+        searchTerm.trim() === "" ||
         JSON.stringify(item).toLowerCase().includes(searchTerm.toLowerCase());
-      
+
       return typeMatch && searchMatch;
     });
   };
-  
+
   // Get categories for filtering
   const getMetadataTypes = () => {
-    const types = new Set(['ALL']);
-    metadata.forEach(item => {
+    const types = new Set(["ALL"]);
+    metadata.forEach((item) => {
       if (item.type) types.add(item.type);
     });
     return Array.from(types);
@@ -68,32 +76,37 @@ const BlockchainMetadataPage = () => {
       try {
         setLoading(true);
         setError(null);
-        
+
         // Get student ID if available
         let studentId = currentUser.studentId || null;
-        
+
         try {
           if (!studentId) {
-            const studentResponse = await blockchainApi.getStudentByEmail(currentUser.email);
+            const studentResponse = await blockchainApi.getStudentByEmail(
+              currentUser.email
+            );
             if (studentResponse.success && studentResponse.studentInfo) {
               studentId = studentResponse.studentInfo.studentId;
             }
           }
         } catch (studentError) {
-          console.warn('Could not fetch student ID:', studentError);
+          console.warn("Could not fetch student ID:", studentError);
         }
-        
+
         // Get user metadata
-        const metadataResponse = await blockchainApi.getUserMetadata(studentId, currentUser.email);
-        
+        const metadataResponse = await blockchainApi.getUserMetadata(
+          studentId,
+          currentUser.email
+        );
+
         if (metadataResponse.success) {
           setMetadata(metadataResponse.metadata);
         } else {
-          setError('Failed to load user metadata');
+          setError("Failed to load user metadata");
         }
       } catch (err) {
-        console.error('Blockchain metadata fetch error:', err);
-        setError(err.message || 'Failed to load blockchain metadata');
+        console.error("Blockchain metadata fetch error:", err);
+        setError(err.message || "Failed to load blockchain metadata");
       } finally {
         setLoading(false);
       }
@@ -114,14 +127,14 @@ const BlockchainMetadataPage = () => {
         <div className="bg-white shadow-md rounded-lg overflow-hidden mb-8">
           <div className="p-6">
             {/* Filters and Search */}
-            <BlockchainMetadataFilters 
+            <BlockchainMetadataFilters
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
               filterType={filterType}
               setFilterType={setFilterType}
               metadataTypes={getMetadataTypes()}
             />
-            
+
             {/* Metadata Content */}
             {loading ? (
               <BlockchainMetadataLoading />
@@ -132,7 +145,7 @@ const BlockchainMetadataPage = () => {
             ) : (
               <div className="space-y-4">
                 {getFilteredMetadata().map((item, index) => (
-                  <BlockchainMetadataItem 
+                  <BlockchainMetadataItem
                     key={item.transactionId || index}
                     item={item}
                     isExpanded={expandedItems[item.transactionId] || false}
@@ -142,7 +155,7 @@ const BlockchainMetadataPage = () => {
                 ))}
               </div>
             )}
-            
+
             {/* Blockchain Info */}
             <BlockchainMetadataInfo />
           </div>
