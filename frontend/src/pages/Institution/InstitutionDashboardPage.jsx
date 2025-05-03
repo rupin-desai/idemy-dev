@@ -14,6 +14,7 @@ import {
 import { useAuth } from "../../hooks/useAuth";
 import * as institutionApi from "../../api/institution.api"; // Import the institution API service
 import * as applicationApi from "../../api/application.api";
+import * as nftApi from "../../api/nft.api"; // Import the NFT API service
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -59,12 +60,9 @@ const InstitutionDashboardPage = () => {
           // If institution has NFT, fetch NFT metadata
           if (response.institution.nftTokenId) {
             try {
-              const nftResponse = await fetch(
-                `http://localhost:3000/api/nft/institution/${institutionId}/metadata`
-              );
-              if (nftResponse.ok) {
-                const metadata = await nftResponse.json();
-                setNftData(metadata);
+              const nftResult = await nftApi.getInstitutionNftMetadata(institutionId);
+              if (nftResult.success) {
+                setNftData(nftResult.metadata);
               }
             } catch (nftErr) {
               console.error("Failed to fetch NFT metadata:", nftErr);
@@ -126,13 +124,9 @@ const InstitutionDashboardPage = () => {
 
         // Fetch NFT metadata after minting
         try {
-          const nftResponse = await fetch(
-            `http://localhost:3000/api/nft/institution/${institutionId}/metadata`
-          );
-
-          if (nftResponse.ok) {
-            const metadata = await nftResponse.json();
-            setNftData(metadata);
+          const nftResult = await nftApi.getInstitutionNftMetadata(institutionId);
+          if (nftResult.success) {
+            setNftData(nftResult.metadata);
           }
         } catch (nftErr) {
           console.error("Failed to fetch NFT metadata after minting:", nftErr);
@@ -301,7 +295,7 @@ const InstitutionDashboardPage = () => {
                     <button
                       onClick={() =>
                         window.open(
-                          `http://localhost:3000/api/nft/institution/${institutionId}/image`
+                          nftApi.getInstitutionNftImageUrl(institutionId)
                         )
                       }
                       className="ml-2 underline hover:text-blue-200 transition-colors"
@@ -397,7 +391,7 @@ const InstitutionDashboardPage = () => {
                     {/* NFT Image */}
                     <div className="mb-4 lg:mb-0 w-full lg:w-1/3 flex justify-center">
                       <img
-                        src={`http://localhost:3000/api/nft/institution/${institutionId}/image?t=${Date.now()}`}
+                        src={nftApi.getInstitutionNftImageUrl(institutionId)}
                         alt="Institution Verification NFT"
                         className="border rounded-lg shadow-sm max-w-full h-auto"
                         onError={(e) => {
@@ -450,7 +444,7 @@ const InstitutionDashboardPage = () => {
                             <button
                               onClick={() =>
                                 window.open(
-                                  `http://localhost:3000/api/nft/institution/${institutionId}/image`
+                                  nftApi.getInstitutionNftImageUrl(institutionId)
                                 )
                               }
                               className="text-sm bg-blue-50 text-blue-700 px-3 py-1.5 rounded hover:bg-blue-100"

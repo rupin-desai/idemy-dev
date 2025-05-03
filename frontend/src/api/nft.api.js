@@ -176,3 +176,45 @@ export const getLatestNftVersionByStudentId = async (studentId) => {
     };
   }
 };
+
+// NEW METHOD: Get institution NFT metadata
+export const getInstitutionNftMetadata = async (institutionId) => {
+  try {
+    const response = await axios.get(`${API_URL}/institution/${institutionId}/metadata`);
+    return {
+      success: true,
+      metadata: response.data
+    };
+  } catch (error) {
+    const errorData = handleApiError(error, 'fetch-institution-nft-metadata');
+    return { 
+      success: false, 
+      error: errorData
+    };
+  }
+};
+
+// NEW METHOD: Get institution NFT image URL
+export const getInstitutionNftImageUrl = (institutionId) => {
+  return `${API_URL}/institution/${institutionId}/image`;
+};
+
+// NEW METHOD: Get institution NFT image as blob
+export const getInstitutionNftImage = async (institutionId) => {
+  try {
+    const response = await axios.get(`${API_URL}/institution/${institutionId}/image`, {
+      responseType: 'blob'
+    });
+    return {
+      success: true,
+      imageBlob: response.data,
+      imageUrl: URL.createObjectURL(response.data)
+    };
+  } catch (error) {
+    const errorData = handleApiError(error, 'fetch-institution-nft-image');
+    return { 
+      success: false, 
+      error: errorData
+    };
+  }
+};
