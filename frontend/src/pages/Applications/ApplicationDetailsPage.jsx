@@ -6,15 +6,16 @@ import { useAuth } from "../../hooks/useAuth";
 import { useNft } from "../../hooks/useNft";
 import { useApplication } from "../../hooks/useApplication";
 
-// Import application details components
-import ApplicationDetailsHeader from "../../components/Applications/ApplicationDetails/ApplicationDetailsHeader";
-import ApplicationDetailsActionMessage from "../../components/Applications/ApplicationDetails/ApplicationDetailsActionMessage";
-import ApplicationDetailsStudentInfo from "../../components/Applications/ApplicationDetails/ApplicationDetailsStudentInfo";
-import ApplicationDetailsInfo from "../../components/Applications/ApplicationDetails/ApplicationDetailsInfo";
-import ApplicationDetailsNftInfo from "../../components/Applications/ApplicationDetails/ApplicationDetailsNftInfo";
-import ApplicationDetailsIdCard from "../../components/Applications/ApplicationDetails/ApplicationDetailsIdCard";
-import ApplicationDetailsActions from "../../components/Applications/ApplicationDetails/ApplicationDetailsActions";
-import ApplicationDetailsBlockchainVerification from "../../components/Applications/ApplicationDetails/ApplicationDetailsBlockchainVerification";
+import {
+  ApplicationDetailsHeader,
+  ApplicationDetailsActionMessage,
+  ApplicationDetailsStudentInfo,
+  ApplicationDetailsInfo,
+  ApplicationDetailsNftInfo,
+  ApplicationDetailsIdCard,
+  ApplicationDetailsActions,
+  ApplicationDetailsBlockchainVerification,
+} from "../../components/Applications/ApplicationDetails";
 
 const containerVariants = {
   hidden: { opacity: 0 },
