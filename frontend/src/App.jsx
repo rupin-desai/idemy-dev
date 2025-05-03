@@ -7,37 +7,34 @@ import {
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader } from "lucide-react";
-import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/Auth/LoginPage";
-import RegisterPage from "./pages/Auth/RegisterPage";
-import UpdateNftPage from "./pages/NFTs/UpdateNftPage";
+
+// Import components from pages using the barrel exports
+import {
+  HomePage,
+  LoginPage,
+  RegisterPage,
+  UpdateNftPage,
+  NftDetailsPage,
+  CreateIdPage,
+  StudentRegistrationPage,
+  LearnBlockchainPage,
+  BlockchainMetadataPage,
+  UserMetadataPage,
+  InstitutionRegistrationPage,
+  InstitutionDashboardPage,
+  ApplyToInstitutionPage,
+  ApplicationDetailsPage,
+  InstitutionDetailsPage,
+} from "./pages";
+
 import Header from "./components/Layout/Header";
 import { AuthProvider } from "./context/AuthContext";
 import { NftProvider } from "./context/NftContext";
-import NftDetailsPage from "./pages/NFTs/NftDetailsPage";
-import CreateIdPage from "./pages/NFTs/CreateIdPage";
-import StudentRegistrationPage from "./pages/Student/StudentRegistrationPage";
+import { InstitutionProvider } from "./context/InstitutionContext";
+import { ApplicationProvider } from "./context/ApplicationContext";
 import { useAuth } from "./hooks/useAuth";
 import { useNft } from "./hooks/useNft";
-import LearnBlockchainPage from "./pages/Blockchain/LearnBlockchainPage";
-import BlockchainMetadataPage from "./pages/Blockchain/BlockchainMetadataPage";
-import UserMetadataPage from "./pages/UserMetadataPage";
-// Add the import for InstitutionRegistrationPage
-import InstitutionRegistrationPage from "./pages/Institution/InstitutionRegistrationPage";
-import InstitutionDashboardPage from "./pages/Institution/InstitutionDashboardPage";
-// Add import for the new context provider
-import { InstitutionProvider } from "./context/InstitutionContext";
-// Add import at the top
-import ApplyToInstitutionPage from "./pages/Applications/ApplyToInstitutionPage";
-// Add the import at the top
-import ApplicationDetailsPage from "./pages/Applications/ApplicationDetailsPage";
 
-import InstitutionDetailsPage from "./pages/Institution/InstitutionDetailsPage";
-
-// In App.js or your root component
-import { ApplicationProvider } from "./context/ApplicationContext";
-
-// 1. Create a splash screen component
 const SplashScreen = () => (
   <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-600 to-violet-600">
     <motion.div
