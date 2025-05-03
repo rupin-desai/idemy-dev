@@ -1,29 +1,13 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  ArrowLeft,
-  User,
-  Calendar,
-  Building,
-  BookOpen,
-  Check,
-  X,
-  Clock,
-  AlertCircle,
-  CheckCircle2,
-  Shield,
-  FileText,
-  Info,
-  Eye,
-  Download,
-  Loader,
+  ArrowLeft, User, Calendar, Building, BookOpen, Check, X, Clock, 
+  AlertCircle, CheckCircle2, Shield, FileText, Info, Eye, Download, Loader
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
-import axios from "axios";
-import * as applicationApi from "../api/application.api";
-import { formatDate } from "../utils/date.utils";
-import * as nftApi from "../api/nft.api";
+import { useNft } from "../hooks/useNft";
+import { useApplication } from "../hooks/useApplication";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -50,203 +34,120 @@ const ApplicationDetailsPage = () => {
   const { applicationId } = useParams();
   const navigate = useNavigate();
   const { currentUser } = useAuth();
+  const { getNftDetails } = useNft();
+  const { 
+    loading, 
+    error: apiError, 
+    processingAction,
+    getApplicationDetailsWithRelations,
+    approveApplication,
+    rejectApplication,
+    verifyApplicationOnBlockchain
+  } = useApplication();
 
   const [application, setApplication] = useState(null);
   const [studentData, setStudentData] = useState(null);
   const [nftData, setNftData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [idCard, setIdCard] = useState(null);
   const [error, setError] = useState(null);
-  const [processingAction, setProcessingAction] = useState(false);
   const [actionMessage, setActionMessage] = useState(null);
   const [imageLoading, setImageLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
-  const [idCard, setIdCard] = useState(null);
-  const [idCardLoading, setIdCardLoading] = useState(false);
 
   useEffect(() => {
     const fetchApplicationDetails = async () => {
       try {
-        setLoading(true);
-
-        // Fetch application details
-        console.log("Fetching application details for ID:", applicationId);
-        const appResponse = await axios.get(
-          `http://localhost:3000/api/applications/${applicationId}`
-        );
-        if (!appResponse.data.success) {
-          setError("Failed to load application details.");
-          return;
-        }
-
-        const app = appResponse.data.application;
-        console.log("Application data retrieved:", app);
-        setApplication(app);
-
-        // Fetch student data
-        console.log("Fetching student data for ID:", app.studentId);
-        const studentResponse = await axios.get(
-          `http://localhost:3000/api/students/${app.studentId}`
-        );
-        if (studentResponse.data.success) {
-          console.log("Student data retrieved:", studentResponse.data.student);
-          setStudentData(studentResponse.data.student);
-          
-          // Once we have student data, fetch their ID card
-          try {
-            setIdCardLoading(true);
-            console.log("Fetching ID card for student:", app.studentId);
-            const idCardResponse = await fetch(`http://localhost:3000/api/nft/idcards/${app.studentId}`);
-            if (idCardResponse.ok) {
-              const idCardData = await idCardResponse.json();
-              if (idCardData.success) {
-                console.log("ID card data retrieved:", idCardData.idCard);
-                setIdCard(idCardData.idCard);
-              }
-            }
-          } catch (idCardError) {
-            console.error("Error fetching ID card:", idCardError);
-          } finally {
-            setIdCardLoading(false);
-          }
+        const result = await getApplicationDetailsWithRelations(applicationId);
+        
+        if (result.success) {
+          setApplication(result.application);
+          setStudentData(result.studentData);
+          setIdCard(result.idCard);
+          setNftData(result.nftData);
         } else {
-          console.error("Failed to get student data:", studentResponse.data);
-        }
-
-        // Fetch NFT data
-        if (app.nftTokenId) {
-          console.log("Fetching NFT data for token ID:", app.nftTokenId);
-          const nftResponse = await axios.get(
-            `http://localhost:3000/api/nft/${app.nftTokenId}`
-          );
-          if (nftResponse.data.success) {
-            console.log("NFT data retrieved:", nftResponse.data.nft);
-            setNftData(nftResponse.data.nft);
-          } else {
-            console.error("Failed to get NFT data:", nftResponse.data);
-          }
-        } else {
-          console.warn("No NFT token ID found in the application");
+          setError(result.error?.message || "Failed to load application details");
         }
       } catch (err) {
         console.error("Error fetching application details:", err);
         setError("Failed to load application details.");
-      } finally {
-        setLoading(false);
       }
     };
 
     if (applicationId) {
       fetchApplicationDetails();
     }
-  }, [applicationId]);
+  }, [applicationId, getApplicationDetailsWithRelations]);
+
+  // Use API error if available
+  useEffect(() => {
+    if (apiError) {
+      setError(apiError);
+    }
+  }, [apiError]);
 
   const handleApprove = async () => {
-    try {
-      setProcessingAction(true);
+    // Create verification data
+    const verificationData = {
+      verifierNotes: `Approved by ${currentUser?.email || "institution administrator"}`,
+      programConfirmed: true,
+      startDate: new Date().toISOString(),
+      endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 4)).toISOString(), // 4 years from now
+      additionalDetails: {
+        verifiedBy: currentUser?.email || "institution admin",
+      },
+    };
 
-      // Create verification data
-      const verificationData = {
-        verifierNotes: `Approved by ${
-          currentUser?.email || "institution administrator"
-        }`,
-        programConfirmed: true,
-        startDate: new Date().toISOString(),
-        endDate: new Date(
-          new Date().setFullYear(new Date().getFullYear() + 4)
-        ).toISOString(), // 4 years from now
-        additionalDetails: {
-          verifiedBy: currentUser?.email || "institution admin",
-        },
-      };
+    const result = await approveApplication(applicationId, verificationData);
 
-      const result = await applicationApi.updateApplicationStatus(
-        applicationId,
-        "APPROVED",
-        verificationData
-      );
-
-      if (result.success) {
-        setApplication({
-          ...application,
-          status: "APPROVED",
-          verificationData,
-        });
-        setActionMessage({
-          type: "success",
-          text: "Application approved successfully!",
-        });
-      } else {
-        setActionMessage({
-          type: "error",
-          text: result.error?.message || "Failed to approve application",
-        });
-      }
-    } catch (err) {
-      console.error("Error approving application:", err);
+    if (result.success) {
+      setApplication({
+        ...application,
+        status: "APPROVED",
+        verificationData,
+      });
+      setActionMessage({
+        type: "success",
+        text: "Application approved successfully!",
+      });
+    } else {
       setActionMessage({
         type: "error",
-        text: "Failed to approve application",
+        text: result.error?.message || "Failed to approve application",
       });
-    } finally {
-      setProcessingAction(false);
     }
   };
 
   const handleReject = async () => {
-    try {
-      setProcessingAction(true);
+    const result = await rejectApplication(applicationId);
 
-      const result = await applicationApi.updateApplicationStatus(
-        applicationId,
-        "REJECTED"
-      );
-
-      if (result.success) {
-        setApplication({ ...application, status: "REJECTED" });
-        setActionMessage({ type: "success", text: "Application rejected." });
-      } else {
-        setActionMessage({
-          type: "error",
-          text: result.error?.message || "Failed to reject application",
-        });
-      }
-    } catch (err) {
-      console.error("Error rejecting application:", err);
-      setActionMessage({ type: "error", text: "Failed to reject application" });
-    } finally {
-      setProcessingAction(false);
+    if (result.success) {
+      setApplication({ ...application, status: "REJECTED" });
+      setActionMessage({ type: "success", text: "Application rejected." });
+    } else {
+      setActionMessage({
+        type: "error",
+        text: result.error?.message || "Failed to reject application",
+      });
     }
   };
 
   const handleVerifyOnBlockchain = async () => {
-    try {
-      setProcessingAction(true);
+    const result = await verifyApplicationOnBlockchain(applicationId);
 
-      const result = await applicationApi.verifyApplication(applicationId);
-
-      if (result.success) {
-        setApplication({
-          ...application,
-          transactionId: result.transaction.id,
-        });
-        setActionMessage({
-          type: "success",
-          text: "Application verified on blockchain successfully!",
-        });
-      } else {
-        setActionMessage({
-          type: "error",
-          text: result.error?.message || "Failed to verify on blockchain",
-        });
-      }
-    } catch (err) {
-      console.error("Error verifying on blockchain:", err);
+    if (result.success) {
+      setApplication({
+        ...application,
+        transactionId: result.transaction.id,
+      });
+      setActionMessage({
+        type: "success",
+        text: "Application verified on blockchain successfully!",
+      });
+    } else {
       setActionMessage({
         type: "error",
-        text: "Failed to verify on blockchain",
+        text: result.error?.message || "Failed to verify on blockchain",
       });
-    } finally {
-      setProcessingAction(false);
     }
   };
 
@@ -275,37 +176,6 @@ const ApplicationDetailsPage = () => {
         };
     }
   };
-
-  // Function to get the NFT image URL using studentId and version
-  const getNftImageUrl = () => {
-    if (!nftData) {
-      console.warn("getNftImageUrl: nftData is null");
-      return null;
-    }
-    
-    if (!nftData.studentId) {
-      console.warn("getNftImageUrl: nftData.studentId is missing", nftData);
-      
-      // If studentId is missing but application has studentId, use that instead
-      if (application && application.studentId) {
-        console.log("Using application.studentId as fallback:", application.studentId);
-        const url = `http://localhost:3000/api/nft/idcards/${application.studentId}/image?v=${nftData.version || 1}&t=${retryCount}`;
-        console.log("Generated fallback URL:", url);
-        return url;
-      }
-      
-      return null;
-    }
-    
-    const url = `http://localhost:3000/api/nft/idcards/${nftData.studentId}/image?v=${nftData.version || 1}&t=${retryCount}`;
-    console.log("Generated NFT image URL:", url);
-    return url;
-  };
-
-  // Add this before the return statement to debug nftData
-  console.log("Before render - nftData:", nftData);
-  console.log("Before render - studentData:", studentData);
-  console.log("Before render - application:", application);
 
   if (loading) {
     return (
@@ -347,6 +217,7 @@ const ApplicationDetailsPage = () => {
       className="container mx-auto px-4 py-12"
     >
       <div className="max-w-4xl mx-auto">
+        {/* Back button and header */}
         <motion.div variants={itemVariants} className="mb-6">
           <button
             onClick={() => navigate(-1)}
@@ -371,6 +242,7 @@ const ApplicationDetailsPage = () => {
           </div>
         </motion.div>
 
+        {/* Action message */}
         {actionMessage && (
           <motion.div
             variants={itemVariants}
@@ -455,6 +327,7 @@ const ApplicationDetailsPage = () => {
           variants={itemVariants}
           className="bg-white shadow-md rounded-lg mb-6 overflow-hidden"
         >
+          {/* Application details content (same as original) */}
           <div className="border-b px-6 py-4 bg-gray-50">
             <h2 className="text-xl font-semibold flex items-center">
               <BookOpen className="mr-2" size={20} />
@@ -597,7 +470,7 @@ const ApplicationDetailsPage = () => {
 
                   {/* Actual NFT Image from API - direct URL */}
                   <div className="relative bg-gray-50 p-4">
-                    {idCardLoading || imageLoading ? (
+                    {imageLoading ? (
                       <div className="w-full h-64 flex items-center justify-center">
                         <Loader className="animate-spin h-8 w-8 text-indigo-600" />
                       </div>
@@ -705,7 +578,7 @@ const ApplicationDetailsPage = () => {
                 <button
                   onClick={handleApprove}
                   disabled={processingAction}
-                  className="px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 flex items-center justify-center"
+                  className="px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 flex items-center justify-center disabled:opacity-70"
                 >
                   {processingAction ? (
                     <>
@@ -723,7 +596,7 @@ const ApplicationDetailsPage = () => {
                 <button
                   onClick={handleReject}
                   disabled={processingAction}
-                  className="px-4 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center justify-center"
+                  className="px-4 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center justify-center disabled:opacity-70"
                 >
                   {processingAction ? (
                     <>
@@ -742,6 +615,7 @@ const ApplicationDetailsPage = () => {
           </motion.div>
         )}
 
+        {/* Blockchain verification section */}
         {application.status === "APPROVED" && !application.transactionId && (
           <motion.div
             variants={itemVariants}
@@ -765,7 +639,7 @@ const ApplicationDetailsPage = () => {
               <button
                 onClick={handleVerifyOnBlockchain}
                 disabled={processingAction}
-                className="px-4 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center justify-center w-full"
+                className="px-4 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center justify-center w-full disabled:opacity-70"
               >
                 {processingAction ? (
                   <>
@@ -783,6 +657,7 @@ const ApplicationDetailsPage = () => {
           </motion.div>
         )}
 
+        {/* Blockchain verified confirmation */}
         {application.status === "APPROVED" && application.transactionId && (
           <motion.div
             variants={itemVariants}

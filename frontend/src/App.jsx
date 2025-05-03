@@ -35,6 +35,9 @@ import ApplicationDetailsPage from "./pages/ApplicationDetailsPage";
 
 import InstitutionDetailsPage from "./pages/InstitutionDetailsPage";
 
+// In App.js or your root component
+import { ApplicationProvider } from './context/ApplicationContext';
+
 // 1. Create a splash screen component
 const SplashScreen = () => (
   <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-600 to-violet-600">
@@ -242,16 +245,18 @@ function App() {
       <NftProvider>
         {/* Wrap with the new InstitutionProvider */}
         <InstitutionProvider>
-          <Router>
-            <div className="min-h-screen bg-slate-50">
-              <Header />
-              <main>
-                <AnimatePresence mode="wait">
-                  <AppRoutes />
-                </AnimatePresence>
-              </main>
-            </div>
-          </Router>
+          <ApplicationProvider>
+            <Router>
+              <div className="min-h-screen bg-slate-50">
+                <Header />
+                <main>
+                  <AnimatePresence mode="wait">
+                    <AppRoutes />
+                  </AnimatePresence>
+                </main>
+              </div>
+            </Router>
+          </ApplicationProvider>
         </InstitutionProvider>
       </NftProvider>
     </AuthProvider>

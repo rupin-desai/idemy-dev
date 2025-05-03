@@ -160,3 +160,87 @@ export const verifyApplication = async (applicationId) => {
     };
   }
 };
+
+// Add this method to get application details with all related data
+export const getApplicationDetailsWithRelations = async (applicationId) => {
+  try {
+    const token = localStorage.getItem("authToken");
+    
+    // Get application data
+    const appResponse = await axios.get(
+      `${API_URL}/${applicationId}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    
+    if (!appResponse.data.success) {
+      return {
+        success: false,
+        error: { message: "Failed to load application details" }
+      };
+    }
+    
+    const application = appResponse.data.application;
+    let studentData = null;
+    let idCard = null;
+    let nftData = null;
+    
+    // Fetch student data
+    try {
+      const studentResponse = await axios.get(
+        `http://localhost:3000/api/students/${application.studentId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      if (studentResponse.data.success) {
+        studentData = studentResponse.data.student;
+        
+        // Try to get ID card data
+        try {
+          const idCardResponse = await axios.get(
+            `http://localhost:3000/api/nft/idcards/${application.studentId}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          
+          if (idCardResponse.data.success) {
+            idCard = idCardResponse.data.idCard;
+          }
+        } catch (idCardError) {
+          console.warn("Could not fetch ID card:", idCardError);
+        }
+      }
+    } catch (studentError) {
+      console.warn("Could not fetch student data:", studentError);
+    }
+    
+    // Fetch NFT data if available
+    if (application.nftTokenId) {
+      try {
+        const nftResponse = await axios.get(
+          `http://localhost:3000/api/nft/${application.nftTokenId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        
+        if (nftResponse.data.success) {
+          nftData = nftResponse.data.nft;
+        }
+      } catch (nftError) {
+        console.warn("Could not fetch NFT data:", nftError);
+      }
+    }
+    
+    return {
+      success: true,
+      application,
+      studentData,
+      idCard,
+      nftData
+    };
+    
+  } catch (error) {
+    const errorData = handleApiError(error, "get-application-details-with-relations");
+    return {
+      success: false,
+      error: errorData
+    };
+  }
+};
